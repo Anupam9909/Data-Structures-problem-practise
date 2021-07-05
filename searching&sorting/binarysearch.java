@@ -92,7 +92,7 @@ public class binarysearch{
 
 
 
-
+    //---------------------------------------------------------------------------------------------------------------
     // again: generally this is used 
     // Insert position
     public int insertposition(int[] arr){

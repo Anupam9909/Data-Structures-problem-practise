@@ -333,8 +333,79 @@ public class questions{
         return dummy.next;
     }
 
-
-
+    // LC-23  MERGE K SORTED LISTS (IMPORTANT) - yaha bhi mergeTwoSortedLists() ka use hoga
+    // 1st way (iski complexity thodi jada hogi as more time tranverse kar rahe ha haam)
+//     public ListNode mergeKLists(ListNode[] lists) {
+//         if(lists.length == 0) return null;
+//         if(lists.length == 1) return lists[0];
+        
+//         ListNode si = lists[0], ei = lists[1];
+        
+//         for(int i = 1; i < lists.length; i++){
+//             si = lists[0];
+//             ei = lists[i];
+//             ListNode nhead = mergeTwoSortedList(si, ei);
+//             lists[0] = nhead;
+//         }
+        
+//         return lists[0];
+//     }
+    
+    
+    //2nd way(iski complexity thodi kaam hogi 1st way ke comparison me, as traverse kam kar rahe ha haam yaha )
+    public ListNode mergeKLists(ListNode[] lists){
+        if(lists.length == 0) return null;
+        if(lists.length == 1) return lists[0];
+        
+        ListNode ans = mergeKlists(lists, 0, lists.length-1);
+        
+        return ans;
+    }
+    
+    public ListNode mergeKlists(ListNode[] lists, int si, int ei){
+        if(si + 1 == ei){
+            return mergeTwoSortedList(lists[si], lists[ei]);
+        }
+        if(si == ei){
+            return lists[si];
+        }
+        int mid = (si+ei)/2;
+        ListNode recans1 = mergeKlists(lists, si, mid);
+        ListNode recans2 = mergeKlists(lists, mid+1, ei);
+        
+        return mergeTwoSortedList(recans1, recans2);
+    }
+    
+    
+   
+    
+    public ListNode mergeTwoSortedList(ListNode l1, ListNode l2){
+        if(l1 == null) return l2;
+        if(l2 == null) return l1;
+        if(l1 == null && l2 == null) return null;
+        
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy;
+        ListNode curr1 = l1, curr2 = l2;
+        
+        while(curr1 != null && curr2 != null){
+            if(curr1.val < curr2.val){
+                prev.next = curr1;
+                prev = curr1;
+                curr1 = curr1.next;
+            }else{
+                prev.next = curr2;
+                prev = curr2;
+                curr2 = curr2.next;
+            }
+        }
+        
+        if(curr1 == null) prev.next = curr2;
+        else   prev.next = curr1;
+        
+        return dummy.next;
+        
+    }
 
 
 
