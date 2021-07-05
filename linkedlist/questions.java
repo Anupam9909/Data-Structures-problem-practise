@@ -212,11 +212,126 @@ public class questions{
         p.next = nhead;
         
     }
+
+
+    //LC-21. MERGE TWO SORTED LIST (YE GENERAL CODE HA AGAR QUESTION ME USE HOGA BAHUT)
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2){
+        if(l1 == null) return l2;
+        if(l2 == null) return l1;
+        if(l1 == null && l2 == null) return null;
+        
+        ListNode dummy = new ListNode(0);
+        
+        ListNode prev = dummy;
+        ListNode curr1 = l1, curr2 = l2;
+        
+        while(curr1 != null && curr2 != null){
+            if(curr1.val < curr2.val){
+                prev.next = curr1;
+                prev = curr1;
+                curr1 = curr1.next;
+            }else{
+                prev.next = curr2;
+                prev = curr2;
+                curr2 = curr2.next;
+            }
+        }
+        
+        if(curr1 == null){
+            prev.next = curr2;
+        }else if(curr2 == null){
+            prev.next = curr1;
+        }// third vala case nahi ayega as esa ni ho sakta ki curr1 == null ha and at the same time curr2 == null
+          // agar hota to while loop se compiler niche hi nahi ata   
+        
+        return dummy.next;
+    }
     
-     
+     // LC - 148 
+
+    // BRUTE FORCE  (O(n2) time , O(1) space)
+    public void swap(ListNode i, ListNode j){
+        int value = i.val;
+        i.val = j.val;
+        j.val = value;
+    }
+    
+    public ListNode sortList(ListNode head) {
+        ListNode temp1 = head;
+        ListNode temp2 = head;
+        
+        while(temp1 != null){
+            temp2 = temp1;
+            while(temp2 != null){
+                if(temp1.val > temp2.val){
+                    swap(temp1,temp2);
+                }
+                temp2 = temp2.next;
+            }
+            temp1 = temp1.next;
+        }
+        return head;
+    }
      
 
-
+    // O(nlogn) time and O(1) space  (using mergeTwoSortedList() concept)
+    public ListNode sortList(ListNode head){
+        if(head == null) return null;
+        if(head.next == null) return head;
+        
+        ListNode midnode = mid(head);
+        ListNode nhead = midnode.next;
+        
+        midnode.next = null;
+        
+        
+        // call recurssion function
+        ListNode h1 = sortList(head);
+        ListNode h2 = sortList(nhead);
+        
+        ListNode anshead = mergeTwoSortedList(h1, h2);
+        
+        return anshead;
+        
+    }
+    
+    public ListNode mid(ListNode head){
+        if(head == null) return null;
+        
+        ListNode slow = head, fast = head;
+        while(fast.next != null && fast.next.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+    
+    public ListNode mergeTwoSortedList(ListNode l1, ListNode l2){
+        if(l1 == null) return l2;
+        if(l2 == null) return l1;
+        if(l1 == null && l2 == null) return null;
+        
+        ListNode dummy = new ListNode(-1);
+        ListNode prev = dummy;
+        ListNode curr1 = l1, curr2 = l2;
+        
+        while(curr1 != null && curr2 != null){
+            if(curr1.val < curr2.val){
+                prev.next = curr1;
+                prev = curr1;
+                curr1 = curr1.next;
+            }else{
+                prev.next = curr2;
+                prev = curr2;
+                curr2 = curr2.next;
+            }
+        }
+        
+        if(curr1 == null) prev.next = curr2;
+        else   prev.next = curr1;
+        
+        return dummy.next;
+    }
 
 
 
