@@ -85,6 +85,36 @@ public class binarysearch{
         return (si == n && arr[si] != data)? -1 : si ;
     }
 
+
+
+
+
+
+
+
+
+    // again: generally this is used 
+    // Insert position
+    public int insertposition(int[] arr){
+        int si = 0, ei = arr.length-1;
+        
+        while(si <= ei){
+            int mid = (si + ei)/2;
+            
+            if(arr[mid] <= data){
+                si = mid + 1;
+            }else{
+                ei = mid - 1;
+            }
+        }
+        // si : gives insert position of the data input.(irrespective of the fact that initially the data was present in the given array or not)
+        
+        // ei : value depends on weather the data is initially present or not.
+        //      - if data is present => ei : last occurance of the data
+        //      - if data is not present => ei : no significance
+        return si;
+    } 
+
     
 
 }
