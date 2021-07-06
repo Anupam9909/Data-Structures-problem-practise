@@ -438,4 +438,68 @@ public class questions{
         return ans;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // LC- 138 COPY LIST WITH RANDOM POINTER 
+    //- FUNCTION ME THOD KE KARO(VARIABLE KE NAAM LIKHNE ME BHI SAHULIYAT RAHEGI(imp))
+    HashMap<Node, Node> hm = new HashMap<>();
+    public Node copyRandomList(Node head) {
+        if(head == null) return head;
+        
+        // making a duplicate linkedlist
+        Node newhead = makeduplicatell(head);
+        
+        // alocating random pointer
+        alocatingRandomPointer(head, newhead);
+        
+        return newhead;
+    }
+    
+    public Node makeduplicatell(Node parenthead){
+        Node dummy = new Node(-1);
+        Node nhead = dummy;
+        Node head = parenthead;
+        while(head != null){
+            Node np = new Node(head.val);
+            
+            hm.put(head, np);    // hashmap.put(key, value);
+            nhead.next = np;
+            nhead = nhead.next;
+            head = head.next;
+        }
+        return dummy.next;
+    }
+    
+    public void alocatingRandomPointer(Node oldhead, Node newhead){
+        Node h1 = oldhead;
+        Node h2 = newhead;
+        while(h1 != null){
+            Node rptr = h1.random;  // rptr : random pointer
+            Node cptr = null;       // cptr : corresponding pointer
+            if(rptr != null) cptr = hm.get(rptr);
+            h2.random = cptr;
+            
+            h1 = h1.next;
+            h2 = h2.next;
+        }
+    }
+
 }
