@@ -335,21 +335,21 @@ public class questions{
 
     // LC-23  MERGE K SORTED LISTS (IMPORTANT) - yaha bhi mergeTwoSortedLists() ka use hoga
     // 1st way (iski complexity thodi jada hogi as more time tranverse kar rahe ha haam)
-//     public ListNode mergeKLists(ListNode[] lists) {
-//         if(lists.length == 0) return null;
-//         if(lists.length == 1) return lists[0];
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length == 0) return null;
+        if(lists.length == 1) return lists[0];
         
-//         ListNode si = lists[0], ei = lists[1];
+        ListNode si = lists[0], ei = lists[1];
         
-//         for(int i = 1; i < lists.length; i++){
-//             si = lists[0];
-//             ei = lists[i];
-//             ListNode nhead = mergeTwoSortedList(si, ei);
-//             lists[0] = nhead;
-//         }
+        for(int i = 1; i < lists.length; i++){
+            si = lists[0];
+            ei = lists[i];
+            ListNode nhead = mergeTwoSortedList(si, ei);
+            lists[0] = nhead;
+        }
         
-//         return lists[0];
-//     }
+        return lists[0];
+    }
     
     
     //2nd way(iski complexity thodi kaam hogi 1st way ke comparison me, as traverse kam kar rahe ha haam yaha )
@@ -376,9 +376,6 @@ public class questions{
         return mergeTwoSortedList(recans1, recans2);
     }
     
-    
-   
-    
     public ListNode mergeTwoSortedList(ListNode l1, ListNode l2){
         if(l1 == null) return l2;
         if(l2 == null) return l1;
@@ -404,16 +401,41 @@ public class questions{
         else   prev.next = curr1;
         
         return dummy.next;
-        
     }
 
 
+    // LC- 141  (CYCLE DETECTION)
+    // SIMPLE APPROACH (USING HASHMAP)
+    public boolean hasCycle(ListNode head){
+        HashMap<ListNode, Integer> hm = new HashMap<>();
+        ListNode temp = head;
 
+        while(temp != null){
+            if(hm.getOrDefault(temp, 0) == 0){
+                hm.put(temp, 1);
+            }else{
+                return true;
+            }
+            temp = temp.next;
+        }
+        return false;
+    }
+    
 
-
-
-
-
-
+    // SMART APPROACH (USING SLOW & FAST POINTER) - (CYCLE DETECTION)
+    public boolean hasCycle(ListNode head){
+        if(head == null) return false;
+        
+        boolean ans = false;
+        ListNode slow = head, fast = head.next;
+        
+        while(slow != null && fast != null && fast.next != null && fast != slow){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        
+        if(slow == fast) ans = true; 
+        return ans;
+    }
 
 }
