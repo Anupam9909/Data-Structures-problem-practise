@@ -117,51 +117,60 @@ public class basic{
     }
 
 
-    // or 
+    // FindData(); -  this template used in further questions
     public boolean findData(TreeNode root, int data){
         if(root == data) return true;
 
         if(root.val == data) return true;
 
-        return findData(root.left, data) || findData(root.right, data);
+        boolean ans = findData(root.left, data) || findData(root.right, data);
+
+        return ans;
     }
 
-    // parameter as a storage
-    public boolean rootToNode(TreeNode root, ArrayList<Integer> psf){
+    //--------------------------------------------------------------------------------------------------
 
+    // [ROOT <-> NODE]  PATH PROBLEM
+
+    // (A)  NODE TO ROOT PATH
+    // (A) i. parameter as a storage
+    public boolean nodeToRootPath(TreeNode root, ArrayList<TreeNode> psf){
+        if(root == null)    return false;
+        
         if(root.val == data){
-            psf.add(root.val);
+            psf.add(root);
             return true;
         }
 
-        boolean ans = rootToNode(root.left, psf) || rootToNode(root.right, psf);
+        boolean ans = nodeToRootPath(root.left, psf) || nodeToRootPath(root.right, psf);
 
         if(ans){
-            psf.add(root.val);
-            return true;
+            psf.add(root);
         }
-        return false;
+
+        return ans;
     }
 
-    // root To Node (by return type of a ArrayList)
-    public ArrayList<Integer> rootToNode(TreeNode root, int data){
+    //(A) ii. NODE TO ROOT PATH (by return type of a ArrayList<>)
+    public ArrayList<TreeNode> nodeToRootPath(TreeNode root, int data){
         if(root == null){
             return new ArrayList<>();
         }
-        ArrayList<Integer> ans = new ArrayList<>();
+
+        ArrayList<TreeNode> ans = new ArrayList<>();
         if(root.val == data){
-            ans.add(root.val);
+            ans.add(root);
             return ans;
         }
-        
-        ans = rootToNode(root.left, data);
+
+        ans = nodeToRootPath(root.left, data);
         if(ans.size() != 0){
-            ans.add(root.val);
+            ans.add(root);
             return ans;
         }
-        ans = rootToNode(root.right, data);
+        ans = nodeToRootPath(root.right, data);
         if(ans.size() != 0){
-            ans.add(root.val);
+            ans.add(root);
             return ans;
         }
 
@@ -169,5 +178,21 @@ public class basic{
     }
 
 
+    // (B) ROOT TO NODE PATH (not used (upar vala i.e [(A) i. NODE TO ROOT PATH - parameter type] hi use karte ha haam))
+    public void rootToNode(TreeNode root, ArrayList<TreeNode> psf){
+        if(root == null) return false;
+
+        psf.add(root);
+        if(root.val == data){
+            return true;
+        }
+
+        boolean res = rootToNode(root.left, psf) || rootToNode(root.right, psf);
+
+        if(!res){
+            psf.remove(psf.size()-1);
+        }
+        return res;     
+    }
 
 }
