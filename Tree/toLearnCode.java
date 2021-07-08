@@ -14,7 +14,7 @@
 
 
 // NODE TO ROOT PATH
-    public boolean nodeToRootPath(TreeNode root, ArrayList<TreeNode> psf){
+    public boolean nodeToRootPath(TreeNode root,, int data, ArrayList<TreeNode> psf){
         if(root == null)    return false;
         
         if(root.val == data){
@@ -23,8 +23,8 @@
         }
 
         boolean ans = false; 
-        ans = ans || nodeToRootPath(root.left, psf);
-        ans = ans || nodeToRootPath(root.right, psf);
+        ans = ans || nodeToRootPath(root.left,data, psf);
+        ans = ans || nodeToRootPath(root.right,data, psf);
 
         if(ans){
             psf.add(root);

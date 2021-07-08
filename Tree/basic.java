@@ -134,7 +134,7 @@ public class basic{
 
     // (A)  NODE TO ROOT PATH
     // (A) i. parameter as a storage
-    public boolean nodeToRootPath(TreeNode root, ArrayList<TreeNode> psf){
+    public boolean nodeToRootPath(TreeNode root,int data, ArrayList<TreeNode> psf){
         if(root == null)    return false;
         
         if(root.val == data){
@@ -142,7 +142,7 @@ public class basic{
             return true;
         }
 
-        boolean ans = nodeToRootPath(root.left, psf) || nodeToRootPath(root.right, psf);
+        boolean ans = nodeToRootPath(root.left,data, psf) || nodeToRootPath(root.right,data, psf);
 
         if(ans){
             psf.add(root);
@@ -179,7 +179,7 @@ public class basic{
 
 
     // (B) ROOT TO NODE PATH (not used (upar vala i.e [(A) i. NODE TO ROOT PATH - parameter type] hi use karte ha haam))
-    public void rootToNode(TreeNode root, ArrayList<TreeNode> psf){
+    public void rootToNode(TreeNode root,int data, ArrayList<TreeNode> psf){
         if(root == null) return false;
 
         psf.add(root);
@@ -187,7 +187,7 @@ public class basic{
             return true;
         }
 
-        boolean res = rootToNode(root.left, psf) || rootToNode(root.right, psf);
+        boolean res = rootToNode(root.left,data, psf) || rootToNode(root.right, data, psf);
 
         if(!res){
             psf.remove(psf.size()-1);
