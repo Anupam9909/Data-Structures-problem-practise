@@ -15,6 +15,11 @@ public class temp{
     }
 
 
+    public int solve(String s){
+        
+    }
+
+
     
 
 }
