@@ -427,6 +427,7 @@ public class questions{
         if(head == null) return false;
         
         boolean ans = false;
+        
         ListNode slow = head, fast = head.next;
         
         while(slow != null && fast != null && fast.next != null && fast != slow){
@@ -454,6 +455,83 @@ public class questions{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // LC - 92 : REVERSE LINKEDLIST (tassali se space le ke karo har imp node ko store karo h1,h2,h3,h4 etc..(space lo bharr bhaar ke))
+    public ListNode reverseBetween(ListNode head, int left, int right){
+       if(head.next == null) return head;
+       ListNode dummy = new ListNode(0);         
+       dummy.next = head;
+       
+       ListNode h1 = dummy, h2 = null, h3 = null , h4 = null;
+       
+       ListNode temp = head;
+       for(int i = 0; temp != null; i++){
+           if(i <= left-2) h1 = temp;
+           if(i <= left-1) h2 = temp;
+           if(i <= right-1) h3 = temp;
+           if(i <= right) h4 = temp;
+           temp = temp.next;
+       }
+       h4 = h3.next;
+       h3.next = null;
+       reverse(h2, h3);
+       
+       // connect list
+       h1.next = h3;
+       h2.next = h4;
+       
+       return dummy.next;
+    }
+
+    public void reverse(ListNode sp, ListNode ep){ // si : starting pointer, ei : ending pointer
+        ListNode prev = null, curr = sp, forv = curr.next;
+        while(curr != null){
+            curr.next = prev;
+            prev = curr;
+            curr = forv;
+            if(forv != null) forv = forv.next;
+        }
+    }
+    
+    
 
 
 

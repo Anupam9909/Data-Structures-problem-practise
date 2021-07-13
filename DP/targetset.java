@@ -1,6 +1,15 @@
 public class targetset{
     public void main(String[] args){
+        int[] arr = new int[]{2,3,5,7};
+
+        // by subsquence method
+        ccp_infi(arr, target, 0);
+        ccc_infi(arr, target, 0);
+        ccc_single(arr, target, 0);
         
+        boolean[] visited = new boolean[arr.length];
+        ccp_single(arr, target, 0, visited);
+        ccp_single(arr, target, 0) // -ve way
     }
 
     // BY SUBSEQUENCE METHOD
@@ -55,7 +64,6 @@ public class targetset{
         if(target == 0) return 1;
 
         int count = 0;
-        
         // ayega 
         if(target-arr[idx] >= 0 && visited[idx] != true){
             visited[idx] = true;
@@ -69,24 +77,23 @@ public class targetset{
         return count;
     }
 
+    // ccp_ single different way i.e without visited(works only for +ve integer in array)
+    public int ccp_single(int[] arr, int target, int idx){
+        if(idx == arr.length) return 0;
+        if(target == 0) return 1;
 
+        int count = 0;
+        if(target-arr[idx] >= 0){
+            int temp = arr[idx];
+            arr[idx] = -arr[idx];
+            count += ccp_single(arr, target-temp, 0); 
+            arr[idx] = -arr[idx];
+        }
 
+        count += ccp_single(arr, target, idx+1);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return count;
+    } 
 
 
 
