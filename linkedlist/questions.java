@@ -580,4 +580,152 @@ public class questions{
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    // LC-445. Add Two Numbers II 
+    // i.  vohi (addFirst/addLast/removeFirst) vala tarika use kiya ha (YE INTERVIEW KE LIYE SAHI HA)
+    ListNode anshead = null, anstail = null;   
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode h1 = reverseList(l1);
+        ListNode h2 = reverseList(l2);
+        int carry = 0;
+        while(h1 != null || h2 != null || carry != 0){
+            int a = h1 == null ? 0 : h1.val;
+            int b = h2 == null ? 0 : h2.val;
+            
+            int sum = a + b + carry;
+            int rem = sum%10;
+            carry = sum/10;
+            
+            addFirst(rem);
+            
+            if(h1 != null) h1 = h1.next;
+            if(h2 != null) h2 = h2.next;
+            
+            // ya to ye theen line likh lo ya simply while loop me ek aur condition daal do ->  carry != 0
+            // if(h1 == null && h2 == null){       
+            //     if(carry != 0)  addFirst(carry);
+            // }
+        }
+        
+        return anshead;
+    }
+    
+    public void addFirst(int val){
+        ListNode node = new ListNode(val);
+        if(anshead == null){
+            anshead = anstail = node;
+        }else{
+            node.next = anshead;
+            anshead = node;
+        }
+    }
+    public ListNode reverseList(ListNode head){
+        ListNode prev = null;
+        ListNode curr = head, forw = head;
+        
+        while(curr != null){
+            forw = curr.next ;
+            curr.next = prev;
+            
+            prev = curr;
+            curr = forw;
+        }
+        
+        return prev;
+    }
+
+
+
+    // but ese chote chote kaam ke liye addfirst ye pura function likne ki jarurat ni ha, Direct dummy node se kar lo
+    // (EXAM TEST KE LIYE SAHI HA- JALDI HOGA CODE KARNA)
+
+    // ii. BY DUMMY WAY
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode h1 = reverseList(l1);
+        ListNode h2 = reverseList(l2);
+        int carry = 0;
+
+        ListNode dummy = new ListNode(-1);
+        ListNode  tp = dummy;  // tp : temporary pointer     (tp link -to learn)
+        while(h1 != null || h2 != null || carry != 0){
+            int a = h1 == null ? 0 : h1.val;
+            int b = h2 == null ? 0 : h2.val;
+            
+            int sum = a + b + carry;
+            int rem = sum%10;
+            carry = sum/10;
+            
+            ListNode node = new ListNode(rem);
+            tp.next = node;
+            tp = node;
+            
+            if(h1 != null) h1 = h1.next;
+            if(h2 != null) h2 = h2.next;
+        }
+        
+        return dummy.next;
+    }
+
+    public ListNode reverseList(ListNode head){
+        ListNode prev = null;
+        ListNode curr = head, forw = head;
+        
+        while(curr != null){
+            forw = curr.next ;
+            curr.next = prev;
+            
+            prev = curr;
+            curr = forw;
+        }
+        
+        return prev;
+    }
+
+
+
+
+
+
+
+
+
 }
