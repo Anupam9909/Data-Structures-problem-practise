@@ -230,8 +230,6 @@ public class graph{
 
     //QUESTION => return true/flase if graph is a fully connected graph or not?
 
-    // /*package whatever //do not write package name here */
-
     // import java.util.*;
     // import java.lang.*;
     // import java.io.*;
@@ -263,10 +261,10 @@ public class graph{
     //             int src = 0;
     //             ArrayList<Integer>[] graph = buildgraph(N,M);
     //             for(int j = 1 ; j <= M ; j++){
-    //             int u = scn.nextInt();
-    //             int v = scn.nextInt();
-    //             src = u;
-    //             addEdge(graph,u,v);
+    //                  int u = scn.nextInt();
+    //                  int v = scn.nextInt();
+    //                  src = u;
+    //                  addEdge(graph,u,v);
     //             }
                 
     //             if(isGraphConnected(graph,src)) System.out.println(1);
@@ -277,6 +275,7 @@ public class graph{
     //     public static boolean isGraphConnected(ArrayList<Integer>[] graph, int src){
     //         boolean[] visited = new boolean[graph.length];
     //         dfs(graph,src,visited);
+
     //         for(int i= 1 ; i < graph.length; i++){
     //             if(visited[i] == false)  return false;
     //         }
@@ -302,61 +301,58 @@ public class graph{
     }
 
 
+    public static int hamiltonianPathCycle(ArrayList<Edge>[] graph,int SRC , int src, boolean[] visited, int count, String psf){
+        if(count == graph.length-1){
+            System.out.println("path : " + psf);
+            if(iscycle(graph,SRC,src))  
+                System.out.println("cycle : " + psf);
+            return 1;
 
-
-
-
-
-
-
-        public static int hamiltonianPathCycle(ArrayList<Edge>[] graph,int SRC , int src, boolean[] visited, int count, String psf){
-            if(count == graph.length-1){
-                System.out.println("path : " + psf);
-                if(iscycle(graph,SRC,src))  
-                    System.out.println("cycle : " + psf);
-                return 1;
-
-            }
-
-            visited[src] = true;
-            int totalans = 0;
-            for(Edge e : graph[src]){
-                if(visited[e.v] == false){
-                    totalans += hamiltonianPathCycle(graph, e.v, visited,count,psf + e.v);
-                }
-            }
-            visited[src] = false;
-            return totalans;
-            
         }
 
-        public static boolean cycle(ArrayList<Edge>[] graph,int SRC , int src){
-            for(Edge e : graph[SRC]){
-                if(e.v == src)  return true;
+        visited[src] = true;
+        int totalans = 0;
+        for(Edge e : graph[src]){
+            if(visited[e.v] == false){
+                totalans += hamiltonianPathCycle(graph, e.v, visited,count,psf + e.v);
             }
-            return false;
         }
+        visited[src] = false;
+        return totalans;
+        
+    }
+
+    public static boolean cycle(ArrayList<Edge>[] graph,int SRC , int src){
+        for(Edge e : graph[SRC]){
+            if(e.v == src)  return true;
+        }
+        return false;
+    }
 
 
-
-        // o(n3)complexity ha ye niche vala
+        // GET NUMBER OF CONNECTED COMPONENTS IN A GRAPH  and print also
+        // I way 
         public static int gcc(ArrayList<Edge>[] graph){
             int count = 0;  // count for the number of components 
             boolean[] visited = new boolean[graph.length];
             for(int i = 0 ; i < graph.length; i++){
                 if(visited[i] == false){
                     dfs(graph,src,visited);
-                    for(int j = 0 ; j < visited.length; j++){
-                        if(visited[j] == true) System.out.print(j + " ");
-                    }
                     System.out.println();
                     count++;
                 }
+            }
+
+            // jo single node bach gaye vo print kar do
+            for(int j = 0 ; j < visited.length; j++){
+                if(visited[j] == false)
+                    System.out.println(j);
             }
         }
 
         public static void dfs(ArrayList<Edge>[] graph, int src , boolean[] visited){
             visited[src] = true;
+            System.out.print(src + " ");
             for(Edge e : graph[src]){
                 if(visited[e.v] == false){
                     dfs(graph,e.v,visited);
@@ -364,8 +360,7 @@ public class graph{
             }
         }
 
-//==-=======================================================================================
-// o(n2) complexity
+        // II way - not much difference just AL me ans mangaya ha 
         public static int gcc(ArrayList<Edge>[] graph){
             int count = 0;
             boolean[] visited = new boolean[graph.length];
@@ -521,7 +516,6 @@ public class graph{
 
         cout << dest << " present at : " << atLevel << endl;
     }
-
 
 
     //leetcode 694 (premium) 

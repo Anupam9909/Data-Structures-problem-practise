@@ -34,7 +34,8 @@ public class stringset{
         return count;
     }
 
-    // LONGEST PALLINDROMIC SUBSEQUENCE
+
+    // LC-516  LONGEST PALLINDROMIC SUBSEQUENCE
 
     // I. BY LAYMANN WAY (teeno calls laga di bina soche then baad me two condition dekhi bass)
     public int longestPalindromeSubseq(String s){
@@ -163,5 +164,9 @@ public class stringset{
         }
         return dp[I][J];
     }
+
+
+    // LC- 115 DISTICT SUBSEQUENCE
+    
 
 }

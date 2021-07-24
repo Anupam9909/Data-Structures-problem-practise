@@ -9,7 +9,7 @@ public class pair implements Comparable<pair>{
     }
     
     public int compareTo(pair p){
-        return this.freq - p.freq;  // (this - other) -> gives default behaviour [in this pq case it is MIN. PQ]
+        return this.freq - p.freq;  // (this - other) -> gives default behaviour [i.e MIN. PQ]
     }
 }
 
