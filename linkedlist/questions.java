@@ -722,10 +722,178 @@ public class questions{
 
 
 
+    // ADD TWO LINKED LIST
+    public static ListNode addTwoLinkedList(ListNode l1, ListNode l2){
+        if(l1 == null && l2 == null) return null;
+        if(l1 == null) return l2;
+        if(l1 == null) return l1;
+
+        ListNode h1 = reverse(l1);
+        ListNode h2 = reverse(l2);
+
+        ListNode t1 = h1, t2 = h2;
+        ListNode anshead = null;
+
+        while(t1 != null || t2 != null || carry != 0){  //NOTE : || ayega yaha pe na ki &&
+            int a = t1 == null ? 0 : t1.val;
+            int b = t2 == null ? 0 : t2.val;
+
+            int sum = a + b + carry;
+            int rem = sum%10;
+            carry = sum/10;
+
+            ListNode nn = new ListNode(rem);
+            nn.next = anshead;
+            anshead = nn;
+
+            if(t1 != null) t1 = t1.next;
+            if(t2 != null) t2 = t2.next;
+        }
+
+        return anshead;
+    }
+
+
+    //-------------------------------------------
+
+
+    // SUBTRACT TWO LINKEDLIST  
+    // (ye SUM TWO LINKEDLIST se jada important ha agar edge cases deal karne hue to)
+
+    // saare edge cases handle karne ha (v.imp)
+    // given two numbers represented by the linked list.
+    // Subtract the smaller from the larger one.
+
+    public static Node subLinkedList(Node l1, Node l2) {
+        if(l2 == null) return l1;
+        if(l1 == null && l2 == null) return null;
+
+        while(l1 != null && l1.data == 0){  // 0 se list suru hui ha to chota karo l1 ko
+            l1 = l1.next;
+        }
+            
+        while(l2 != null && l2.data == 0){ // 0 se list suru hui ha to chota karo l2 ko
+            l2 = l2.next;
+        }
+            
+        Node x = bigList(l1, l2); // find ki badi list kon si ha and choti list kon si ha
+        if(x == l2){
+            Node temp = l1;
+            l1 = l2;
+            l2 = temp;
+        } 
+        
+        Node h1 = reverse(l1); // reverse l1 list them to traverse form left to right
+        Node h2 = reverse(l2); // reverse l2 list them to traverse form left to right
+        
+        Node t1 = h1, t2 = h2;
+        int borrow = 0;
+        
+        Node anshead = null;
+        while(t1 != null || t2 != null){  // simply subtract   //NOTE : || ayega yaha pe na ki && 
+            int a = t1 == null ? 0 : t1.data;
+            int b = t2 == null ? 0 : t2.data;
+            
+            int diff = borrow + (a - b);
+            
+            if(diff < 0){
+                diff = diff + 10;
+                borrow = -1;
+            }else{
+                borrow = 0;
+            }
+            
+            Node nn = new Node(diff);
+            nn.next = anshead;
+            anshead = nn;
+            
+            if(t1 != null) t1 = t1.next;
+            if(t2 != null) t2 = t2.next;
+        }
+        
+        while(anshead != null && anshead.data == 0){  // last me jo ans list bani ha usme agge koi 0 ha to hatta do
+            anshead = anshead.next;
+        }
+            
+        if(anshead == null){    // null aya iska matlab difference of two list 0 ha na ki null, so we have to return a list with 0 element only
+            Node ans = new Node(0);
+            return ans;
+        }
+
+        return anshead; // final ans return
+    }
+
+
+    public static Node reverse(Node head){
+        Node prev = null;
+        Node curr = head, forw = head;
+        
+        while(curr != null){
+            forw = curr.next;
+            
+            curr.next = prev;
+            prev = curr;
+            curr = forw;
+        }
+        
+        return prev;
+    }
+
+    public static Node bigList(Node l1, Node l2){
+        long s1 = size(l1);
+        long s2 = size(l2);
+        
+        if(s1 < s2) return l2;
+        if(s2 < s1) return l1;
+        
+        Node t1 = l1;
+        Node t2 = l2;
+            
+        if(s1 == s2){
+            while( t1 != null && t2 != null && t1.data >= t2.data ){
+            t1 = t1.next;
+            t2 = t2.next;
+            }
+            if(t1 == null) return t1;
+            else   return t2;
+        }
+        return null;
+    }
+
+    public static int size(Node head){
+        Node temp = head;
+        int count = 0;
+        while(temp != null){
+            temp = temp.next;
+            count++;
+        }
+        return count;
+    }
 
 
 
 
+    // MULTIPLICATION OF TWO LINKEDLIST
 
+    public static ListNode multiplyTwoLL(ListNode l1, ListNode l) {
+        if(l1 == null || l2 == null)  return new ListNode(0);
 
+        ListNode h1 = reverse(l1);
+        ListNode h2 = reverse(l2);
+
+        ListNode t1 = h1, t2 = h2;
+        ListNode temp = new ListNode(0);
+
+        while(t2 != null){
+            int val = t2.val;
+            
+            ListNode list1 = multiplyListWithNumber(t1, val);
+
+            temp = sumTwoList(list1, temp);
+
+            t2 = t2.next;
+            
+        }
+      
+    }
 }

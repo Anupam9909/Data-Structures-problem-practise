@@ -8,7 +8,7 @@ public int findSubstring(String s)
 {
     int[] freq = new int[128];
     int counter;            // check whether the substring is valid
-    int si = 0, ei = 0; //two pointers, si(starting index) and ei(ending index) of window
+    int si = 0, ei = 0;     //two pointers, si(starting index) and ei(ending index) of window
     int d;                  //the length of substring
 
     for ()
@@ -26,8 +26,7 @@ public int findSubstring(String s)
 
                 /* update d here if finding minimum, window(ei-si) */
 
-                //increase begin to make it invalid/valid again
-
+                //increase  si  to make it invalid/valid again
                 if(freq[s.charAt(si++)]++ ?)
                 { /*modify counter here*/
                 }

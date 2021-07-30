@@ -6,7 +6,6 @@ public class arraystring{
     }
 
     // lc-003 Longest substring without repeating character
-
     //O(n3) Solution
     public int lengthOfLongestSubstring(String s){
         int maxlen = 0;
@@ -80,7 +79,7 @@ public class arraystring{
         return maxlen;
     }
 
-    // lc-76
+    // lc-76 Minimum Window Substring
     // O(n3)
     public String minWindow(String s, String t) {
         int si = 0, ei = 0;
@@ -108,6 +107,7 @@ public class arraystring{
         
         return ans;
     }
+    
 
     public boolean checkSubstring(String s,String t, int i, int j){
         int[] freq = new int[128];
@@ -119,6 +119,7 @@ public class arraystring{
             if(--freq[t.charAt(k)] < 0) return false;
         
         return true;
+
     }
 
     //O(n2)  - (264/266 test cases pass)
