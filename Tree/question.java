@@ -1,4 +1,13 @@
 public class question{
+
+    public class Node{
+        int val;
+        Node left;
+        Node right;
+        Node(int v) this.val = v;
+        Node(int v, Node l){this.val = v; this.left = l;}
+        Node(int v, Node l, Node r) { this.val = v; this.left = l; this.right = r;}
+    }
     
     // LC-236. Lowest Common Ancestor of a Binary Tree
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
@@ -120,6 +129,176 @@ public class question{
         
         if(blocknode != root.left)  printkdown(root.left, k-1, ans, blocknode);
         if(blocknode != root.right)  printkdown(root.right, k-1, ans, blocknode);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // vertical view 
+
+    public class pair{
+        Node node;
+        int index;
+        pair(Node n , int i){
+            this.node = n;
+            this.index = i;
+        }
+    }
+
+    public static void verticalview(Node root){
+        LinkedList<Node> que = new LinkedList<>();
+        HashMap<Integer, ArrayList<Integer>> hm = new HashMap<>();
+        que.add(root);
+        int minorder = 0;
+        int maxorder = 0;
+
+
+        while(que.size() != 0){
+            int size  = que.size();
+            while(size-- > 0){
+                pair rempair = que.removeFirst();
+                Node rnode = rempair.node;
+                int index = rempair.index;
+
+                if(minorder > index) minorder = index;
+                if(maxorder < index) maxorder = index;
+
+                hm.putIfAbsent(index, new ArrayList<>());
+                hm.get(index).add(rnode.val);
+
+                if(rnode.left != null)
+                    que.addLast(rnode.left);
+
+                if(rnode.right != null)
+                    que.addLast(rnode.right);
+
+            }
+        }
+
+        return; 
+    }
+
+
+
+    // ek aur similar tarika ha (ye vala har jagah submit hoga)  CORRECT 100%
+    public static class pair {
+        TreeNode node = null;
+        int index = 0; // index of node 
+        int y = 0; // level of node 
+
+        pair(TreeNode node, int i, int y) {
+            this.node = node;
+            this.index = i;
+            this.y = y;
+        }
+    }
+    
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        PriorityQueue<pair> que = new PriorityQueue<>((a, b) -> {
+            if (a.y != b.y)
+                return a.y - b.y;   // this - other  => for default behaviour
+            else
+                return a.node.val - b.node.val; // this - other  => for default behaviour
+        });
+
+        HashMap<Integer, ArrayList<Integer>> hm = new HashMap<>();
+        
+        int minindex = 0;
+        int maxindex = 0;
+
+        que.add(new pair(root, 0 , 0));
+
+        while (que.size() != 0) {
+            pair rp = que.remove();
+            TreeNode rnode = rp.node;
+            int index = rp.index;
+            
+            minindex = Math.min(minindex, index);
+            maxindex = Math.max(maxindex, index);
+
+            hm.putIfAbsent(index, new ArrayList<>());
+            hm.get(index).add(rnode.val);
+
+            if (rnode.left != null)
+                que.add(new pair(rnode.left, rp.index - 1, rp.y + 1));
+
+            if (rnode.right != null)
+                que.add(new pair(rnode.right, rp.index + 1, rp.y + 1));
+
+        }
+
+        
+        List<List<Integer>> ans = new ArrayList<>();
+        
+        for(int i = minindex; i<= maxindex; i++){
+            ans.add(hm.get(i));
+        }
+        
+        return ans;
+        
     }
 
 }

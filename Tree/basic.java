@@ -11,7 +11,7 @@ public class basic{
             this.val = val;
             this.left = left;
             this.right = right;
-        }
+        } 
     }
 
     // WRITING BASE CASE IN A BINARY TREE
@@ -196,5 +196,4 @@ public class basic{
     }
 
 
-    
 }
