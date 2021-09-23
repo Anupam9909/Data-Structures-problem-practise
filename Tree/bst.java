@@ -252,7 +252,95 @@ public class bst{
     }
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // LC-1008. Construct Binary Search Tree from Preorder Traversal
+    // O(n) time , O(n) space(of recursion)
+    // best approach (basically second 1 property of bst ka use kiya ha vo interval( <minval, maxval> ) vala)
+    int i = 0;
+    public TreeNode bstFromPreorder(int[] preorder){
+        int minval = -(int)1e9;
+        int maxval = (int)1e9;
+        return solve(preorder, minval, maxval);
+    }
     
+    public TreeNode solve(int[] arr, int minval, int maxval){
+        if( i >= arr.length ) return null;
+        
+        if(arr[i] < minval || arr[i] > maxval){
+            return null;
+        }
+        
+        TreeNode root = new TreeNode(arr[i]);
+        i++;
+        
+        root.left = solve(arr, minval , root.val);
+        root.right = solve(arr, root.val, maxval);
+        
+        return root;
+    }
+    
+
+
+     // II approach (dry run pattern)-> O(nlogn) average time(as haam har level pe (n/2 , n/4, n/8... so on) kaam kar rahe ha ), O(n) space (recursion ka) 
+//     public TreeNode bstFromPreorder(int[] preorder) {
+//         if(preorder.length == 0) return null;
+//         return constructBST(preorder, 0, preorder.length-1);
+//     }
+    
+//     public TreeNode constructBST(int[] arr, int si, int ei){
+//         if(si > ei) return null;
+//         if(si == ei) return new TreeNode(arr[si]);
+        
+//         int i = si+1;
+//         while(i <= ei && arr[i] < arr[si] ) i++;
+        
+//         TreeNode root = new TreeNode(arr[si]);
+        
+//         root.left = constructBST(arr, si+1, i-1);
+//         root.right = constructBST(arr, i, ei);
+        
+//         return root;
+//     }
+
+
+
+
 
     public static void main(String [] args){
         
