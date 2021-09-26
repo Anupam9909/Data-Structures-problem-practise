@@ -134,6 +134,46 @@ public class question{
 
 
 
+    // LC- 103. Binary Tree Zigzag Level Order Traversal 
+
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
+        if(root == null) return ans;
+        
+        Stack<TreeNode> currst = new Stack<>();
+        Stack<TreeNode> forwst = new Stack<>();
+        
+        boolean order = true;
+        currst.push(root);
+        
+        while(currst.size() != 0){
+            int size = currst.size();
+            ArrayList<Integer> arr = new ArrayList<>();
+            while(size-- > 0){
+                TreeNode rnode = currst.pop();
+                    
+                arr.add(rnode.val);
+                
+                if(order){
+                    if(rnode.left != null) forwst.push(rnode.left);
+                    if(rnode.right != null) forwst.push(rnode.right);
+                }else{
+                    if(rnode.right != null) forwst.push(rnode.right);
+                    if(rnode.left != null) forwst.push(rnode.left);
+                }
+                
+            }
+            ans.add(arr); 
+            // level changes. so, update the (order) & both stack
+            order = !order;
+        
+            Stack<TreeNode> temp = currst;
+            currst = forwst;
+            forwst = temp;
+        }
+        
+        return ans;
+    }
 
 
 
@@ -300,5 +340,18 @@ public class question{
         return ans;
         
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
