@@ -39,4 +39,9 @@ public class gtree{
             forwst = temp;
         }
     }
+
+
+
+    
+
 }

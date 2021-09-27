@@ -354,4 +354,181 @@ public class question{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // CONSTRUCTION BASES QUESTION OF BINARY TREE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // SERIALIZE AND DESERIALIZE OF A BINARY TREE
+    public void serialize(TreeNode root, StringBuilder sb){
+        if(root == null){
+            sb.append("-1001,");
+            return;
+        }
+        
+        sb.append(root.val + ",");
+        serialize(root.left, sb);
+        serialize(root.right, sb);
+        
+    }
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root == null) return "";
+        StringBuilder sb = new StringBuilder();
+        serialize(root, sb);
+        return sb.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(itr >= data.length() || data.length() == 0) return null;
+        int num = numval(data);
+        if(num == -1001) return null;
+        
+        TreeNode root =  new TreeNode(num);
+        
+        root.left = deserialize(data);
+        root.right = deserialize(data);
+        
+        return root;
+    }
+    
+    int itr = 0;
+    public int numval(String data){
+        String str = new String();
+        if(data.charAt(itr) == ',') itr++;
+            
+        for(int i = itr; i < data.length(); i++){
+            String s = data.charAt(i)+"";
+            if(s.equals(",") == true){
+                break;
+            }else{
+                str = str + data.charAt(i);
+                itr++;
+            }
+        }
+        
+        int ans = Integer.parseInt(str);
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // LC-101. Symmetric Tree
+    // (short recurssive code)
+    public boolean isSymmetric(TreeNode root){
+        if(root == null || (root.left == null && root.right == null)) return true;
+        
+        // do alag-alag tree bana lo pehle to (and ab se dono alag tree ha ye socho)
+        TreeNode leftTree = root.left;
+        TreeNode rightTree = root.right;
+        
+        boolean ans =  checkmirror(leftTree, rightTree);
+        return ans;
+    }
+    // now haam dono ko sath-sath check karte chlege ki sahi ha na 
+    
+    public boolean checkmirror(TreeNode root1, TreeNode root2){
+        if(root1 == null && root2 == null)  return true;
+        if(root1 == null || root2 == null) return false;
+        
+        boolean ans = (root1.val == root2.val);
+        ans = ans && checkmirror(root1.left, root2.right);
+        ans = ans && checkmirror(root1.right, root2.left);
+        
+        return ans;
+    }
+
+
+    
+    //-----------------------------
+    //-=========================
+
+
+    
+
+
+
+
+
+
+
+
+
 }
