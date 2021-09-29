@@ -41,7 +41,73 @@ public class gtree{
     }
 
 
+    // Mirror of n-ary Tree (convert a n-ary tree into it's mirror)
+    // kuch ni karna yaha just children ko swap kar do 0 se n-1 ke logo ko
+    // i.e   (0 with n-1) , (1 with n-2) ... so on
 
+    public Node convertIntoMirror(Node root){
+        if(root == null || (root.left == null && root.right == null)) return root;
+
+        ConvertintoMirrorTree(root);
+    }
+
+    public void ConvertintoMirrorTree(Node root){
+        if(root == null) return ;
+
+        int n = root.children.size();
+        int si = 0, ei = n-1;
+        while(si < ei){
+            Node temp = root.children.get(si);
+            root.children.set(si, root.children.get(ei));
+            root.children.set(ei, temp);
+            si++; ei--;
+        }
+
+        for(Node x : root.children){
+            ConvertintoMirrorTree(x);
+        }
+
+    }
     
+
+    // check symmetry of an n-ary tree 
+    // solution : bilkul binary tree jaisa ha 
+    public void checksymmetry(Node root){
+        if(root == null || (root.left == null  && root.right == null)) return null;
+
+        Node leftTree = root.left;
+        Node rightTree = root.right;
+        boolean ans = checksymmetry(leftTree, rightTree);
+
+        return ans;
+    }
+
+
+    public boolean checksymmetry(Node root1, Node root2){
+        if(root1 == null && root2 == null) return true;
+        if(root1 == null || root2 == null) return false;
+
+        boolean ans = (root1.val == root2.val);
+        
+        if(root1.children.size() != root2.children.size()) return false;
+
+        int n = root1.children.size();
+        for(int i = 0; i < root1.children.size(); i++){
+            ans = ans && checksymmetry(root1.children.get(i), root2.children.get(n-1-i));
+        }
+
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }
