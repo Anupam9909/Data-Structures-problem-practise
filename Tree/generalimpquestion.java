@@ -59,7 +59,8 @@
     //     }
     // }
 
-    
+    //================================================================================================= 
+
     // LC-337. House Robber III   (diameter jesa ha ye) rec concept : {maxvalueifRobbed, maxvalueifNotRobbed}
         
     // RECURSION: 
@@ -150,3 +151,72 @@
         
         return myans;
     }
+
+    
+    //=================================================================================================
+
+    // LC-1372 Longest ZigZag Path in a Binary Tree
+
+    // yaha haam do entity lege int[] me 
+    // {longestZZpathleftway, longestZZpathrightway}
+    // and ek global variable ans le lege to ensure kabhi bhi kissi level pe ans max ho to ans update ho jaye
+    static int ans = 0;
+    public int longestZigZag(TreeNode root) {
+        if(root == null || (root.left == null && root.right == null)) return 0;
+        
+        ans = 0; // ye karna jaruri ha (nahi to submit me dikkat ati ha)
+        int[] val = solve(root);
+        ans = Math.max(ans, Math.max(val[0], val[1]));
+        
+        return ans-1;
+    }
+    
+    public int[] solve(TreeNode root){
+        if(root == null) return new int[]{0,0};
+        
+        int[] lans = solve(root.left);
+        int[] rans = solve(root.right);
+        
+        ans = Math.max(ans, Math.max(lans[0],lans[1]));
+        ans = Math.max(ans, Math.max(rans[0], rans[1]));
+        
+        int[] myans = new int[2];
+        myans[0] = lans[1]+1;
+        myans[1] = rans[0]+1;
+        
+        return myans;
+    }
+
+
+    // WE CAN DO ANOTHER THING BY TAKING 3 size ka ARRAY
+
+    // global variable ki jaga 3rd variable rakh do array me
+    // {longestZZpathleftway, longestZZpathrightway, maxpathans}
+    public int longestZigZag(TreeNode root) {
+        if(root == null || (root.left == null && root.right == null)) return 0;
+        
+        int[] ans = solve(root);
+        
+        return Math.max(Math.max(ans[0], ans[1]), ans[2]);
+        
+    }
+    
+    public int[] solve(TreeNode root){
+        if(root == null) return new int[]{-1,-1,0};
+        
+        int[] lans = solve(root.left);
+        int[] rans = solve(root.right);
+        
+        int[] myans = new int[3];
+        myans[2] = Math.max(Math.max(lans[0], lans[1]), Math.max(rans[0], rans[1]));
+        myans[2] = Math.max(myans[2], Math.max(lans[2], rans[2]));
+        
+        myans[0] = lans[1] + 1;
+        myans[1] = rans[0] + 1;
+        
+        return myans;
+    }
+    
+    //=================================================================================================
+
+    
