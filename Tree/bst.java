@@ -342,6 +342,61 @@ public class bst{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // LC-617, merge two bst
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if(root1 == null) return root2;
+        if(root2 == null) return root1;
+        
+        return makeBT(root1, root2);
+    }
+    
+    public TreeNode makeBT(TreeNode root1, TreeNode root2){
+        if(root1 == null && root2 == null) return null;
+        
+        int ans = 0;
+        ans += root1 == null ? 0 : root1.val;
+        ans += root2 == null ? 0 : root2.val;
+        
+        TreeNode temp = new TreeNode(ans);
+        
+        temp.left  = makeBT( (root1 == null ? null : root1.left), (root2 == null ? null : root2.left));
+        temp.right = makeBT( (root1 == null ? null : root1.right), (root2 == null ? null : root2.right));
+        
+        return temp;
+    }
+
+
+
+
+
+
+
+
+
+
+    
+
     public static void main(String [] args){
         
     }

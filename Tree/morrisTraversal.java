@@ -6,11 +6,11 @@ public class morrisTraversal{
     // TIME: O(N) , SPACE : O(N)
     public List<Integer> inorderTraversal(TreeNode root){
         List<Integer> ans = new ArrayList<>();
-        iterativeStacksolution(root, ans);
+        iterativeInorderStacksolution(root, ans);
         return ans;
     }
     
-    public void iterativeStacksolution(TreeNode root,List<Integer> ans) {
+    public void iterativeInorderStacksolution(TreeNode root,List<Integer> ans) {
         Stack<TreeNode> stack = new Stack<TreeNode>();
         TreeNode cur = root;
 
@@ -211,7 +211,7 @@ public class morrisTraversal{
 				cur = cur.left;
 			}
 		}
-        
+
 		return new ArrayList<>(res);
 	}
 
