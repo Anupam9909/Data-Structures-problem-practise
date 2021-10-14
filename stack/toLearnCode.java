@@ -45,7 +45,7 @@ public class toLearnCode{
     }
 
     // NSOL -> smaller i.e chotta vala bade vale ko pop karayega
-    //      -> loop move from n-1 to 0 , i.e olta
+    //      -> loop move from n-1 to 0 , i.e ulta
     public void NSOL(int[] arr, int[] ans){
         Stack<Integer> st = new Stack<>();
         Arrays.fill(ans, -1);
@@ -59,24 +59,5 @@ public class toLearnCode{
     }
 
 
-    while(t1 != null && t2 != null){
-        int a = t1 == null ? 0 : t1.val;
-        int b = t2 == null ? 0 : t2.val;
-        
-        int val = a-b+borrow;
-        
-        if(val < 0){
-            val = val + 10;
-            borrow = -1;
-        }else{
-            borrow = 0;
-        }
-        
-        ListNode nn = new ListNode(val);
-        nn.next = anshead;
-        anshead = nn;
-        
-        t1 = t1.next;
-        t2 = t2.next;
-    }
+
 }
