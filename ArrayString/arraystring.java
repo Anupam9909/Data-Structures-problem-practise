@@ -552,9 +552,164 @@ public class arraystring{
         return ans;
     }
 
-    // LC - 904
+     
+    // LC - 930. Binary Subarrays With Sum
+    public int numSubarraysWithSum(int[] arr, int sum) {
+        if(sum == 0) return AtMost(arr, sum);
+        return AtMost(arr, sum) - AtMost(arr, sum-1);
+    }
+    
+    public int AtMost(int[] arr, int sum){
+        int si = 0,ei = 0, n = arr.length;
+        int zerofreq = 0;
+        int onefreq = 0;
+        int ans = 0, count = 0;
+        
+        while(ei < n){
+            if(arr[ei] == 1 && onefreq++ == sum) count++;
+            ei++;
+            
+            while(count > 0){
+                if(arr[si] == 1 && onefreq-- == sum+1) count--;
+                si++;
+            }
+            
+            ans += (ei-si);
+        }
+
+    }
+
+    // LC : 485  Max Consecutive Ones 
+    // do this way (because same hi concept(amr*u) pe based ha tarika ha issi se karo)
+    // kissi aur method se karoge to ei-si vali chij shyd na kar pao
+    public int MaxconsecutiveOnes(int[] arr){
+        int si = 0, ei = 0, n = arr.length;
+        int count = 0, maxlen = -(int)1e8;
+        
+        while(ei < n){
+            if(arr[ei++] == 0) count++;
+            
+            while(count > 0){
+                if(arr[si++] == 0) count--;
+            }
+            
+            maxlen = Math.max(maxlen, ei-si);
+        }
+        return maxlen;
+    }
+
+    // F.U : MAX consecutive zeros
+    public int MaxConsecutiveZeros(int[] arr){
+        int si = 0, ei = 0, n = arr.length;
+        int count = 0, maxlen = -(int)1e8;
+        
+        while(ei < n){
+            if(arr[ei++] == 0) count++;
+            
+            while(count > 0){
+                if(arr[si++] == 0) count--;
+            }
+            
+            maxlen = Math.max(maxlen, ei-si);
+        }
+        return maxlen;
+    }
+    
+    // F.U : count of subarrays of Ones 
+    public int countofsubarraysOnes(int[] arr){
+        int si = 0, ei = 0, n = arr.length;
+        int count = 0, ans = 0;
+        
+        while(ei < n){
+            if(arr[ei++] == 0) count++;
+            
+            while(count > 0){
+                if(arr[si++] == 0) count--;
+            }
+            
+            ans += ei-si;  // YE KAR DO BASS
+        }
+        return ans;
+    }
+
+
+    //  LC-487 LINTCODE SUBMITTED
+    //O(n2) Solution
+    public int findMaxConsecutiveOnes(int[] arr) {
+        int maxlen = -(int)1e8;
+
+        maxlen  = Math.max(maxlen , MaxConsecutiveOnes(arr));
+        for(int i = 0;i <  arr.length; i++){
+            if(arr[i] == 0){
+                arr[i] = 1;
+                maxlen  = Math.max(maxlen , MaxConsecutiveOnes(arr));
+                arr[i] = 0;
+            }
+            
+        }
+
+        return maxlen;
+    }
+
+    public int MaxConsecutiveOnes(int[] arr){
+        int n = arr.length, si = 0, ei = 0, count = 0;
+        int maxlen = -(int)1e8;
+
+        while(ei < n){
+            if(arr[ei++] == 0) count++;
+
+            while(count > 0){
+                if(arr[si++] == 0 ) count--;
+            }
+            maxlen = Math.max(maxlen, ei-si);
+        }
+        return maxlen;
+    }
+
+    //O(n) Solution 
+    // think the solution in this way : since question me flip karne ke liye bola ha but haam 
+    // ese soch sakte ha ki agar ek 0 allowed ho hamare substring me so sirf ek condition change hogi 
+    // i.e    while(count > 1)  ab >1 ho jayega bass!!   simple!!
+
+    public int findMaxConsecutiveOnes(int[] arr){
+        int si = 0, ei = 0, n = arr.length;
+        int count = 0, maxlen = -(int)1e8;
+       
+       while(ei < n ){
+           if(arr[ei++] == 0) count++;
+
+           while(count > 1){
+               if(arr[si++] == 0) count--;
+           }
+           
+           maxlen = Math.max(maxlen, ei-si);
+       }
+       return maxlen;
+    }
+
+
+    //LC : 1004. Max Consecutive Ones III
+    public int longestOnes(int[] arr, int k) {
+        int si = 0, ei = 0, n = arr.length;
+        int count = 0, maxlen = -(int)1e8;
+        
+        while(ei < n){
+            if(arr[ei++] == 0) count++;
+
+            while(count > k)    
+                if(arr[si++] == 0) count--;
+            
+            maxlen = Math.max(maxlen, ei-si);
+        }
+        return maxlen;
+    }
+
+
+//----------------------------------------------------------------------------------------
+    
+    // LC - 904 Fruits into baskets
     public int totalFruit(int[] arr) {
-        // same concept pe ha At most 2 characters vala question ah
+        // same concept pe ha At most 2 characters vala question ha
         int si = 0, ei = 0;
         int n = arr.length;
         int count = 0;
@@ -635,207 +790,66 @@ public class arraystring{
         return maxlen;
     }
 
-     
-    // LC - 930. Binary Subarrays With Sum
-    public int numSubarraysWithSum(int[] arr, int sum) {
-        if(sum == 0) return AtMost(arr, sum);
-        return AtMost(arr, sum) - AtMost(arr, sum-1);
-    }
-    
-    public int AtMost(int[] arr, int sum){
-        int si = 0,ei = 0, n = arr.length;
-        int zerofreq = 0;
-        int onefreq = 0;
-        int ans = 0, count = 0;
-        
-        while(ei < n){
-            if(arr[ei] == 1 && onefreq++ == sum) count++;
-            ei++;
-            
-            while(count > 0){
-                if(arr[si] == 1 && onefreq-- == sum+1) count--;
-                si++;
-            }
-            
-            ans += (ei-si);
-        }
 
-    }
 
-    // do this way (because same hi concept(amr*u) pe based ha tarika ha issi se karo)
-    // kissi aur method se karoge to ei-si vali chij shyd na kar pao
-    // 485. Max Consecutive Ones 
-    public int MaxconsecutiveOnes(int[] arr){
-        int si = 0, ei = 0, n = arr.length;
-        int count = 0, maxlen = -(int)1e8;
-        
-        while(ei < n){
-            if(arr[ei++] == 0) count++;
-            
-            while(count > 0){
-                if(arr[si++] == 0) count--;
-            }
-            
-            maxlen = Math.max(maxlen, ei-si);
-        }
-        return maxlen;
-    }
 
-    // F.U : MAX consecutive zeros
-    public int MaxConsecutiveZeros(int[] arr){
-        int si = 0, ei = 0, n = arr.length;
-        int count = 0, maxlen = -(int)1e8;
+    //----------------------------------------------------------------------------------------
+
+    // LC 560. Subarray Sum Equals K
+    public int subarraySumEqualsk(int[] arr, int k) {
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0, 1);   // {sum , frequency}
+        int psum = 0;
+        int ans = 0;
         
-        while(ei < n){
-            if(arr[ei++] == 0) count++;
+        for(int i = 0 ; i < arr.length; i++){
+            psum += arr[i];
             
-            while(count > 0){
-                if(arr[si++] == 0) count--;
+            if(hm.containsKey(psum-k)){
+                int count = hm.get(psum-k);
+                ans = ans + count;
             }
             
-            maxlen = Math.max(maxlen, ei-si);
+            hm.put(psum, hm.getOrDefault(psum,0)+1);
         }
-        return maxlen;
-    }
-    
-    // F.U : count of subarrays of Ones 
-    public int countofsubarraysOnes(int[] arr){
-        int si = 0, ei = 0, n = arr.length;
-        int count = 0, ans = 0;
         
-        while(ei < n){
-            if(arr[ei++] == 0) count++;
-            
-            while(count > 0){
-                if(arr[si++] == 0) count--;
-            }
-            
-            ans += ei-si;
-        }
         return ans;
     }
 
 
-    //  LC-487 LINTCODE SUBMITTED
-    //O(n2) Solution
-    public int findMaxConsecutiveOnes(int[] arr) {
-        int maxlen = -(int)1e8;
 
-        maxlen  = Math.max(maxlen , MaxConsecutiveOnes(arr));
-        for(int i = 0;i <  arr.length; i++){
-            if(arr[i] == 0){
-                arr[i] = 1;
-                maxlen  = Math.max(maxlen , MaxConsecutiveOnes(arr));
-                arr[i] = 0;
-            }
-            
-        }
+    //LC 974. Subarray Sums Divisible by K
 
-        return maxlen;
-    }
+    // imp test case: of negetive numbers -> (rem jese hi -ve aye usme +k karke hm me add do bass)
+    // [2,-6,3,1,2,8,2,1]  , k = 7
 
-    public int MaxConsecutiveOnes(int[] arr){
-        int n = arr.length, si = 0, ei = 0, count = 0;
-        int maxlen = -(int)1e8;
-
-        while(ei < n){
-            if(arr[ei++] == 0) count++;
-
-            while(count > 0){
-                if(arr[si++] == 0 ) count--;
-            }
-            maxlen = Math.max(maxlen, ei-si);
-        }
-        return maxlen;
-    }
-
-    //O(n) Solution 
-    // think the solution in this way : since question me flip karne ke liye bola ha but haam 
-    // ese soch sakte ha ki agar ek 0 allowed ho hamare substring me so sirf ek condition change hogi 
-    // i.e    while(count > 1)  ab >1 ho jayega bass!!   simple!!
-
-    public int findMaxConsecutiveOnes(int[] arr){
-        int si = 0, ei = 0, n = arr.length;
-        int count = 0, maxlen = -(int)1e8;
-       
-       while(ei < n ){
-           if(arr[ei++] == 0) count++;
-
-           while(count > 1){
-               if(arr[si++] == 0) count--;
-           }
-           
-           maxlen = Math.max(maxlen, ei-si);
-       }
-       return maxlen;
-    }
-
-    //LC : 1004. Max Consecutive Ones III
-    public int longestOnes(int[] arr, int k) {
-        int si = 0, ei = 0, n = arr.length;
-        int count = 0, maxlen = -(int)1e8;
-        
-        while(ei < n){
-            if(arr[ei++] == 0) count++;
-
-            while(count > k)    
-                if(arr[si++] == 0) count--;
-            
-            maxlen = Math.max(maxlen, ei-si);
-        }
-        return maxlen;
-    }
-
-    // LC 
-    // O(n) Solution
-    public int subarrayDivByk(int[] arr, int k){
-        int n = arr.length;
-        int[] psum = new int[n];
-        int sum = 0;
-        // psum array making
-        for(int i = 0; i < n; i++){
-            sum += arr[i];
-            psum[i] = sum%k;
-        }
-
-        // fill hashmap
-        int numzeros = 0;
+    // O(N) time 
+    // O(N) space (of hashmap(worst case))
+    public int subarraysDivByK(int[] arr, int k){
         HashMap<Integer, Integer> hm = new HashMap<>();
-        for(int i = 0; i < n; i++){
-            if(psum[i] == 0) numzeros++;
-            hm.put(psum[i], hm.getOrDefault(psum[i], 0) + 1);
-        }
-
-        // calculating ans
-        int ans = 0;
-        for(Integer x : hm.KeySet()){
-            Integer val = hm.get(x);
-            ans += (val*(val-1))/2;
-        }
-
-        return (ans+numzeros);
+        hm.put(0,1);   // {remainder , frequency}
+        int psum = 0;  
+        int ans = 0;   
+        
+        for(int i = 0; i < arr.length; i++){
+            psum += arr[i];
+            int rem = psum%k;
+            if(rem < 0) rem += k;
+            
+            if(hm.containsKey(rem)){
+                int count = hm.get(rem);
+                ans += count;
+            }
+            
+            hm.put(rem, hm.getOrDefault(rem, 0)+1);
+        } 
+        
+        return ans;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // O(n2) Solution
-     public int subarraysDivByK (int[]arr, int k)
-     {
+    public int subarraysDivByK (int[]arr, int k)
+    {
         int count = 0;
         int sum = 0;
         for (int i = 0; i < arr.length; i++){
@@ -849,50 +863,6 @@ public class arraystring{
         }
         return count;
     }
-
-    // O(n3) Solution
-    public int subarraysDivByK(int[] arr, int k){
-        int count = 0;
-        
-        for(int i = 0; i < arr.length; i++){
-            for(int j = i; j < arr.length; j++){
-                if(divisiblebyk(arr,i, j, k)) count++;
-            }
-        }
-        return count;
-    }
-        
-    public boolean divisiblebyk(int[] arr, int si, int ei, int k){
-        int sum = 0;
-        for(int i = si; i <= ei; i++){
-            sum += arr[i];
-        }
-        
-        return (sum%k == 0);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

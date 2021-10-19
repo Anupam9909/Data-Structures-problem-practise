@@ -218,5 +218,67 @@
     }
     
     //=================================================================================================
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
+    // FIND MEDIAN IN A BST
+    // T : O(n)
+    // S : O(n)
+    // simply inorder me traverse karo and find the median (pehle size of tree nikal lo(n) then find the median)
+    static int count = 0;
+    static int prev = -(int)1e9;
+    static double ans = 0;
+    public static double findMedian(Node root)
+    {
+        count = 0;
+        int n = findsize(root);
+        int mid = n%2 == 0 ? (n/2) + 1 : (n+1)/2;
+        
+        solve(root, mid , n);
+        
+        return ans;
+    }
+
+    public static int findsize(Node root){
+        return root == null ? 0 : findsize(root.left) + findsize(root.right) + 1;
+    }
+    
+    
+    public static void solve(Node root, int mid , int n){
+        if(root == null) return ;
+        
+        solve(root.left, mid , n);
+        
+        count++;
+        if(count == mid){  
+            if(n%2 == 0)  ans = ((prev + root.data)*1.0)/(2*1.0);
+            else    ans = root.data;
+        }
+        prev = root.data;
+        
+        solve(root.right, mid, n);
+    }
