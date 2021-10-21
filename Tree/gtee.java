@@ -40,6 +40,9 @@ public class gtree{
         }
     }
 
+    
+    //===========================================================================================
+
 
     // Mirror of n-ary Tree (convert a n-ary tree into it's mirror)
     // kuch ni karna yaha just children ko swap kar do 0 se n-1 ke logo ko
@@ -69,6 +72,8 @@ public class gtree{
 
     }
     
+    
+    //===========================================================================================
 
     // check symmetry of an n-ary tree 
     // solution : bilkul binary tree jaisa ha 
@@ -100,6 +105,79 @@ public class gtree{
     }
 
 
+    //===========================================================================================
+
+    // DIAMETER OF A GENERIC TREE (vohi concept use karege diameter vala)
+    // {maxdiaAns, maxheighttillnow}
+
+    // bass ek chij remember yaha hame longestHeight and secondlongestHeight nikalni padegi
+    // and hamare level ka diameter = (longestHeight + secondlongestHeight + 2) ;
+    
+    public static int[] diameter(Node root){
+        if(root == null) return new int[]{-1,-1};
+        
+        int[] myans = new int[2];
+        int longestHeight = -1;
+        int secondlongestHeight = -1;
+        
+        for(Node child : root.children){
+            int[] recans = diameter(child);
+            
+            if(recans[1] > longestHeight){
+                secondlongestHeight = longestHeight;
+                longestHeight = recans[1];
+            }else if(recans[1] > secondlongestHeight){
+                secondlongestHeight = recans[1];
+            }
+            
+            myans[0] = Math.max(myans[0], recans[0]);
+        }
+        
+        myans[0] = Math.max(myans[0], longestHeight + secondlongestHeight + 2);
+        
+        myans[1] = longestHeight + 1;
+        
+        return myans;
+    }
+
+
+    //===========================================================================================
+
+    // (LINEARIZE)FLATTENING OF A  GENERIC TREE
+    // pehle sare childs ko recursion ke thru linear karke karke hi usko connect karte jao
+    // and then last me bass root.children = new ArrayList<>(); kake usme vo ek node connect kar do bass
+    public static void linearize(Node root){
+        if(root == null) return;        
+        Node temp = linearizeGenericTree(root);
+
+    }
+    
+    public static Node linearizeGenericTree(Node root){
+        if(root == null || root.children.size() == 0) return root;
+        
+        Node finallastnode = null;
+        int n = root.children.size();
+        for(int i = 0 ; i < n; i++){
+            Node child1 = root.children.get(i);
+            Node child2 = i+1 == n ? null : root.children.get(i+1);
+            
+            Node lastnode = linearizeGenericTree(child1);
+            if(child2 == null){
+                finallastnode = lastnode;
+                break;
+            }  
+            lastnode.children.add(child2);
+        }
+        
+        Node temp = root.children.get(0);
+        root.children = new ArrayList<>();
+        root.children.add(temp);
+        
+        return finallastnode;
+    }
+
+
+    //===========================================================================================
 
 
 
