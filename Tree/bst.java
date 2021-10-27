@@ -257,7 +257,52 @@ public class bst{
 
 
 
+    // Inorder successor in BST (leetcode premium ha) 
+    // https://www.interviewbit.com/problems/next-greater-number-bst/
 
+    // O(logn) - imp. ha ye
+
+    public void predecessor_successor_ofBST(TreeNode root, int data){
+        TreeNode pred = null;
+        TreeNode succ = null;
+
+        TreeNode curr = root;
+        while(curr != null){
+            if(curr.val < data){
+                pred = curr;
+                curr = curr.right;
+            }
+            else if(curr.val > data){
+                succ = curr;
+                curr = curr.left;
+            }
+            else if(curr.val == data){
+                // updating predessor
+                if(curr.left != null){
+                    TreeNode ptr = curr.left;
+                    while(ptr != null) 
+                        ptr = ptr.right;
+
+                    pred = ptr;
+                }
+
+                // updating successor
+                if(curr.right != null){
+                    TreeNode ptr = curr.right;
+                    while(ptr.left != null) 
+                        ptr = ptr.left;
+
+                    succ = ptr;
+                }
+
+                break;    //(IMPORTANT HA YE LIKHNA) since data mil gya ha so break the loop aur aage ni jana
+            }
+        }
+
+        // now jo bhi return karna ha kar do
+        // return pred;
+        return succ;
+    }
 
 
 
