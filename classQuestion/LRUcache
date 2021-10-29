@@ -1,0 +1,118 @@
+// LRU CACHE
+// QUESTION :
+class LRUCache {
+    public LRUCache(int capacity){  }
+    public int get(int key){  }
+    public void put(int key, int value){  }
+}
+
+// SOLUTION:
+class LRUCache{
+    public class Node{
+        int key, value;
+        Node prev, forw;
+        Node(int k, int v){
+            this.key = k;
+            this.value = v;
+        }
+    }
+    private Node head, tail;
+    private int size, capacity;
+    private HashMap<Integer, Node> hm;     // NOTE: ye HASHMAP hi actuall me hamara [CACHE] ha 
+    
+    public LRUCache(int capacity) {
+        this.head = this.tail = null;
+        this.size = 0;
+        this.capacity = capacity;
+        hm = new HashMap<>();
+    }
+    
+    public int get(int key) {
+        Node node = hm.getOrDefault(key, null);
+        
+        if(node == null){   // node does not exist in cache(i.e hashmap)
+            return -1;
+        }else{   // node exist in cache(i.e hashmap)
+            int val = node.value;
+            removeNode(node);
+            addFirst(node);
+            
+            return val;
+        }
+    }
+    
+    public void put(int key, int value) {
+        Node node = hm.getOrDefault(key, null);
+        
+        if(node == null){  // does not exist previously in cache(hm)
+            Node newnode = new Node(key, value);
+                                         
+            if(this.size >= capacity){   // check for capacity
+                removeNode(tail);
+                addFirst(newnode);
+            }else{
+                addFirst(newnode);
+            }
+            
+        }else{   // node exists previously in cache(hm)->so,update it and make it as MRU(most recent used)
+            node.key = key;
+            node.value = value;
+            
+            removeNode(node);    // yaha capacity check karne ka matlab ni banta as we (remove & add) node
+            addFirst(node);
+        }
+    }
+    
+    // niche vale extra function private rakho(oops used)
+    private void addFirst(Node newnode){
+        if(head == null){
+            head = tail = newnode;
+        }else{
+            newnode.forw = head;
+            head.prev = newnode;
+            head = head.prev;
+        }
+        size++;
+        hm.put(newnode.key, newnode);
+    }
+    
+    private void removeNode(Node newnode){
+        if(head == null || newnode == null) return;
+        if(this.size == 1){  // important case: when only one node is present
+            head = tail = null;
+            size--;
+            hm.remove(newnode.key);
+            return;
+        }
+        
+        if(newnode == head){
+            head = head.forw;        
+            if(head != null) head.prev = null;
+            
+        }else if(newnode == tail){
+            tail = tail.prev;
+            if(tail != null) tail.forw = null;
+            
+        }else{
+            Node prevPtr = newnode.prev;
+            Node forwPtr = newnode.forw;
+            
+            newnode.prev = null;
+            newnode.forw = null;
+            
+            prevPtr.forw = forwPtr;
+            forwPtr.prev = prevPtr;
+        }
+        
+        size--;
+        hm.remove(newnode.key);
+    }
+}
+
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */

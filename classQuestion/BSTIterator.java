@@ -6,20 +6,42 @@ class BSTIterator{
 }
 
 // SOLUTION 1 (BST ITERATOR)
-class BSTIterator {
-    // [inorder successor of the given data] -> ka hi question ha ye bass class ki form me ha 
-    
-    // variable defining here
-    TreeNode root;
-    TreeNode minele;
+// [inorder successor of the given data] -> ka hi question ha ye bass class ki form me ha 
+// yaha ye jo given data vo hamara minimum element hoga jo hama apna variable banayege
+
+class BSTIterator 
+{
+    TreeNode root;   // bst ko store karne ke liye
+    TreeNode minele;  // to store the minimum element
+
     public BSTIterator(TreeNode root) {
         // variable initialising here
         minele = null;
         this.root = root;
     }
     
-    public TreeNode inordersuccessor(TreeNode data){
-        if(data == null) return root;
+    public int next(){
+        if(minele == null){
+            TreeNode temp = root;
+            while(temp.left != null) temp = temp.left;
+            minele = temp;
+        }else{
+            TreeNode ans = inordersuccessor(minele);
+            minele = ans;
+        }
+        
+        return minele == null ? -1 : minele.val;
+    }
+
+    
+    public boolean hasNext(){
+        if(inordersuccessor(minele) == null) return false;
+        return true;
+    }
+
+
+    public TreeNode inordersuccessor(TreeNode data){   // same inorder succesor vala program likha ha
+        if(data == null) return root;    // bass ye line extra ha if(data == null) then return root itself
         if(root == null) return null;
         TreeNode curr = root;
         TreeNode succ = null;
@@ -44,64 +66,9 @@ class BSTIterator {
         
     }
     
-    public int next() {
-        // do function work
-        if(minele == null){
-            TreeNode temp = root;
-            while(temp.left != null) temp = temp.left;
-            minele = temp;
-        }else{
-            TreeNode ans = inordersuccessor(minele);
-            minele = ans;
-        }
-        
-        return minele == null ? -1 : minele.val;
-    }
-    
-    public boolean hasNext() {
-        // do function work
-        if(inordersuccessor(minele) == null) return false;
-        return true;
-    }
 }
 
 
-//===========================================================================
-// QUESTION 2   MIN STACK 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//===========================================================================
-// QUESTION 2.    LRU CACHE 
-
-
-
-
 
 
 
@@ -126,7 +93,7 @@ class BSTIterator {
 
 
 //===========================================================================
-// QUESTION 3.    GET RANDOM IN O(1)   (asked from devashish(pocket pills))
+// QUESTION 3.  INSERT- DELETE- GET RANDOM IN O(1)   (asked from devashish(pocket pills))
 
 
 
