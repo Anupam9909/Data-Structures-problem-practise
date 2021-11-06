@@ -71,59 +71,6 @@ class BSTIterator
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//===========================================================================
-// QUESTION 3.  INSERT- DELETE- GET RANDOM IN O(1)   (asked from devashish(pocket pills))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //===========================================================================
 // QUESTION 4.    MEDIAN FROM DATA STREAM
 
