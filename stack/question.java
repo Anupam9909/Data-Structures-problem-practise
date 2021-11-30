@@ -59,9 +59,6 @@ public class question{
     }
 
 
-
-
-    
     // lc - 1249. Minimum Remove to Make Valid Parentheses
     public String minRemoveToMakeValid(String s){
         ArrayList<Integer> arr = new ArrayList<>();
@@ -83,7 +80,6 @@ public class question{
         }
         
         // invalid element are present in the stack
-        
         StringBuilder ans  = new StringBuilder();  // string lege to jada time lagta ha compare to this stringbuilder
         int j = 0;
         for(int  i =  0; i < s.length(); i++){
@@ -96,8 +92,6 @@ public class question{
                
         return ans.toString();
     }
-
-
 
 
     // LC  - 1021 remove outermost paranthesis
@@ -128,7 +122,6 @@ public class question{
         }
 
         return ans;
-
     }
 
 
@@ -201,6 +194,194 @@ public class question{
         return ans;
     }
 
+    
+
+    // LC - 901. Online Stock Span
+    class StockSpanner {
+        Stack<int[]> st;
+        int idx;
+        public StockSpanner() {
+            st = new Stack<>();
+            st.push(new int[]{-1,-1});
+            idx = 0;
+        }
+        
+        public int next(int price) {
+            int[] np = new int[]{idx, price};  // np : new pair
+            
+            while(st.peek()[1] != -1 && st.peek()[1] <= price){ //agar equal ha to bhi pop karna ha
+                st.pop();
+            }
+            
+            int ans = idx - st.peek()[0];
+            st.push(np);
+            idx++;
+            return ans;
+        }
+
+    }
+
+
+
+    // LC - 84. Largest Rectangle in Histogram
+    public int largestRectangleArea(int[] arr){
+        int n = arr.length; 
+        int[] NSOL  = nsol(arr);
+        int[] NSOR  = nsor(arr);
+        
+        int ans = 0;
+        
+        for(int i = 0; i < n; i++){
+            int height = arr[i];
+            int width = NSOR[i]-NSOL[i]-1;
+            int area = height*width;
+            
+            ans = Math.max(ans, area);
+        }
+        
+        return ans;
+    }
+    
+    public int[] nsor(int[] arr){
+        int n = arr.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, n);
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i = 0; i < n; i++ ){
+            while(st.size() != 0 && arr[i] <= arr[st.peek()]){
+                ans[st.pop()] = i;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+    
+    
+    public int[] nsol(int[] arr){
+        int n = arr.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, -1);
+        
+        Stack<Integer> st = new Stack<>();
+        
+        for(int i = n-1; i >= 0; i--){
+            while(st.size() != 0 && arr[i] < arr[st.peek()]){
+                ans[st.pop()] = i;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+
+    // OPTIMISE II method approach
+    // NSOR concept lagega and here
+    // jo banda pop karayega vo right boundry ka kaam karega for st.peek() element
+    // and jo element pop hua ha uske just niche vala element left boundry ka kaam kar raha hoga
+    // so area = height*width;  (height = arr[popedIdx]  ,   width = rb-lb-1) 
+    public int largestRectangleArea(int[] arr){
+        Stack<Integer> st = new Stack<>();
+        int n = arr.length;
+        st.push(-1);
+        int ans = 0; // max area
+        
+        for(int i = 0; i < n; i++  ){
+            
+            while(st.peek() != -1 && arr[i] < arr[st.peek()] ){
+                int idx  = st.pop();
+                int lb = st.peek();       // lb : left boundry 
+                int rb = i;               // rb : right boundry
+                int width = rb-lb-1;
+                int height = arr[idx];
+                
+                ans = Math.max(ans, height*width);
+            }     
+            
+            st.push(i);
+        }
+        
+        // now jo stack me bach gye elements unko bhi solve karna ha 
+        while(st.peek() != -1 ){
+                int idx  = st.pop();
+                int lb = st.peek(); // lb: left boundry
+                int rb = n;         // rb: right boundry (yaha right boundry hamesha [n] hogi)
+                int width = rb-lb-1;
+                int height = arr[idx];
+                
+                ans = Math.max(ans, height*width);
+        }
+        return ans;
+    }
+    
+
+
+    // LC - 85. Maximal Rectangle of 1's in a matrix[of 0 & 1]
+    // same hi question ha ye bilkul lc-84 jesa (just upar vala question)ha 
+    // alag alag base ke liye alag alag histogram banege and find then find the maximum rectangle of histogram laga do(i.e lc-84)
+    public int maximalRectangle(char[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+        
+        int[] arr = new int[matrix[0].length];
+        Arrays.fill(arr,0);
+        int ans = 0;
+        
+        for(int i = 0; i < matrix.length; i++){
+            for(int j  = 0; j < matrix[0].length; j++){
+                if(matrix[i][j] == '1'){
+                    arr[j]++;
+                }else if(matrix[i][j] == '0'){
+                    arr[j] = 0;
+                }
+            }
+            ans = Math.max(ans, maxrectangle(arr));
+        }
+        
+        return ans;
+    }
+    
+    public int maxrectangle(int[] arr){
+        if(arr.length == 0) return 0;
+        int[] nsol = NSOL(arr);
+        int[] nsor = NSOR(arr);
+        int ans  = 0;
+        
+        for(int i = 0 ; i <arr.length; i++){
+            int area = arr[i] * (nsor[i]-nsol[i]-1);
+            ans = Math.max(ans,area );
+        }
+        
+        return ans;
+    }
+    
+    
+    public int[] NSOR(int[] arr){
+        Stack<Integer> st= new Stack<>();
+        int[] ans  = new int[arr.length];
+         Arrays.fill(ans,arr.length);
+        
+        for(int i = 0; i < arr.length; i++){
+            while(st.size() != 0 && arr[i] < arr[st.peek()]){
+                ans[st.pop()] = i;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+    
+    public int[] NSOL(int[] arr){
+        Stack<Integer> st= new Stack<>();
+        int[] ans  = new int[arr.length];
+        Arrays.fill(ans,-1);
+        
+        for(int i = arr.length-1; i >=0 ; i--){
+            while(st.size() != 0 && arr[i] < arr[st.peek()]){
+                ans[st.pop()] = i;
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+    
 
 
 
