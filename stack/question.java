@@ -224,6 +224,9 @@ public class question{
 
 
     // LC - 84. Largest Rectangle in Histogram
+    // EXAM TEST KE LIYE YAHI METHOD KARO SIMPLE HA
+    // simple NSOL & NSOR nikal lo and for a particular element (difference = NSOR[i]-NSOL[i]-1)
+    // will act as width so AREA = HEIGHT * WIDTH kar lo and find the maximum area 
     public int largestRectangleArea(int[] arr){
         int n = arr.length; 
         int[] NSOL  = nsol(arr);
@@ -274,7 +277,7 @@ public class question{
         return ans;
     }
 
-    // OPTIMISE II method approach
+    //  II method approach [to impress interview]
     // NSOR concept lagega and here
     // jo banda pop karayega vo right boundry ka kaam karega for st.peek() element
     // and jo element pop hua ha uske just niche vala element left boundry ka kaam kar raha hoga
@@ -316,6 +319,7 @@ public class question{
 
 
     // LC - 85. Maximal Rectangle of 1's in a matrix[of 0 & 1]
+    // EXAM TEST KE LIYE YAHI METHOD KARO SIMPLE HA
     // same hi question ha ye bilkul lc-84 jesa (just upar vala question)ha 
     // alag alag base ke liye alag alag histogram banege and find then find the maximum rectangle of histogram laga do(i.e lc-84)
     public int maximalRectangle(char[][] matrix) {
@@ -381,9 +385,7 @@ public class question{
         }
         return ans;
     }
-    
-
-
+    // iska II approach (to impress interview) vala bhi vese hi kar lege jese lc-84 kiyya ha baki so same hoga yaha ki har base ka histogram nikalana ha  
 
 
 
