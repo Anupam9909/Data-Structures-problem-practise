@@ -389,11 +389,52 @@ public class question{
 
 
 
+    // LC - 221. Maximal Square(vese to dp ka question ha but yaha bhi solve ho jayega)
+    // kuch ni karna bass lc-85 me ek line ka change karna ha bass
+    // since yaha hame square chahiye so haam minimum of height and width le lege taki square hi mile 
+    // Area = Math.min(width, height) * Math.min(width, height);
 
-
-
-
-
+    public int maximalSquare(char[][] matrix) {
+        if(matrix.length == 0 || matrix[0].length == 0) return 0;
+        
+        int[] arr = new int[matrix[0].length];
+        Arrays.fill(arr,0);
+        int ans = 0;
+        
+        for(int i = 0; i < matrix.length; i++){
+            for(int j  = 0; j < matrix[0].length; j++){
+                if(matrix[i][j] == '1'){
+                    arr[j]++;
+                }else if(matrix[i][j] == '0'){
+                    arr[j] = 0;
+                }
+            }
+            ans = Math.max(ans, maxsquare(arr));
+        }
+        
+        return ans;
+    }
+    
+    public int maxsquare(int[] arr){
+        if(arr.length == 0) return 0;
+        int[] nsol = NSOL(arr);     // write the NSOL function
+        int[] nsor = NSOR(arr);     // write the NSOR function
+        int ans  = 0;
+        
+        for(int i = 0 ; i <arr.length; i++){
+            int width = (nsor[i]-nsol[i]-1);
+            int height = arr[i];
+            int length = Math.min(width, height);
+            int maxsquare_area = length*length;
+            ans = Math.max(ans,maxsquare_area );
+        }
+        
+        return ans;
+    }
+    
+    
+    // LC - MIN STACK
+    // MIN STACK VALA SOLUTION (CLASS QUESTION) VALE FOLDER ME HA as it is a question of class
 
 
 

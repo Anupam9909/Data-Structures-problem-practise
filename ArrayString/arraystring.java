@@ -945,6 +945,41 @@ public class arraystring{
 
 
 
+
+    
+
+
+
+    // LC - 152. Maximum Product Subarray
+    // MAXIMUM PRODUCT SUBARRAY
+
+    public int maxProduct(int[] nums){
+        int prefix = 1;  // prefix product
+        int suffix = 1;  // suffix product
+        int n = nums.length; 
+        int maxProduct = nums[0];
+        
+        for(int i = 0; i < n; i++){
+            if(prefix == 0){
+                prefix = nums[i];
+            }else{
+                prefix = prefix * nums[i];
+            }
+            
+            if(suffix == 0){
+                suffix = nums[n-1-i];
+            }else{
+                suffix = suffix * nums[n-1-i];
+            }
+            
+            maxProduct = Math.max(maxProduct, prefix);
+            maxProduct = Math.max(maxProduct, suffix);
+        }
+        return maxProduct;        
+    }
+
+
+
     
     
 
