@@ -1,0 +1,41 @@
+// MERGE SORT
+    public int[] sortArray(int[] nums) {
+        return mergesort(nums, 0, nums.length-1);
+    }
+    
+    public int[] mergesort(int[] nums, int si, int ei){
+        if(si == ei) return new int[]{nums[si]}; 
+        
+        int mid = (si + ei)/2;
+        
+        int[] ar1 = mergesort(nums, si, mid);
+        int[] ar2 = mergesort(nums, mid+1, ei);
+        
+        return mergeTwoSortedArray(ar1, ar2, ei-si+1);
+    }
+    
+    public int[] mergeTwoSortedArray(int[] ar1, int[] ar2, int n){
+        int[] ans = new int[n];
+        int i = 0, j = 0;
+        int idx= 0;
+        while(i != ar1.length && j != ar2.length){
+            if(ar1[i] < ar2[j]){
+                ans[idx++] = ar1[i++];
+            }else if(ar1[i] > ar2[j]){
+                ans[idx++] = ar2[j++];
+            }else{
+                ans[idx++] = ar1[i++];
+                ans[idx++] = ar2[j++];
+            }
+        }
+        
+        while(i != ar1.length){
+            ans[idx++] = ar1[i++];
+        }
+        
+        while(j != ar2.length){
+            ans[idx++] = ar2[j++];
+        }
+        
+        return ans;
+    }

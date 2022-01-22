@@ -1,0 +1,12 @@
+The SQL syntax for how to use Where vs. On
+1. syntax used for where clause:
+
+	SELECT
+	FROM
+	WHERE
+
+2. syntax used for on clause:
+	
+	SELECT
+	FROM <table name 1> JOIN <table name 2>
+	ON

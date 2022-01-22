@@ -1,0 +1,159 @@
+LC-175. Combine Two Tables
+
+# SOLUTION 1    312 ms
+
+# select P.firstName, P.lastName, A.city, A.state 
+# from person P left join address A 
+# on P.personId = A.personId;
+
+
+# 409 ms
+# SOLUTION 2 : SINCE IN THIS QUESTION BOTH THE TABLES HAVE UNIQUE COLUMN SO, WE CAN REMOVE THE OBJECT AND SIMPLY WRITE THE QUERY.
+select FirstName, LastName, City, State 
+from Person left join Address 
+on Person.PersonId = Address.PersonId
+
+###########################################################################
+
+LC-176  FIND SECOND HIGHEST SALARY
+# ye statement merko maximum value la ke de degi ->   (select max(salary) from Employee)
+
+# 1 st way -> max  YAHA Nth HIGHEST SALARY KA QUERY NI BAAN PAYEGA IS CONCEPT SE
+
+# select max(salary) As SecondHighestSalary from Employee
+# where salary < (select max(salary) from Employee);
+
+# or
+
+# select max(salary) As SecondHighestSalary from Employee 
+# where salary <> (select max(salary) from Employee);
+
+
+# 2nd way -> using limit and offset keyword   IMPORTANT AS Nth HIGHEST SALARY KA CONCEPT APPLY KA SAKTE HA YAHA AS LIMIT AND OFFSET USE KIYA HA (see lc-177)
+
+# distinct ayega as duplicate salary values bhi ha -> [100, 100] if this comes ans is null (given in question) 
+
+# ifnull() ka case bhi ayega as -> [100] testcase come then null is the ans
+
+select ifnull((select distinct(salary) from Employee order by salary desc limit 1 offset 1), null) as SecondHighestSalary;
+
+
+###########################################################################
+
+LC-177 Nth HIGHEST SALARY
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+declare m int;
+set m = n-1;
+  RETURN (
+      # Write your MySQL query statement below.
+                                                                                  # yaha niche (n-1) nahi likha sakte error ayega
+      select ifnull((select distinct salary from Employee order by salary desc limit 1 offset m), null) as
+      'getNthHighestSalary(2)'
+      # note : yaha semicolon nahi ayega last me !!
+  );
+END
+
+
+###########################################################################
+
+LC-178. Rank Scores
+
+select s1.score, (select count(distinct s2.score) from Scores s2 where s1.score <= s2.score ) AS "rank"
+from Scores s1
+order by s1.score desc;
+
+
+#  ye santax galat ha                         # yaha scores s2 likna hoga upar hi
+# select s1.score, (select count(distinct s2.score) from s2 where s1.score <= s2.score ) AS "rank"
+# from Scores s1, Scores s2
+# order by s1.score desc;
+
+# ye bhi galat ha nahi chalega as rank asc me rank to hamne diya ha temporary(100% correct)
+# select s1.score, (select count(distinct s2.score) from s2 where s1.score <= s2.score ) AS "rank"
+# from Scores s1, Scores s2
+# order by rank asc;
+
+
+
+
+###########################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+########################################################################
+
+181. Employees Earning More Than Their Managers
+
+select E1.name as Employee
+from Employee E1, Employee E2
+where E1.salary > (select E2.salary where E2.id = E1.managerId);
+                        # yaha upar [from E2] nahi ayega as ek baar declare kar diya tha Employee E2 (dubar)
+
+
+# conceptually to ye bhi sahi ha 
+# because E1.managerId = E2.id hogi ek hi baar as id is primary key & hamne AND lagaya ha so it will work 
+
+# select E1.name as Employee 
+# from Employee E1, Employee E2
+# where E1.managerId = E2.id AND E1.salary > E2.salary;
+
+########################################################################
+
+182. Duplicate Emails
+
+select distinct p1.email as Email 
+from Person p1, Person p2
+where p1.email = p2.email and p1.id <> p2.id;
+
+
+# ek simple way ha issi question ka count(*) ka 
+select email as "Email"
+from Person
+group by email
+having count(*) > 1
+
+NOTE:
+# where clause : is used to put condition on the column
+# having clause : is used to put condition on the paticular groups created by GROUP BY clause
+
+
+########################################################################
+
+183. Customers Who Never Order
+
+select C.name as "Customers"
+from Customers C left join Orders O
+on C.id = O.customerId
+where O.customerId Is null;
+      # yaha upar [= null] nahi ayega , agar likha to ans wrong ayega (Is) ayega hamesha
+
+
