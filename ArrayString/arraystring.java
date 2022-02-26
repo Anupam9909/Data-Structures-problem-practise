@@ -864,9 +864,32 @@ public class arraystring{
         return count;
     }
 
+// =====================================================================
+// gfg - find longest subarray sum equals k
 
+   public static int lenOfLongSubarr (int arr[], int n, int k) {
+        //Complete the function
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        int psum = 0, maxlen = 0;
+        hm.put(0,-1);  // ye kar dena as psum == 0 to -1 index to present hoga esa man liya ha
+        
+        for(int i = 0; i < n; i++){
+            psum += arr[i];
+            
+            if(hm.containsKey(psum-k)){
+                int idx = hm.get(psum-k);
+                maxlen = Math.max(maxlen, i-idx); 
+            }
+            
+            if(!hm.containsKey(psum)){
+                hm.put(psum,i);
+            }
+        }
+        
+        return maxlen;
+    }
 
-
+//==================================
 
 
 

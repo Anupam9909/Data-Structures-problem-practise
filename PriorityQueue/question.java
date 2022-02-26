@@ -113,4 +113,108 @@ public int dist(int a, int b){
         
         return ans;
     }
+
+
+//==========================================================================
+// bass question me implementation thodi si tough ha baki question aasan ha BFS hi ha 
+// BFS LAGAO SIMPLE EK QUEUE LE KE
+// BASS JESE HI QUEUE ME ELEMENTS REMOVE KARO TO SIRF VO 
+// ELEMENTS KO PQ ME DAAL DO JINKI VALUE 1 NAHI HA AND THE VALUE IS IN THE RANGE(GIVEN)
+// lc-2146. K Highest Ranked Items Within a Price Range
+
+    public class pair{
+        int i, j;
+        pair(int i , int j){
+            this.i = i;
+            this.j = j;
+        }
+    }
     
+    public class pp implements Comparable<pp>{
+        int row;
+        int col;
+        int price;
+        int level;
+        pp(int r, int c, int p, int l){
+            this.row = r;
+            this.col = c;
+            this.price = p;
+            this.level = l;
+        }
+        
+        public int compareTo(pp other){
+            if(this.level == other.level){
+                if(this.price == other.price){
+                    if(this.row == other.row){
+                        return this.col-other.col;
+                    }else{
+                        return this.row-other.row;
+                    }
+                }else{
+                    return this.price-other.price;
+                }
+            }else{
+                return this.level-other.level;
+            }
+        }
+    }
+        
+    public List<List<Integer>> highestRankedKItems(int[][] grid, int[] pricing, int[] start, int k) {
+        int n = grid.length, m = grid[0].length;
+        
+        PriorityQueue<pp> pq = new PriorityQueue<>(Collections.reverseOrder());  // max pq  banani ha
+        int[][] dir = {{1,0}, {0,1}, {-1,0}, {0,-1}};
+        
+        LinkedList<pair> q = new LinkedList<>();
+        boolean[][] vis = new boolean[n][m];
+        
+        int level = 0;
+        q.add(new pair(start[0], start[1]));
+        vis[start[0]][start[1]] = true;
+        
+        while(q.size() != 0){
+            int s = q.size();
+            while(s-- > 0){
+                pair rp = q.removeFirst();
+                int r = rp.i, c = rp.j;
+                int val = grid[r][c];
+                
+                if(val != 1 && val >= pricing[0] && val <= pricing[1]){ 
+                    pq.add(new pp(r,c,val,level));
+                    // System.out.println(r + " " + c);
+                    if(pq.size() > k){
+                        pq.remove();
+                    }
+                }
+                
+                for(int d = 0; d < 4; d++){
+                    int x = r+dir[d][0];
+                    int y = c+dir[d][1];
+                    if(x >= 0 && x < n && y >= 0 && y < m && !vis[x][y]  && val != 0){
+                        vis[x][y] = true;
+                        // System.out.println(x + " " + y);
+                        q.add(new pair(x,y));
+                    }
+                }
+                
+            }
+            level++;
+        }
+        // System.out.println(pq.size());
+        
+        // making ans
+        List<List<Integer>> ans = new ArrayList<>();
+        while(pq.size() != 0){
+            pp r = pq.remove();
+            // System.out.println(r.row + " " + r.col + " " + r.price + " " + r.level);
+            List<Integer> t = new ArrayList<>();
+            t.add(r.row);
+            t.add(r.col);
+            
+            ans.add(t);
+        }
+        
+        // ans.reverse();
+        Collections.reverse(ans);
+        return ans;
+    }   

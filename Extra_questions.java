@@ -38,3 +38,35 @@ LEAVES KO HATATE JAO JAB TAK 1 YA 2 NODE NI MILTE
         }
         return ans;
     }
+
+//===================================================================================
+
+// gfg - Count pairs in array whose sum is  divisible by K
+// jab bhi (array) and (divisible by k) jesa term aye question me to hashmap use 
+// ho raha hoga
+public static int countKdivPairs(int arr[], int n, int k)
+    {
+        //code here
+        int ans = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(k,0);
+        
+        for(int i = 0; i < n; i++){
+            int rem = arr[i]%k;
+        
+            if(hm.containsKey(k-rem)){
+                int count = hm.get(k-rem);
+                ans += count;
+            }
+            
+            hm.put(rem, hm.getOrDefault(rem,0)+1);
+            
+            // 0 ka special case handle karna padega 
+            // when rem == 0 then increase the frequency of (k-rem) in hm
+            if(rem == 0){
+                hm.put(k-rem, hm.getOrDefault(k-rem,0)+1);    
+            }
+        }
+        
+        return ans;
+    }

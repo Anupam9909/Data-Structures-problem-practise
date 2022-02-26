@@ -75,7 +75,35 @@
 //     }
     
 
+//========================================================================================
 
+// count plindromic subsequence
+yaha hamm har level par nikal lege and then dry run karo condition ke liye ni aya to ratt lo solution
+long countPS(String str){ 
+        // iss question me haar level pe 3 call lagege as hame count nikalna ha so sare call lagane padege
+        long[][] dp = new long[str.length()+1][str.length()+1];
+        for(long[] x : dp) Arrays.fill(x, -1);
+        
+        long ans = solve(str, 0, str.length()-1, dp);
+        return ans;
+    }
+    
+    public long solve(String s, int i, int j, long[][] dp){
+        if(i > j) return dp[i][j] = 0;
+        if(i == j) return dp[i][j] = 1;
+        
+        if(dp[i][j] != -1) return dp[i][j];
+        long ans = 0 ;
+        
+        long x = solve(s, i+1, j-1, dp);
+        long y = solve(s, i+1, j, dp);
+        long z = solve(s, i, j-1, dp);
+        
+        if(s.charAt(i) == s.charAt(j)) ans = y+z+1;  // (x+1) + (y + z - x);  
+        else ans =  y + z - x; // (x + y + z) - x;
+        
+        return dp[i][j] = ans;
+    }
 
 
 //=========================================================================================

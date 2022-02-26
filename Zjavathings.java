@@ -89,6 +89,19 @@ public class Solution {
     }
 }
  
+//===================================================================
+
+String str = "[1,2,3,4, 5,6 ,7,8 ,9]";
+
+String ans = str.toString().replace(" ","").replace(",", "").replace("[", "").replace("]", "");
 
 
+System.out.println(ans);
 
+
+// or 
+
+int[] arr = new int[]{1,2,3,4,5};
+String ans = Arrays.toString(arr).replace(" ","").replace(",", "").replace("[", "").replace("]", "");
+
+System.out.println(ans);
