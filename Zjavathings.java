@@ -105,3 +105,85 @@ int[] arr = new int[]{1,2,3,4,5};
 String ans = Arrays.toString(arr).replace(" ","").replace(",", "").replace("[", "").replace("]", "");
 
 System.out.println(ans);
+
+
+
+ 
+//===================================================================
+
+
+// LC-1466. Reorder Routes to Make All Paths Lead to the City Zero
+
+    // read the question carefully 
+    // the question says that there is only one way to travel between two different cities which is very important. so ye tree ka question ha graph ka nahi(just to solve question)
+    
+    // NOTE : 
+    // tree is a special type of graph -> in which every node has a unique path from root 
+    
+    // SOLUTION:
+    // PEHLE TO APNA GRAPH BNA LO BIDIRECTIONAL & THEN
+    // SIMPLE TRAVERSE KAR LO BFS SE YA DFS SE AND JO JO SAME DIRECTION HO COUNT++ DO IT AND RETURN COUNT;
+    
+    public int minReorder(int n, int[][] arr) {
+        // build graph
+        List<Integer>[] g = new ArrayList[n];
+        for(int i = 0; i < n; i++) g[i] = new ArrayList<>();
+        for(int[] x : arr){
+            int u = x[0], v = x[1];
+            g[u].add(v);
+            g[v].add(u);
+        }
+        
+        int count = 0;
+        // NOTE : yaha freq table nahi bana sakte as -> 
+        // 1-->0
+        // 1-->2 hm me alag alag nahi atte
+        
+        // // making freq table
+        // HashMap<Integer, Integer> hm = new HashMap<>();
+        // for(int[] x : arr){
+        //     int u = x[0], v = x[1];
+        //     hm.put(u, v);
+        // }
+        
+        // so ham esa kuch bana lege
+        HashSet<Integer>[] map = new HashSet[n];
+        for(int i = 0; i < n; i++) map[i] = new HashSet<>();
+        for(int[] x : arr){
+            int u = x[0], v = x[1];
+            map[u].add(v);
+        }
+        
+        Queue<Integer> q = new LinkedList<>();
+        boolean[] vis = new boolean[n];
+        q.add(0);
+        vis[0] = true;
+        
+        while(q.size() != 0){
+            int s = q.size();
+            while(s-- > 0){
+                int rem = q.remove();
+                // System.out.println("hello");
+                for(int v : g[rem]){
+                    if(vis[v] == false){
+                        vis[v] = true;
+                        q.add(v);
+                        // increasing count ans
+                        if(map[rem].contains(v)) count++;
+                    }
+                }
+            }
+        }
+        
+        return count;
+    }
+
+
+//=========================================================
+        // System.out.println('e'-'a'); =>  gives the output as interger value -> 4
+        // System.out.println('2'-'0'); =>  gives the output as interger value -> 2
+        
+    
+
+//=========================================================
+    

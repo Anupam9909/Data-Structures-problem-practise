@@ -42,3 +42,63 @@
     
 
 //====================================================================================
+
+// gcc - get Connected Component using [union find]
+
+    public int getConnectedComponent(int n, int[][] arr){
+	// firstly make graph(ie. fill the parent array)
+        parent = new int[n];
+        for(int i = 0; i < n; i++) parent[i] = i;
+
+        for(int[] x : arr){
+            int u = x[0], v = x[1];
+            int l1 = findleader(u);
+            int l2 = findleader(v);
+            
+            if(l1 != l2)  parent[l1] = l2; 
+        }
+        
+
+        // now find gcc
+        HashSet<Integer> hs = new HashSet<>();
+        for(int i = 0; i < n; i++) hs.add(findleader(i));   // findleader function hi call karna padega imp. ha
+
+        int ans = hs.size();
+	return ans;
+    }
+
+
+//=================================================================================
+
+// LC-1319 -  Number of Operations to Make Network Connected
+
+// dfs se bhi kar sakte ha but union find se quickly ho jayega as yaha graph banana ni padta
+    static int[] parent;
+    public int findleader(int u){
+        if(parent[u] == u) return u;
+        int recans = findleader(parent[u]);
+        return parent[u] = recans;
+    }
+    
+    public int makeConnected(int n, int[][] arr){
+        int edges = arr.length;
+        if(edges < n-1) return -1;
+        
+        // find gcc using union find
+        parent = new int[n];
+        for(int i = 0; i < n; i++) parent[i] = i;  // initialise is very imp
+        for(int[] x : arr){
+            int u = x[0], v = x[1];
+            int l1 = findleader(u);
+            int l2 = findleader(v);
+            
+            if(l1 != l2) parent[l1] = l2;
+        }
+
+        HashSet<Integer> hs = new HashSet<>();
+        
+        for(int i = 0; i < n; i++) hs.add(findleader(i));
+        int gcc = hs.size()-1;
+        
+        return gcc;        
+    }

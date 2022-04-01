@@ -2,7 +2,56 @@ public class LIS{
    
 // LC-300. Longest Increasing Subsequence 
 
-   // simple (recursion & dp)
+    // TABULATION: learn this 
+   // O(n^2) approach
+    public int lengthOfLIS(int[] arr){
+        int n = arr.length, max = 1, dp[] = new int[n];
+        
+        for(int i = 0; i < n ; i++){
+            dp[i] = 1;
+            for(int j = i-1; j >= 0; j--){
+                if(arr[i]  > arr[j]){
+                    dp[i] = Math.max(dp[i], dp[j]+1);
+                }
+            }        
+            max = Math.max(max, dp[i]);
+        }
+        return max;
+    }
+
+
+//-------------------------------------
+
+// OPTIMISED LIS  ->  O(nlogn) approach
+// using binary search 
+// concept : 
+// ek arraylist(al) lelo
+// given array ko traverse karo and for any ith element x
+// bring the insert position of the x in the arraylist al
+// and now x ko replace kar do uss insert postion pe (i.e use set() function which directly replace) kar do arraylist al me 
+// and last me lis will be our size of the arraylist
+
+// using binary search
+     public int lengthOfLIS(int[] arr){
+         ArrayList<Integer> al = new ArrayList<>();
+         int n = arr.length;
+         
+         for(int i = 0; i < n; i++){
+             int idx = Collections.binarySearch(al, arr[i]);
+             if(idx < 0){   // that means element is not present so set them
+                 idx = -idx-1;
+                 if(idx == al.size()) al.add(arr[i]);
+                 else al.set(idx, arr[i]);  // set() function replace bhi karta ha and remove bhi
+             }  
+         }
+         
+         return al.size();
+     }
+
+
+
+//-------------------------------------
+// using simple (recursion & dp)
     public int lengthOfLIS(int[] arr){
         int n = arr.length, ans = 0, dp[] = new int[n];
         Arrays.fill(dp, -1);
