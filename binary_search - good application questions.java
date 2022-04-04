@@ -126,6 +126,7 @@
     // Intution: keep dividing your array in two halves and check in which half there are odd number of elements...that will be your required part.
 // jiss taraf odd length hogi uss taraf jana ha binary search me
 
+
     public int singleNonDuplicate(int[] arr){
         int n = arr.length;
         if(n == 1) return arr[0];
