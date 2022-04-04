@@ -1,32 +1,11 @@
-// INBUILT
-int idx = Arrays.binarySearch(arr, key);     ||     int idx = Collections.binarySearch(arr, key); // for arraylist
-// if key present in arr ->  idx is the position at which key present
-// if key not present in arr then it returns ->   -(x)-1     ,where x = insertion point
+// ese type of question me pata ni chalta ki binary search lagega 
+// jab bhi ek (arr) array aur ek (k) value de rakhi ho question me and  
+// usme monotonic(ya to sirf increasing(equal ho sakte ha) -ya- to sirf decreasing(equal ho sakte ha)] jese answer ban rahe ho 
+// then samaj jao ki binary search lag sakta ha, 
+// but NOTE : ye question hard problem ke hote ha so if question easy category me ha then vo greedy se solve ho raha hoga bajaye iss binary search ke concept ke
 
-// so if we want to retrieve x(insertion point) then do this
-int insertpos = -idx-1;
-
-
-// QUESTIONS :-
-
-// LC-852. Peak Index in a Mountain Array
-// using binary search
-// since yaha DATA to given nahi ha so haam yaha 
-// mid aur (mid+1) ko compare karke kaam karege [mid-1 isliye nahi liya vaha edge case ka dhyan karna padega]
-    
-   public int peakIndexInMountainArray(int[] arr){
-        int si = 0, ei = arr.length-1;
-        
-        while(si <= ei){
-            int mid = (si+ei)/2;
-            
-            if(arr[mid] < arr[mid+1]) si = mid+1;
-            else if(arr[mid] > arr[mid+1]) ei = mid-1;
-        }
-        return si;
-    }
-
-//================================================================================
+// ARTICLE:
+// https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems
 
 // LC-1011. Capacity To Ship Packages Within D Days
 

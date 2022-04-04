@@ -158,3 +158,42 @@ YE SIMPLY VALUE SE TARGET MIN STEP KITNE STEP ME POCHEGE YE PUCHA HA
         }
     }
     
+
+// ============================================================================
+
+// LC-31. Next Permutation
+
+// CONCEPT:
+    // step 1 : find the last peak point (say idx)
+    // step 2 : travel from (n-1 to idx) for finding the element just greater than arr[idx-1] and swap them both
+    // step 3 : sort the elements after idx index (sort -> nlogn) so, we use reverse() as they are in decreasing order and reversing will make them in sorted order
+    
+    // or can watch this video ->   https://www.youtube.com/watch?v=6qXO72FkqwM&t=609s
+    public void nextPermutation(int[] arr){
+        int n = arr.length, idx = n-1;
+        
+        while(idx-1 >= 0 && arr[idx] <= arr[idx-1]) idx--;
+        
+        if(idx == 0){
+            reverse(arr, 0, n-1);
+            return;
+        }
+        
+        int i = n-1;
+        while(arr[idx-1] >= arr[i]) i--;
+        
+        swap(arr, idx-1, i);
+        reverse(arr, idx, n-1);
+    }
+    
+    public void swap(int[] arr, int i, int j){
+        int t = arr[i];
+        arr[i] = arr[j];
+        arr[j] = t;
+    }
+    
+    public void reverse(int[] arr, int i, int j){
+        while(i <= j){
+            swap(arr, i++, j--);
+        }
+    }
