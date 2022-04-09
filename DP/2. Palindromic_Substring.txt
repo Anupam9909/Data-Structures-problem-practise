@@ -1,7 +1,14 @@
 // LC-647. count all Palindromic Substrings
 
 // ye basically dp ki problem ha hi ni
+// steps:-
+// 1. gap stratergy lagegi
+// 2. sidha dp ka table banao and then condition lagao
+// 1st condition : if(gap == 0) then yes pallindrome
+// 2nd condition : if(gap == 1 && s[i] == s[j]) then yes palindrome
+// 3rd condition : check for prev and i.e -> dp[i+1][j-1] === reccall(i+1, j-1)
     
+// now jo bhi dp table me true hoge vo index (i,j) represent karega ki it is yes pallindrome
     public int countSubstrings(String s) {
         int n = s.length();
         boolean[][] dp = new boolean[n][n];
