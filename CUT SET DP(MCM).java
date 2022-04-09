@@ -47,7 +47,6 @@
         return ans;
     } 
 
-    
     public int solve(int[] arr, int SI, int EI, int[][] dp){
         int n = arr.length;
         
