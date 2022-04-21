@@ -1,5 +1,23 @@
 // DP - cut set 
 
+  (cut in b/w element)     ;    (cut on the element)
+     A B C D E             ;        A B C D E           
+      | | | |              ;          | | |
+   k = si; k < ei          ;    k = (si+1) ; k < ei
+
+f(si, k+1),  f(k, ei)      ;    f(si, k) ,  f(k, ei)
+
+
+// mostly question me ye apply ho jata ha, phir bhi kissi 
+// question me alag bhi ho sakta ha eg. LC-312. Burst Balloons yaha cut alag tarike se ha
+// so dry run kar ke dekna thoda kya fit bethta ha
+
+// NOTE 1.  : cut set me hamesha tabulation me gap strategy lagegi ye to pakka ha
+// NOTE 2.  : MCM vale problem me kabhi (new int[2]) ye mat lena, apna pair class bana ke karna nahi to dp likte vakt dikkat ayegi
+
+//=======================================================================================================
+// QUESTIONS:-
+
 // GFG => MCM - MATRIX CHAIN MULTIPLICATION:
 
 // MEMOIZATION:
@@ -28,9 +46,10 @@
             int recans1 = solve(arr, si, k, dp);
             int recans2 = solve(arr, k, ei, dp);
             
-            int val = recans1 + recans2 + (arr[si]*arr[k]*arr[ei]);
+	    int thisLevelMultiplicationCost = (arr[si]*arr[k]*arr[ei]);
+            int totalcost = recans1 + recans2 + thisLevelMultiplicationCost; 
             
-            minans = Math.min(minans, val);
+            minans = Math.min(minans, totalcost);
         }
         // System.out.println(minans);
         return dp[si][ei] = minans;
@@ -101,7 +120,6 @@
     static pair solve(int[] arr, int si, int ei, pair[][] dp){
         if(si+1 == ei){
             char ch = (char)('A'+ si);
-            // System.out.println(ch + "");
             return new pair(0, ch+"");
         }
         
@@ -125,109 +143,93 @@
 
 
 
+//=================================================================================
 
+// GFG - Boolean Parenthesization - imp question  ->  find number of true in this exp:  T|F^T&T|T^F|T&T
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=======================================================================================
-
-// LC-132. Palindrome Partitioning II
- // since : yaha partitioning simple alag alag hogi so
- // we will use
- //  for(int k = si; k < ei; k++){
- //     solve(si, k);
- //     solve(k+1, ei);
- //  }
-
-
-    // NOTE : agar ye question exam me aya aur pass nahi hua that means hame vo 
-    // isPalindrome vala function dp se karna hoga i.e 647. Palindromic Substrings ye vala karna hoga taki O(1) time me nikal sake [isPalindrome(s)]
-  
-    public int minCut(String s){
-        int n = s.length();
-        int[][] dp = new int[n][n];
-        for(int[] x: dp) Arrays.fill(x, (int)1e9);
+       // NOTE : most importantly haam iss question me na sirf recurssion me faith me
+        // number of trues return karvayege but also number of false bhi return karayege
+        // and operator ke hisab se condition banayege apne level ka ans banane ke liye
         
-        int ans = solve(s, 0, n-1, dp);
-        return ans;
+        // so finally here 3d dp na use karke haam [pair class use karege with 2d dp]-> yahi tarika best hota ha 3dp ke question ko karne ka
+    // pair ka 0 index number of false's ko represent karta ha
+    // pair ka 1 index number of true's ko represent karta ha 
+    // {number of false, number of true}
+    
+    //  CONCEPT : ISS QUESTION ME CUT SET LAGEGA 
+    //  (K = si; k < ei; k = k+2)     => k = k+2 isliye kiya as operator(|,&,^) ye to +2 pe hi milege
+
+// NOTE : MCM vale problem me kabhi (new int[2]) ye mat lena, apna pair class bana ke karna nahi to dp likte vakt dikkat ayegi
+    public static class pair{
+        int f;  // total number of true's
+        int t;  // total number of false's
+        pair(int f, int t) {
+            this.f = f; 
+            this.t = t;
+        }
     }
     
-// memoization (tabulation bhi kar sakte ha with simple apply vvrrc)
-    public int solve(String s, int si, int ei, int[][] dp){
-        if(si >= ei) return dp[si][ei] = 0;
-        if(dp[si][ei] != (int)1e9) return dp[si][ei];
+    public static int countWays(int N, String S){
+        pair[][] dp = new pair[N][N];
+        pair ans = solve(S, 0, N-1, dp);
+        return ans.t;
+    }
+    
+
+    public static pair solve(String s, int si, int ei, pair[][] dp){
+        if(si == ei){
+            if(s.charAt(si) == 'T') return dp[si][ei] = new pair(0,1);
+            else return dp[si][ei] = new pair(1,0);
+        }
         
-        if(isPalindrome(s, si, ei)) return 0;
+        if(dp[si][ei] != null) return dp[si][ei];
         
-        int mincut = (int)1e9;
-        for(int k = si; k < ei; k++){
-            if(isPalindrome(s, si, k)){  // left rec call check kar lo agar palindrome ha to hi ander aao and dusre ko check karo varna agar nahi ha to dusre ko call karke duplicate calls lagegi
-                int recans = solve(s, k+1, ei, dp);
-                mincut = Math.min(mincut, recans+1);
+        pair myans = new pair(0,0);
+        int n = s.length(), mod = 1003;
+        
+        for(int k = si+1; k < ei; k += 2){
+            
+            pair left = solve(s, si, k-1, dp);
+            pair right = solve(s, k+1, ei, dp);
+ 
+            if(s.charAt(k) == '|'){
+                myans.f += left.f * right.f;
+                myans.t += (left.f * right.t) + (left.t * right.f) + (left.t * right.t);
             }
+            else if(s.charAt(k) == '&'){
+                myans.f +=  (left.f * right.f) + (left.t * right.f) + (left.f * right.t);  
+                myans.t +=  (left.t * right.t);
+            }
+            else if(s.charAt(k) == '^'){
+                myans.f += (left.f * right.f) + (left.t * right.t);  
+                myans.t += (left.f * right.t) + (left.t * right.f);  
+            }
+            myans.f %= mod;
+            myans.t %= mod;
+            
         }
-        return dp[si][ei] = mincut;
+        
+        return dp[si][ei] = myans;
     }
     
-  // for loop ke ander ye na karke upar vala kiya ha so as to reduce rec. call VARNA TLE AYEGA PAKKA 
-    // int recans1 = solve(s, si, k, dp);
-    // int recans2 = solve(s, k+1, ei, dp);
-    // int totalcut = recans1 + recans2 + 1;
-    // mincut = Math.min(mincut, totalcut);
-    
- // this method works in O(n) solution 
-    public boolean isPalindrome(String s, int si, int ei){
-        while(si < ei){
-            if(s.charAt(si) == s.charAt(ei)) { si++; ei--;}
-            else return false;
-        }
-        return true;
-    }  
-    
-    
-    // usi jagah agar ese karege to O(1) me solve ho jayega isPalindrome()
-//     public boolean isPalindrome(String s, int si, int ei){
-//         int n = str.length();
-//         char[] ch = s.toCharArray();
-//         boolean[][] dp = new boolean[n][n];
-        
-//         for(int gap = 0; gap < n; gap++){
-//             for(int i = 0, j < gap; (i < n && j < m); i++, j++ ){
-//                 if(gap == 0) dp[i][j] = true;
-//                 else if(gap == 1 && s[i] == s[j]) dp[i][j] = 0;
-//                 else{
-//                     if(s[i] == s[j] && dp[i+1][j-1]) dp[i][j] = true;
-//                     else dp[i][j] = false;
-//                 }
-//             }
-//         }
-//     }   
-
-
 
 
 //===========================================================================
 
 // LC-312. Burst Balloons (V.Imp for Interview)
+// QUESTION : You are given n balloons, indexed from 0 to n - 1. Each balloon is painted with a number on 
+// it represented by an array nums. You are asked to burst all the balloons.
+// If you burst the ith balloon, you will get nums[i - 1] * nums[i] * nums[i + 1] coins. If i - 1 or i + 1 
+// goes out of bounds of the array, then treat it as if there is a balloon with a 1 painted on it.
 
+// SOLUTION:
     // yahi tarike se karo code (aur kahi se mat karna confusion hogi)
     // concept :
-    // 1. cut set ka question ha and yaha kuch alag type ka cut lagana padega i.e [k = si; k <= ei] as hame sare posibilities check karni ha haar ballon par
+    // 1. cut set ka question ha and yaha kuch alag type ka cut lagana padega i.e              [k = si; k <= ei] as hame sare posibilities check karni ha haar ballon par
     
-    // 2. let say we are at kth position then recurssion is 
-    // hamari window [si,ei] me Kth position vale ballon ko last me phodne par kitna max coins bana sakte ha ans is :-(YE LAST ME BALLON PHODNE VALA POINT IS MOST IMPORTANT ISSI KA QUESTION HA YE)
+    // 2. let say we are at kth position then recurssion faith is:- 
+    // faith === hamari window [si,ei] me Kth position vale ballon ko last me phodne par kitna max coins bana sakte ha ans is :-(YE LAST ME BALLON PHODNE VALA POINT IS MOST IMPORTANT ISSI KA QUESTION HA YE)
+    // last me kth ballon ko phoda ha iska matlab sare window(i.e [si,ei]) ke ballons phoot gye hoge kth ballon ko chod kar, so now,
     //  lastburstcoins = arr[si-1]*arr[k]*arr[ei+1]     // si-1 and ei+1 isliye liya as jab [si,ei] is window me sab phod dege to uske baad to sirf Kth ballon and (si-1) ballon and (ei+1) ballon hi bachega that why we have taken this
     // totalcoins === [left subarray me sare ballon ko phodne ki total kimat] 
     //                                        + 
@@ -241,10 +243,13 @@
     // jisme newarr[first index] = 1  hoga and  newarr[last index] = 1 hoga
     // and solve(newarr, 1, n) hoga
     
-    public int maxCoins(int[] nums) {
+    //NOTE : (INTERVIEWER QUESTION -> WHY WE ARE BURSTING THE BALLONS AT LAST TIME IN THE RECURSSION?) 
+//           ANS IS -> BECAUSE KISSI BALLON KO PEHLE PHODNE SE DEPENDENCY KHARAB HO JATI HA
+    
+public int maxCoins(int[] nums) {
         int n = nums.length;
         int[] arr = new int[n+2];
-        arr[0] = 1; arr[n+1] = 1;
+        arr[0] = 1; arr[n+1] = 1;   // ye karna jaruri ha bass
         for(int i = 0; i < n; i++) arr[i+1] = nums[i];
         
         int[][] dp = new int[n+2][n+2];
@@ -254,8 +259,7 @@
     
     // solve()-> (si se ei) tak ke sare ballon ko phodne ki total kimat return karega
     public int solve(int[] arr, int si, int ei, int[][] dp){
-        if(si > ei) return dp[si][ei] = 0;
-        if(si == ei) return dp[si][ei] =  (arr[si-1]*arr[si]*arr[si+1]);
+        if(si > ei) return dp[si][ei] = 0;   // bass ye base case ayega only aur kuch mat likhna      (i.e agar si==ei vali condition likhi to ye karna padega ->  if(si == ei) return dp[si][ei] =  (arr[si-1]*arr[si]*arr[si+1]);   // yahi ayega only arr[si] nai ayega)
         
         if(dp[si][ei] != 0) return dp[si][ei];
         
@@ -283,11 +287,6 @@
 //             for(int si = 1,ei = gap; (si <= n && ei <= n); si++, ei++){
 //                 if(si > ei) { 
 //                     dp[si][ei] = 0; 
-//                     continue;
-//                 }
-                
-//                 if(si == ei) {
-//                     dp[si][ei] =  (arr[si-1]*arr[si]*arr[si+1]); 
 //                     continue;
 //                 }
 
@@ -372,4 +371,53 @@
 
     }
     
-     
+
+
+//=================================================================================
+
+// GFG - MIN AND MAX VALUE OF AN EXPRESSION
+// (CODING NINJA FOR SUBMITTION) CODESTUDIO - Minimum Maximum Value
+
+// SOLUTION: vohi thoda boolean paranthisation ka question ha bass usse aasan ha simple condition lagegi max vale me max ko add kar do and min vale me min ko, same with multiplication			
+
+	public static int[] minMaxValue(String exp) {
+		// Write your code here.
+		int n = exp.length();
+		int[][][] dp = new int[n+1][n+1][2];
+		for(int[][] y : dp) for(int[] x : y) {x[0] = (int)1e9; x[1] = -(int)1e9;}
+		
+		int[] ans = solve(exp, 0, n-1, dp);
+		return ans;
+	}
+	
+	public static int[] solve(String s, int si, int ei, int[][][] dp){
+		if(si == ei){
+			int val = (int)(s.charAt(si)-'0');
+			return dp[si][ei] = new int[]{val, val};
+		}
+		
+		if( dp[si][ei][0] != (int)1e9 && dp[si][ei][1] != -(int)1e9) return dp[si][ei];
+		
+		int[] myans = new int[2];
+		myans[0] = (int)1e9;	myans[1] = -(int)1e9;
+		
+		for(int k = si+1; k < ei; k+= 2){
+			int[] rec1 = solve(s, si, k-1, dp);
+			int[] rec2 = solve(s, k+1, ei, dp);
+			int[] temp = new int[2];
+			
+			char ch = s.charAt(k);
+			if(ch == '+'){
+				temp[0] = rec1[0] + rec2[0];
+				temp[1] = rec1[1] + rec2[1];
+			}else if(ch == '*'){
+				temp[0] = rec1[0]*rec2[0];
+				temp[1] = rec1[1]*rec2[1];
+			}
+			
+			myans[0] = Math.min(myans[0], temp[0]);
+			myans[1] = Math.max(myans[1], temp[1]);
+		}
+		return  dp[si][ei] = myans;
+	}
+

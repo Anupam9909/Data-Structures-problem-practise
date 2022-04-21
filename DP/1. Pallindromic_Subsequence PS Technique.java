@@ -77,7 +77,7 @@
 
 //========================================================================================
 
-// count plindromic subsequence
+// count palindromic subsequence
 yaha hamm har level par nikal lege and then dry run karo condition ke liye ni aya to ratt lo solution
 long countPS(String str){ 
         // iss question me haar level pe 3 call lagege as hame count nikalna ha so sare call lagane padege
@@ -107,6 +107,52 @@ long countPS(String str){
 
 
 //=========================================================================================
+
+// EXTRA QUESTION:
+// LC-1771. Maximize Palindrome Length From Subsequences
+
+ // pura concept vohi ha finding longest palindrome sequence 
+    // tabu se kar lo chota rahta ha 
+    // bass jab bhi 
+    // Si == Sj ho then if(i is between w1.length) and (j between w2.length) tabhi haam apna answer mangege 
+    public int longestPalindrome(String w1, String w2){
+        int n = w1.length(), m = w2.length(), N = n+m;
+        int[][] dp =  new int[N][N];
+        StringBuilder s = new StringBuilder();
+        s.append(w1);
+        s.append(w2);
+        String str = s.toString();
+        int myans = 0;
+        
+        for(int gap = 0; gap < N; gap++){
+            for(int i = 0, j = gap; i < N && j < N ; i++, j++){
+                if(i >= j){
+                    dp[i][j] = i==j ? 1 : 0;
+                    continue;
+                }
+                int ans = 0;
+                
+                if(str.charAt(i) == str.charAt(j)){
+                    ans = dp[i+1][j-1]+2;
+                    
+                    if((i >= 0 && i < n) && (j >= n && j < n+m)){  // sirf ye condition extra lagegi iss question me 
+                       myans = Math.max(myans, ans);  
+                    } 
+                       
+                }else{
+                    ans = Math.max(dp[i+1][j], dp[i][j-1]);
+                }
+                dp[i][j] = ans;
+            }
+        }
+        
+        return myans;
+    }
+    
+
+//==========================================================================
+
+
 
 // 115. Distinct Subsequences
 
@@ -376,13 +422,3 @@ ans = Math.min(ans,solve(s1, s2, i+1, j+1, dp))
 //         return dp[I][J];
 //     }
 
-
-
-
-
-
-
-
-
-// Hello my name is anupam 
-    

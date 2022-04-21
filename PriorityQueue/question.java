@@ -218,3 +218,84 @@ public int dist(int a, int b){
         Collections.reverse(ans);
         return ans;
     }   
+
+
+//==============================================================================
+
+// 347. Top K Frequent Elements
+// doo tarike se kar sakte ha i.e (class me sort[using implements comparable]) se bhi
+// and (pq me sort[using lambda function]) karke bhi
+
+    // I WAY
+    // simple class pair + pq me sort kar diya definition likte vakt
+    public class pair{
+        int ele;
+        int freq;
+        pair(int e, int f){this.ele = e; this.freq = f;}
+    }
+    
+    public int[] topKFrequent(int[] arr, int k){
+        int n = arr.length;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        for(int x : arr) hm.put(x, hm.getOrDefault(x, 0)+1);
+        
+        
+        //{ele, freq}
+        PriorityQueue<pair> pq = new PriorityQueue<>((a,b)->{
+            return a.freq - b.freq;
+        });
+        
+        for(Integer p : hm.keySet()){
+            pair np = new pair(p,hm.get(p));
+            pq.add(np);
+            if(pq.size() > k) pq.remove();
+        }
+        
+        // making ans
+        int[] ans = new int[pq.size()];
+        int t = 0;
+        while(pq.size() != 0){
+            ans[t++] = pq.remove().ele;
+        }
+        return ans;
+    }
+    
+    
+    // II WAY
+    // class pair me implements comparable use karke sort kara +  simple pq use kiya
+//     public class pair implements Comparable<pair>{
+//         int val;
+//         int freq;
+//         pair(int v, int f){
+//             val = v;
+//             freq = f;
+//         }
+        
+//         public int compareTo(pair other){
+//             return  this.freq-other.freq;  // this - other => default behaviour i.e [min pq]
+//         }
+//     }
+    
+//     public int[] topKFrequent(int[] arr, int k){ 
+//       PriorityQueue<pair> pq = new PriorityQueue<>();
+//       HashMap<Integer, Integer> hm = new HashMap<>();
+        
+//       for(int x : arr)  hm.put(x, hm.getOrDefault(x,0)+1);  // ek choti si line me freq table banao
+      
+//       for(int x : hm.keySet()){             // pq for top k elements
+//           int f = hm.get(x);
+//           pq.add(new pair(x,f));
+//           if(pq.size() > k) pq.remove();
+//       }
+        
+//       int[] ans = new int[k];
+//       int i = 0;
+//       while(i < k) ans[i++] = pq.remove().val;  // ek choti si line me ans add karo
+        
+//       return ans;   
+        
+//     }
+    
+    
+    
+    

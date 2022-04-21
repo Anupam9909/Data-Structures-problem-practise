@@ -156,6 +156,9 @@ public class bst{
 
 
 
+//====================================================================================
+
+
 
     // LC- 450 , DELETE A NODE IN BST
 
@@ -197,6 +200,7 @@ public class bst{
     
 
 
+//====================================================================================
 
     // ROOT TO NODE PATH IN BST (ye bilkul different ha binary tree se(easy ha usse))
     public static boolean rootToNodePathBST(Node root, Node dataNode, ArrayList<Node> path){    // O(log n) time
@@ -253,6 +257,7 @@ public class bst{
 
     
 
+//====================================================================================
 
 
 
@@ -262,50 +267,94 @@ public class bst{
 
     // O(logn) - imp. ha ye
 
-    public void predecessor_successor_ofBST(TreeNode root, int data){
-        TreeNode pred = null;
+    public TreeNode inorder_Successor_BST(TreeNode root,TreeNode data){
         TreeNode succ = null;
-
         TreeNode curr = root;
+        
         while(curr != null){
-            if(curr.val < data){
-                pred = curr;
+            if(curr.val <= data.val){   // agar equal ho jaye to haam right chale jayege as succ to udhar hi milega and successor update ho jayega baad me (dry run it)
                 curr = curr.right;
             }
-            else if(curr.val > data){
+            else if(curr.val > data.val){
                 succ = curr;
                 curr = curr.left;
             }
-            else if(curr.val == data){
-                // updating predessor
-                if(curr.left != null){
-                    TreeNode ptr = curr.left;
-                    while(ptr != null) 
-                        ptr = ptr.right;
-
-                    pred = ptr;
-                }
-
-                // updating successor
-                if(curr.right != null){
-                    TreeNode ptr = curr.right;
-                    while(ptr.left != null) 
-                        ptr = ptr.left;
-
-                    succ = ptr;
-                }
-
-                break;    //(IMPORTANT HA YE LIKHNA) since data mil gya ha so break the loop aur aage ni jana
-            }
         }
-
-        // now jo bhi return karna ha kar do
-        // return pred;
-        return succ;
+        
+        return succ;        
     }
 
 
 
+//=====================================================
+
+
+
+// Inorder Predecesor in BST (if question ask)
+
+    public TreeNode inorder_Predecessor_BST(TreeNode root,TreeNode data){
+        TreeNode pred = null;
+        TreeNode curr = root;
+        
+        while(curr != null){
+            if(curr.val < data.val){   // agar equal ho jaye to haam right chale jayege as succ to udhar hi milega and successor update ho jayega baad me (dry run it)
+                pred = curr;
+		curr = curr.right;
+            }
+            else if(curr.val >= data.val){
+                curr = curr.left;
+            }
+        }
+        
+        return pred;
+    }
+
+//================================================================
+
+// ek sath bhi calculate kar sakte ha but lamba ha and bada ha aur break; na lagao to TLE bhot confusion hoti ha so niche vala tarike use mat karna upar vala hi yaad karo
+
+// equal to vale case me pred and succ dono alag tarike se nikalna padega
+//     public void predecessor_successor_ofBST(TreeNode root, int data){
+//         TreeNode pred = null;
+//         TreeNode succ = null;
+
+//         TreeNode curr = root;
+//         while(curr != null){
+//             if(curr.val < data){
+//                 pred = curr;
+//                 curr = curr.right;
+//             }
+//             else if(curr.val > data){
+//                 succ = curr;
+//                 curr = curr.left;
+//             }
+//             else if(curr.val == data){
+//                 // updating predessor
+//                 if(curr.left != null){
+//                     TreeNode ptr = curr.left;
+//                     while(ptr != null) 
+//                         ptr = ptr.right;
+
+//                     pred = ptr;
+//                 }
+
+//                 // updating successor
+//                 if(curr.right != null){
+//                     TreeNode ptr = curr.right;
+//                     while(ptr.left != null) 
+//                         ptr = ptr.left;
+
+//                     succ = ptr;
+//                 }
+
+//                 break;    //(IMPORTANT HA YE LIKHNA) since data mil gya ha so break the loop aur aage ni jana
+//             }
+//         }
+
+//         // now jo bhi return karna ha kar do
+//         // return pred;
+//         return succ;
+//     }
 
 
 
@@ -316,21 +365,7 @@ public class bst{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//====================================================================================
 
 
 

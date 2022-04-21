@@ -1,5 +1,6 @@
-NOTE : agar recurssive function true, false ka hi baan pa raha ha and hame dp use 
-    karni ha to haam dp use kar sakte ha bajaye iske ki true/false is part of an answer by using a trick i.e haam dp me to 0,1,2 values hi store karayege but jab bhi use karna hoga recurssive function me then we do this:
+// NOTE : agar recurssive function true, false ka hi baan pa raha ha and hame dp use 
+// karni ha to haam dp use kar sakte ha bajaye iske ki true/false is part of an answer by using a trick 
+// i.e haam dp me to 0,1,2 values hi store karayege but jab bhi use karna hoga recurssive function me then we do this:
     
     // BASE CASE:
     if(i > j)  { dp[i][j] = 0; return false;}

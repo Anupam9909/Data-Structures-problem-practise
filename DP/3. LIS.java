@@ -75,7 +75,7 @@ public class LIS{
     }   
 
 //========================================================================
-// PRINT ALL LONGEST INCRESING SUBSUEQUENCE
+// PRINT ALL LONGEST INCREASING SUBSUEQUENCE
 
 // print all the longest increasing subsequence
 // agar sare chahiye then to recurssion hi lagana padega dp me hi

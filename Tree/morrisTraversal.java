@@ -27,77 +27,75 @@ public class morrisTraversal{
     }
 
 
+//================================================================================
+
     // MORRIS TRAVERSAL (In-order)
     // TIME : O(N) , SPACE : O(1)
-    public List<Integer> inorderTraversal(TreeNode root){
+    public List<Integer> inorderTraversal(TreeNode A) {
         List<Integer> ans = new ArrayList<>();
-        morrisTraversal(root, ans);
-        
+
+        morris_Traversal_In(A, ans);
         return ans;
     }
-    
-    public void morrisTraversal(TreeNode root, List<Integer> ans){
+
+    public void morris_Traversal_In(TreeNode root, List<Integer> ans){
         TreeNode curr = root;
-        
+
         while(curr != null){
-            TreeNode leftnode = curr.left;
-            if(leftnode == null){
+            TreeNode forw = curr.left;
+            if(forw == null){ 
                 ans.add(curr.val);
-                curr = curr.right;
+                curr = curr.right; 
             }else{
-                TreeNode rmnode = leftnode;  // rmnode : rightmostnode
-                while(rmnode.right != null && rmnode.right != curr){ 
-                    rmnode = rmnode.right;
-                }
-                
-                if(rmnode.right == null){
-                    rmnode.right = curr;
+                TreeNode lastnode = forw;
+                while(lastnode.right != null && lastnode.right != curr) lastnode = lastnode.right;
+
+                if(lastnode.right == null){
+                    lastnode.right = curr;
                     curr = curr.left;
                 }else{
-                    rmnode.right = null;
+                    lastnode.right = null;
                     ans.add(curr.val);
                     curr = curr.right;
                 }
             }
         }
-        
     }
 
+//================================================================================
 
     // MORRIS TRAVERSAL (pre-order)
     // TIME : O(N) , SPACE : O(1)
-    public List<Integer> preorderTraversal(TreeNode root){
-        List<Integer> ans = new ArrayList<>();
-        morrisTraversalpre(root, ans);
-        
+   public ArrayList<Integer> preorderTraversal(TreeNode A) {
+        ArrayList<Integer> ans = new ArrayList<>();
+
+        morris_Traversal_Pre(A, ans);
         return ans;
     }
-    
-    public void morrisTraversalpre(TreeNode root, List<Integer> ans){
+
+    public void morris_Traversal_Pre(TreeNode root, ArrayList<Integer> ans){
         TreeNode curr = root;
-        
+
         while(curr != null){
-            TreeNode leftnode = curr.left;
-            if(leftnode == null){
+            TreeNode forw = curr.left;
+            
+            if(forw == null){
                 ans.add(curr.val);
                 curr = curr.right;
             }else{
-                TreeNode rmnode = leftnode;  // rmnode : rightmostnode
-                while(rmnode.right != null && rmnode.right != curr){ 
-                    rmnode = rmnode.right;
-                }
-                
-                if(rmnode.right == null){
-                    rmnode.right = curr;
-                    ans.add(curr.val);  // bas ye line shift hui ha upar
+                TreeNode lastnode = forw;
+                while(lastnode.right != null && lastnode.right != curr) lastnode = lastnode.right;
+
+                if(lastnode.right == null){
+                    ans.add(curr.val);
+                    lastnode.right = curr;
                     curr = curr.left;
-                }else{
-                    rmnode.right = null;
+                }else if(lastnode.right == curr){
+                    lastnode.right = null;
                     curr = curr.right;
                 }
             }
         }
-        
     }
 
 
@@ -105,6 +103,7 @@ public class morrisTraversal{
 
 
 
+//================================================================================
 
 
 

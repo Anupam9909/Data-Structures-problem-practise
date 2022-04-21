@@ -8,8 +8,12 @@ public class question{
         Node(int v, Node l){this.val = v; this.left = l;}
         Node(int v, Node l, Node r) { this.val = v; this.left = l; this.right = r;}
     }
-    
-    // LC-236. Lowest Common Ancestor of a Binary Tree
+
+
+
+//=======================================================================================
+
+  // LC-236. Lowest Common Ancestor of a Binary Tree
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         ArrayList<TreeNode> arr1 = new ArrayList<>();  
         nodeToRootPath(root, p, arr1);
@@ -43,47 +47,34 @@ public class question{
         return ans;
     }
 
+//=======================================================================================
 
+  // LC-257. Binary Tree Paths
 
     public List<String> binaryTreePaths(TreeNode root) {
-        ArrayList<Integer> psf = new ArrayList<>();
+        if(root == null) return new ArrayList<String>();
         
-        List<String> ans = new ArrayList<String>();
+        String psf = root.val + "";
+        List<String> ans = new ArrayList<>();
         solve(root, psf, ans);
         return ans;
     }
     
-    public void solve(TreeNode root, ArrayList<Integer> psf, List<String> ans){
-        if(root == null){
-            return;
-        }
+    public void solve(TreeNode root, String psf, List<String> ans ){
+        if(root == null) return;
         if(root.left == null && root.right == null){
-            psf.add(root.val);
-            String stans = makeans(psf); 
-            ans.add(stans);
-            psf.remove(psf.size()-1);
-        }
-        
-        psf.add(root.val);
-        
-        solve(root.left, psf, ans);
-        solve(root.right, psf, ans);
-        
-        psf.remove(psf.size()-1);
-    } 
-    
-    
-    public String makeans(ArrayList<Integer> arr){
-        String ans = "";
-        for(int i = 0; i < arr.size(); i++){
-            if(i != arr.size()-1) ans = ans + arr.get(i) + "->";
-            else ans = ans + arr.get(i);
-        }
-        return ans;
+            ans.add(psf);
+            return ;
+        } 
+
+        if(root.left != null) solve(root.left, psf +"->"+ root.left.val, ans);
+        if(root.right != null) solve(root.right, psf +  "->" + root.right.val, ans);
     }
+    
+//=======================================================================================
 
+  // LC-863 All Nodes distance k in binary Tree
 
-    // LC-863 All Nodes distance k in binary Tree
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k ){
         if(root == null) return new ArrayList<>();
         // if(k == 0) return new ArrayList<>(target.val);
@@ -131,7 +122,68 @@ public class question{
         if(blocknode != root.right)  printkdown(root.right, k-1, ans, blocknode);
     }
 
+//=======================================================================================
 
+// GFG - BURNING TREE (INTERVIEW QUESTION)
+// NOTE : ye question bhi upar vale tarike se kar sakte ha i.e k tak ke parent ko list me store kara ke.. soon but ye lamba method ha 
+// best method down 
+    // CONEPT: SIMPLE YE CONCEPT YAAD RAKHO KI
+    // haam ek hashmap bana lege are node me [child ---> parent] ka
+    // and now the question becomes : find the maximum time to traverse the whole tree
+    // now to find the maximum time traverse the whole tree chahe DFS se kar lo ya BFS se 
+    // baat ek hi ha 
+    // I HAVE DONE WITH DFS code
+    
+    public static int minTime(Node root, int target) 
+    {
+        // Your code goes here
+        tarnode = null;
+        
+        HashMap<Node, Node> hm= new HashMap<>();
+        dfsfindParent(root, hm, target);   // sare nodes ke parents hm me daal lo
+        
+        boolean[] vis = new boolean[10000];
+        totaltime = 0;
+        dfs(tarnode, vis, 0, hm);
+        return totaltime-1;
+    }
+    
+    public static void dfs(Node root, boolean[] vis, int t, HashMap<Node, Node> hm){
+        if(root == null){
+            totaltime = Math.max(totaltime, t);
+            return;
+        }
+        
+        if(vis[root.data]) return;
+        
+        vis[root.data] = true;
+        
+        dfs(root.left, vis, t+1, hm);
+        dfs(root.right, vis, t+1, hm);
+        dfs(hm.get(root), vis, t+1, hm);
+        
+    }
+    
+    static int totaltime;
+    static Node tarnode;
+    
+    public static void dfsfindParent(Node root, HashMap<Node, Node> hm, int target){
+        if(target == root.data) tarnode = root;
+        
+        if(root.left != null){
+            hm.put(root.left, root);
+            dfsfindParent(root.left, hm, target);
+        }
+        
+        if(root.right != null){
+            hm.put(root.right, root);
+            dfsfindParent(root.right, hm, target);
+        }
+    }
+    
+
+    
+  //================================================================================
 
 
     // LC- 103. Binary Tree Zigzag Level Order Traversal 
