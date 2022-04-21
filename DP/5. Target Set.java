@@ -536,7 +536,35 @@ public class targetset{
         return dp[x + sum][idx] = count;
     }
     
-    
 
+//==================================================================================================
+
+// GFG - KNAPSACK WITH DUPLICATE ITEMS (UNBOUNDED KNAPSACK)
+
+// solution : (combination + infinte coins)
+
+    public static int knapSack(int N, int W, int val[], int wt[]){
+        // code here
+        int[][] dp = new int[W+1][N+1];
+        for(int[] x : dp) Arrays.fill(x, -(int)1e9);
+        
+        int ans = solve(val, wt, W, 0, dp);
+        return ans;
+    }
     
+    public static int solve(int[] val, int[] wt, int target, int idx, int[][] dp){
+        if(target == 0) return dp[target][idx] = 0;    // note : pehle target ki condition ayegi then idx == arr.length ayegi (imp. varna wrong ans will come)
+        if(idx == val.length) return dp[target][idx] = 0;
+        
+        if(dp[target][idx] != -(int)1e9) return dp[target][idx];
+        
+        int max = -(int)1e9;
+        if(target-wt[idx] >= 0){
+            max = Math.max(max, solve(val, wt, target-wt[idx], idx, dp) + val[idx]);
+        }
+        
+        max = Math.max(max, solve(val, wt, target, idx+1, dp));
+        
+        return dp[target][idx] = max;
+    }    
 }
