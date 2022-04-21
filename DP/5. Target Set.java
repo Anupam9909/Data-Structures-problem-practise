@@ -566,5 +566,37 @@ public class targetset{
         max = Math.max(max, solve(val, wt, target, idx+1, dp));
         
         return dp[target][idx] = max;
-    }    
+    }   
+
+
+//=====================================================================================
+
+// ROD CUTTING
+// https://practice.geeksforgeeks.org/problems/rod-cutting0840/1/# 
+
+// CONCEPT : (combination + infinite coins)
+
+   public int cutRod(int price[], int n) {
+        int[][] dp = new int[n+1][price.length+1];
+        int ans = solve(price,n , 0, dp);
+        return ans;
+    }
+    
+    public int solve(int[] prices, int target, int idx, int[][] dp){
+        if(target == 0) return dp[target][idx] = 0;
+        if(idx == prices.length) return dp[target][idx] =  0;
+        
+        if( dp[target][idx] != 0) return  dp[target][idx];
+        
+        int max = -(int)1e9;
+        if(target-(idx+1) >= 0){
+            max = Math.max(max, solve(prices, target-(idx+1), idx, dp) + prices[idx]);
+        }
+        
+        max = Math.max(max, solve(prices, target, idx+1, dp));
+        
+        return  dp[target][idx] =  max;
+    }
+
+
 }

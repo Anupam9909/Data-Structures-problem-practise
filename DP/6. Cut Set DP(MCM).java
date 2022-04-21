@@ -421,3 +421,48 @@ public int maxCoins(int[] nums) {
 		return  dp[si][ei] = myans;
 	}
 
+
+//=====================================================================================
+
+// OPTIMAL BST (pepcoding submit) - nahi samaj aye to chod dena not that imp. but can be asked kuch keh ni sakte
+
+// concept: simple ha ye MCM hi lagana ha (cut = si, cut <= ei) bhi bass ek chij ayegi ki min cost nikalne ke baad last me freq ka sum de dena ha from (si,ei) of that level
+// 1.  har element ko root maan ke leftsubtree ka ans le aao and rightsubtree ka ans le aao
+// then totalcost nikal lo ans sare possibility check karke (min) cost value nikal lo
+
+// 2. bass last me jo bhi (min) ans ayega usme freq ka sum ([si,ei] iss window me) add karke return kar dena 
+// reason:  https://www.youtube.com/watch?v=HnslzEs8dbY  -> 51:31 pe ye samaj lo ki freq ka sum kyu add karna pad raha ha hame
+    public int optimalbst(int[] keys, int[] freq, int n) {
+        int[][] dp = new int[n+1][n+1];
+        for(int[] x : dp) Arrays.fill(x, (int)1e9);
+        
+        int ans = solve(keys, freq, 0, n-1, dp);
+        return ans;
+    }
+	
+    public int solve(int[] keys, int[] freq, int si, int ei, int[][] dp){
+        if(si == ei) return dp[si][ei] = freq[si];
+        if(si > ei) return 0;   // yaha 0 return karna ha (int)1e9 nahi 
+        
+        if(dp[si][ei] != (int)1e9) return dp[si][ei];
+        
+        int fsum = freqsum(freq, si, ei);
+        int min = (int)1e9;
+        
+        for(int i = si; i <= ei; i++){
+            int totalcost = solve(keys, freq, si, i-1, dp) + solve(keys, freq, i+1, ei, dp);
+            
+            min = Math.min(min, totalcost);
+        }
+        
+        return dp[si][ei] = (min + fsum);
+        
+    }
+    
+    public int freqsum(int[] arr, int si, int ei){
+        int sum = 0;
+        for(int i = si; i <= ei; i++){
+            sum += arr[i];
+        }
+        return sum;
+    }
