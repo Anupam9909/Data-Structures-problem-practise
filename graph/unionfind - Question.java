@@ -102,3 +102,62 @@
         
         return gcc;        
     }
+
+
+
+
+
+
+
+
+
+
+
+//======================================================================================
+
+// LC - 947. Most Stones Removed with Same Row or Column
+// this question is based on number of island
+// concept: iss question me basically hame number of island nikalne ha 
+// ek island me remove karte karte last me sirf ek node bachega 
+// so, and  = (total nodes - number of islands)
+
+    public int find(int i){
+        if(parent[i] == i) return parent[i] = i;
+        int ans = find(parent[i]);
+        return parent[i] = ans;
+    }
+    
+    int[] parent;
+    public int removeStones(int[][] stones) {
+        int n = stones.length;
+        
+        // making the parent array for union find
+        parent = new int[n];
+        for(int i = 0; i < n; i++) parent[i] = i;
+        
+        for(int i = 0; i < n; i++){
+            int x1 = stones[i][0], y1 = stones[i][1];
+            for(int j = 0; j < n; j++){
+                int x2 = stones[j][0], y2 = stones[j][1];
+
+                if(x1 == x2 || y1 == y2){
+                    int par1 = find(i);  // find
+                    int par2 = find(j);
+
+                    if(par1 != par2){
+                        parent[par1] = par2;   // union(merge)
+                    }
+                }
+            }
+        }
+        
+        HashSet<Integer> hs = new HashSet<>();
+        for(int x : parent){
+            int par = find(x);
+            hs.add(par);
+        }
+        
+        int unremovednodes = hs.size();
+        int ans = n-unremovednodes;
+        return ans;
+    }

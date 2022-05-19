@@ -329,6 +329,7 @@ public class graph{
         return false;
     }
 
+/==============================================================================================
 
         // GET NUMBER OF CONNECTED COMPONENTS IN A GRAPH  and print also
         // I way 
@@ -360,6 +361,8 @@ public class graph{
             }
         }
 
+/==============================================================================================
+
         // II way - not much difference just AL me ans mangaya ha 
         public static int gcc(ArrayList<Edge>[] graph){
             int count = 0;
@@ -387,11 +390,11 @@ public class graph{
 
 
 
+//==================================================================================================
 
 
 
-
-
+// UNION FIND (DISJOINT SET)
 
     vector<int> par;
     vector<int> size;

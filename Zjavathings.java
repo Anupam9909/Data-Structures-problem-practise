@@ -187,3 +187,36 @@ System.out.println(ans);
 
 //=========================================================
     
+// TREEMAP (ordered map ha bass aur kuch ni ha)
+
+// We have seen HashMap in java but we know it is not in the sorted form 
+// so, to get the element in the sorted form we use (TreeMap) which insert
+// the element and sort them on the basis of the key
+// agar key interger me ha then integer sorting karega
+// and if key string me ha then lexiographically sort karega
+
+//Example : 1
+TreeMap<String, Integer> users = new TreeMap<String, Integer>();
+users.put("Bob", 1);
+users.put("Alice", 2);
+users.put("John", 3);
+
+Output:
+Alice (ID = 2)
+Bob (ID = 1)
+John (ID = 3)
+
+//------------------
+
+//Example : 2
+TreeMap<Integer, String> tmap = new TreeMap<String, Integer>();
+tmap.put(3, "Bob");
+tmap.put(1, "Alice");
+tmap.put(2, "John");
+
+Output:
+1 : Alice
+2 : John
+3 : Bob
+
+//===============================================================

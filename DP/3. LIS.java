@@ -1,6 +1,30 @@
 public class LIS{
    
 // LC-300. Longest Increasing Subsequence 
+ 
+    // using binary search O(logN) time
+    // concept:
+    // ek arraylist le lege and ussme haam values replace karte jayege  (at the end jo bhi arraylist me list bachegi vohi longest subsequence hoga ie ans hoga)
+    // 1. traverse the arr given and find the insert position of the arr[i] in the arraylist made and replace that position (note REPLACE(remove then add) karna ha insert nahi karna) 
+    // 2. esa karte jao apne aap last me longest increasing subsequence mil jayega
+     
+     public int lengthOfLIS(int[] arr){
+         ArrayList<Integer> al = new ArrayList<>();
+         int n = arr.length;
+         
+         for(int i = 0; i < n; i++){
+             int idx = Collections.binarySearch(al, arr[i]);
+             if(idx < 0){   // that means element is not present so set them
+                 idx = -idx-1;   // inbuilt me ese hi nikalta ha index insert position ka
+                 if(idx == al.size()) al.add(arr[i]);
+                 else al.set(idx, arr[i]);  // set() function replace bhi karta ha and remove bhi
+             }  
+         }
+         
+         return al.size();
+     }
+    
+//==============================================================================================
 
     // TABULATION: learn this 
    // O(n^2) approach

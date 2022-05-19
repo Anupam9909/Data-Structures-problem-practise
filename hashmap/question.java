@@ -185,5 +185,52 @@ public class question{
         return ans;
     }
 
+//===============================================================================
 
+// HASHMAP + BINARY TREE question
+
+// 652. Find Duplicate Subtrees
+
+// concept : ek hashmap le lo ie. ---> HashMap =>  <String , ArrayList<TreeNode>>
+// tree ka structure store kara lo haar subtree ka ye ek ID hogi and jiss bhi subtree ka ye id same hoga(ie. structure same hoga) then uska root store kara lo ArrayList<TreeNode> me and then finally make the ans from the hashmap
+
+class Solution {
+    HashMap<String, ArrayList<TreeNode>> hm;
+    
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        hm = new HashMap<>();
+        
+        String str = solve(root);
+        
+        // making ans 
+        List<TreeNode> fans = new ArrayList<>();
+        for(String x : hm.keySet()){
+            if(hm.get(x).size() > 1){
+                TreeNode t = hm.get(x).get(0);
+                fans.add(t);
+            }
+        }
+        
+        return fans;
+    }
+    
+    public String solve(TreeNode root){
+        if(root == null) return "null";
+        
+        String leftstr = solve(root.left);
+        String rightstr = solve(root.right);
+        
+        String mystr = (root.val +","+ leftstr + "," + rightstr);
+        
+        if(hm.containsKey(mystr)){
+            ArrayList<TreeNode> arr = hm.get(mystr);
+            arr.add(root);
+        }else{
+            ArrayList<TreeNode> tans = new ArrayList<>();
+            tans.add(root);
+            hm.put(mystr, tans);
+        }
+        
+        return mystr;
+    }
 }

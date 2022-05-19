@@ -1,3 +1,4 @@
+
 // jump game - Q1, Q3(Q1 ka bhai) easy ha compare to Q2, Q4(Q2 ka bhai) 
 // 55. Jump Game-I
 
@@ -249,3 +250,32 @@ public int minJumps(int[] arr){
 //         return dp[idx] = ans;
 //     }
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
