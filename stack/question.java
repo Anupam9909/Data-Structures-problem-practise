@@ -22,6 +22,8 @@ public class question{
         return st.size() > 0 ? false : true;
     }
 
+//======================================================================================================
+
 
     //LC-503. Next Greater Element II(circular way)
     // just (2*n) tak chala do loop
@@ -43,6 +45,8 @@ public class question{
         return ans;
     }
 
+
+//======================================================================================================
     
     //LC- 946. Validate Stack Sequences (pushed, popped)
     public boolean validateStackSequences(int[] pushed, int[] popped){
@@ -58,6 +62,8 @@ public class question{
         return j < popped.length-1 ? false : true;
     }
 
+
+//======================================================================================================
 
     // lc - 1249. Minimum Remove to Make Valid Parentheses
     public String minRemoveToMakeValid(String s){
@@ -94,6 +100,8 @@ public class question{
     }
 
 
+//======================================================================================================
+
     // LC  - 1021 remove outermost paranthesis
     public String removeOuterMostParam(String str){
         if(str.length() == 0 ) return str;
@@ -125,6 +133,7 @@ public class question{
     }
 
 
+//======================================================================================================
 
     // LC - 32. Longest Valid Parentheses
     public int longestValidParentheses(String s){
@@ -164,6 +173,7 @@ public class question{
 
 
 
+//======================================================================================================
 
 
 
@@ -194,7 +204,8 @@ public class question{
         return ans;
     }
 
-    
+ 
+//======================================================================================================   
 
     // LC - 901. Online Stock Span
     class StockSpanner {
@@ -222,6 +233,7 @@ public class question{
     }
 
 
+//======================================================================================================
 
     // LC - 84. Largest Rectangle in Histogram
     // EXAM TEST KE LIYE YAHI METHOD KARO SIMPLE HA
@@ -317,6 +329,7 @@ public class question{
     }
     
 
+//======================================================================================================
 
     // LC - 85. Maximal Rectangle of 1's in a matrix[of 0 & 1]
     // EXAM TEST KE LIYE YAHI METHOD KARO SIMPLE HA
@@ -388,6 +401,7 @@ public class question{
     // iska II approach (to impress interview) vala bhi vese hi kar lege jese lc-84 kiyya ha baki so same hoga yaha ki har base ka histogram nikalana ha  
 
 
+//======================================================================================================
 
     // LC - 221. Maximal Square(vese to dp ka question ha but yaha bhi solve ho jayega)
     // kuch ni karna bass lc-85 me ek line ka change karna ha bass
@@ -431,15 +445,54 @@ public class question{
         
         return ans;
     }
+
+//======================================================================================================
     
-    
-    // LC - MIN STACK
+ // LC-155. Min Stack (Easy)
     // MIN STACK VALA SOLUTION (CLASS QUESTION) VALE FOLDER ME HA as it is a question of class
 
+//======================================================================================================
 
+// LC-1190. Reverse Substrings Between Each Pair of Parentheses 
 
-
-
+    // stack use hoga
+    // sare element ko ek ek karke stack me dalte jao 
+    // ek ) closing bracket comes then haam pop karke string bana lege which will be the reverse automatically and then dubara ussi stack me daal dege at the end we will get the final ans string in the stack so get it 
+    public String reverseParentheses(String s){
+        Stack<Character> st = new Stack<>();
+        
+        for(int i = 0; i < s.length(); i++){
+            char ch = s.charAt(i);
+            if(ch == ')'){
+                StringBuilder sb = new StringBuilder();
+                // sare middle element ko nikalo i.e ( ) inke bich ke
+                while(st.peek() != '('){
+                    sb.append(st.pop());
+                }
+                
+                st.pop();  // remove:  ( this bracket
+                
+                // now jo reverse string bani ha vo simply stack me daal do
+                for(int j = 0; j < sb.length(); j++){
+                    char c = sb.charAt(j);
+                    st.push(c);
+                }
+            }
+            else{  // ch == '(' || ch == alphabet then add in st 
+                st.push(ch);
+            }
+        }
+        
+        StringBuilder ans = new StringBuilder();
+        while(st.size() != 0) ans.append(st.pop());
+        
+        return ans.reverse().toString();
+    }
+    
+    
+    
+//======================================================================================================
+    
 
 
 

@@ -1,3 +1,7 @@
+// tree ka question jab bhi aye pehle recurssion se try karna ho jayega ya to paramter me kuch le ke ya to 
+// kuch pair class return kara ke ya to simple value return kara ke ya to inorder me chal ke bst me etc etc 
+// ye lee ne bataya ha vo leetcode vale ne
+
 public class question{
 
     public class Node{
@@ -13,7 +17,45 @@ public class question{
 
 //=======================================================================================
 
-  // LC-236. Lowest Common Ancestor of a Binary Tree
+// LC-236. Lowest Common Ancestor of a Binary Tree      
+// issi question ka dursra naam:- LC-865. Smallest Subtree with all the Deepest Nodes
+
+  // I WAY
+  // O(N^2) time & O(1) space (just recurssion ha aur kuch nahi)
+
+// CONCEPT: 
+// If left subtree height is greater, then the result is whatever returned by the left as it has highest depth elements.
+// Similarly if right subtree height is greater, then the result is whatever returned by the right as it has highest depth elements.
+// If heights of both left and right subtrees are equal then the current node is the common ancestors of the deepest leaves.
+    
+    public TreeNode LCA(TreeNode root){
+        if(root == null) return null;
+        
+        TreeNode leftLCA = LCA(root.left);
+        TreeNode rightLCA = LCA(root.right);
+        
+        int lheight = height(root.left);
+        int rheight = height(root.right);
+        
+        if(lheight == rheight){
+            return root;  // we return this level root because this can be my potential LCA
+        }
+        else{
+            if(lheight > rheight)  return leftLCA;
+            else   return rightLCA;
+        }
+    }
+
+    public int height(TreeNode root){
+        return root==null ? 0 : Math.max(height(root.left), height(root.right)) + 1;
+    }
+
+
+//------------------------------------------------------------------------------------------
+
+  // II WAY
+  // O(N) time & O(N) space (USING NODE TO ROOT PATH)
+
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         ArrayList<TreeNode> arr1 = new ArrayList<>();  
         nodeToRootPath(root, p, arr1);

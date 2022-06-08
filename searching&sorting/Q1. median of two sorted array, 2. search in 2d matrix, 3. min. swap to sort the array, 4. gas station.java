@@ -3,11 +3,11 @@ LC-Median of Two Sorted Arrays
 // DO CHIJ HA ISME 
 // 1. hame median nikalna ha so we will make cut in the first array and in the second array
 //    aur cut hamesha esa hoga ki dono array ka lefthalf size == dono array ka righthalf size
-// 2. haam binary search lagate ha keval arr1 me (since arr2 me to pata hi chal jayega ki kaha ha)
-//    and jab tak chalayege jab tak   (l1 <= r2 && l2 <= r1) 
+// 2. haam binary search lagate ha keval ek array me, let say arr1 me (since arr2 me to pata 
+//    hi chal jayega ki kaha ha) and jab tak chalayege jab tak   (l1 <= r2 && l2 <= r1) 
 //                       l1 |  r1
 //                       l2 |  r2           where | -> is the cut  
-// and if (l1 > r1)  -> (ei = mid-1) kar do
+// and if (l1 > r2)  -> (ei = mid-1) kar do
 // and else (si = mid+1)
 // NOTE : haam sirf chote vale array pe hi binary search lagagyege (esa nai kiya to wrong ans ayega) 
 // see the code before exam
@@ -85,7 +85,7 @@ LC-Median of Two Sorted Arrays
   // conecpt ha ye raat lo:
     // just simply-> find the total number of circular graph in the array
     // haar ek circular graph me jitne element hoge usse -1 karke count me add karte raho
-    // and get the ans visited leke kaam karna ha
+    // and get the ans. here note that visited array leke kaam karna ha
     public class pair{
         int val;
         int idx;

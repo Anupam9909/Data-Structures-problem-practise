@@ -51,16 +51,16 @@ public class question{
         return fans;
     }
 
-
+//====================================================================================================
 
 
     // LC- 128 longest Consecutive sequence
-
     // sabse best solution ha ki sare elements ko Hashset me daalo
     // then for each nums ele do this thing
     // x element ko x-- karte karte le jao and calculate (leftcount) i.e -> hs.contains(x) and remove those x-- element
     // similarly, x element ko x++ karte karte le jao and calculate (rightcount) i.e -> hs.contains(x++) and remove those x++ element
-    
+
+    // NOTE : iski complexity O(N^2) nahi hogi as haam remove bhi kar rahe ha 
     public int longestConsecutive(int[] nums){
         HashSet<Integer> hs = new HashSet<>();
         
@@ -85,14 +85,16 @@ public class question{
                 temp2++;
             }
             
-            if(ans < (lcount + rcount+1)) ans = (lcount + rcount + 1);
-            hs.remove(ch);
+            ans = Math.max(ans, lcount+rcount+1);
+                hs.remove(ch);
         }
         
         return ans;
     }
-
     
+    
+
+//====================================================================================================
 
 
     // LC-347.    TOP K-FREQUENT ELEMENTS
@@ -184,6 +186,110 @@ public class question{
         Collections.reverse(ans);
         return ans;
     }
+
+//===============================================================================
+
+// LC- 49. Group Anagrams
+
+    // hame actual me yaha 
+    // simply string ki array ko traverse karege then
+    // for a particular string ham uska freq array banayege and iss freq(of 26 size) array ko ek string me convert kar lege 
+    // and now ye string ek unique string hogi jo ki hashmap me ek key ki tarah act karegi
+    // so we will make HashMap of (String vs List<String>) 
+    // List<String> me ans store karte chalege
+    
+    
+    // ie for an lame example hm will be
+    // 20001010011000110011 ----> eat, tea, ate
+    // 10000101001010000010 ----> bat, 
+    // 00000000001000001000 ----> nat, tan
+    // I way hm ->{freq string , List<String>}
+    public List<List<String>> groupAnagrams(String[] strs){
+        HashMap<String, List<String>> hm = new HashMap<>();
+        int n = strs.length;
+        
+        for(int i = 0; i < n; i++){
+            String s = strs[i];
+            int[] freq = new int[26];
+            for(char ch : s.toCharArray()) freq[ch-'a']++; 
+            
+            String st = "";
+            for(int x : freq) st += (x+".");   // x + "." -> yaha haam dot se seperate kar lege numbers ko as 1.10 bhi ho sakta ha koi string and 11.0 bhi ho sakte ha so dot se hi differentiate ho payega
+            
+            if(!hm.containsKey(st)){
+                List<String> ans = new ArrayList<>();
+                ans.add(s);
+                hm.put(st, ans);
+            }else{
+                hm.get(st).add(s);
+            }
+        }
+        
+        List<List<String>> fans = new ArrayList<>();
+        for(String s : hm.keySet()){
+            List<String> temp = hm.get(s);
+            fans.add(temp);
+        }
+        
+        return fans;
+    }
+    
+    //====================================================================================
+    
+    // II way  ->{sorted string , List<String>}
+    // using sorting of string
+       public List<List<String>> groupAnagrams(String[] strs){
+        HashMap<String, List<String>> hm = new HashMap<>();
+        int n = strs.length;
+        
+        for(int i = 0; i < n; i++){
+            String s = strs[i];
+            
+            char[] ch = s.toCharArray();
+            Arrays.sort(ch);
+            String key = "";
+            for(char c : ch)  key += (c+"");
+            
+            if(!hm.containsKey(key)){
+                List<String> ans = new ArrayList<>();
+                ans.add(s);
+                hm.put(key, ans);
+            }else{
+                hm.get(key).add(s);
+            }
+        }
+        
+        List<List<String>> fans = new ArrayList<>();
+        for(String s : hm.keySet()){
+            List<String> temp = hm.get(s);
+            fans.add(temp);
+        }
+        
+        return fans;
+    }
+    
+
+//===============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //===============================================================================
 

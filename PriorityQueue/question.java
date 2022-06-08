@@ -296,6 +296,76 @@ public int dist(int a, int b){
         
 //     }
     
+//=====================================================================================================================
+
+
+// LC - 295. Find Median from Data Stream              //  bhot simple ha logic easy ha karna bhi
+// since, haame median nikalna ha kaam time me so
+// haam do PQ le lete ha,
+// pehla left PQ jo ki MAX PQ hoga taki left half ke number hamesha sorted order me rahe in increasing order
+// and dusra right PQ jo MIN PQ hoga taki right half ke number hamesha sorted order me rahe in increasing order 
+
+//   1.2.3.(MAX PQ).4.5.6.  <  [median]  <  7.8.9.(MIN PQ).10.11.12     
+// step1 : add() me dono pq ke peek() element dek ke insert kar do
+//         and balance karna imp ha dono pq ko
+// step2 : findmedian() function me simple agar size dono pq ka equal ha to return avg of both peek ele of PQ's
+//         and agar size unequal ha to return the peek of greater size pq vohi median hoga pakka 
+class MedianFinder {
+    PriorityQueue<Integer> maxpq;
+    PriorityQueue<Integer> minpq;
+    public MedianFinder() {
+        maxpq = new PriorityQueue<>((a,b)->{  // max pq  -> which hold left half of the numbers
+            return b-a;
+        });   
+        minpq = new PriorityQueue<>();    // min pq  -> which hold right half of the numbers
+    }
     
+    public void addNum(int num) {
+        if(maxpq.size() == 0 || num <= maxpq.peek()){
+            maxpq.add(num);
+        }else{
+            minpq.add(num);
+        }
+        
+        // balance both the PQ  -> v.imp ha karna tabhi to haam kissi bhi samaye median nikal sakte ha O(1) me
+        if(maxpq.size() > minpq.size()+1){
+            int temp = maxpq.remove();
+            minpq.add(temp);
+        }
+        else if(maxpq.size()+1 < minpq.size()){
+            int temp = minpq.remove();
+            maxpq.add(temp);
+        }
+    }
+    
+    public double findMedian() 
+        if(maxpq.size() == minpq.size()){  // even number of elements present ->so, avg of two terms lena hoga
+            double ans = (double)(maxpq.peek() + minpq.peek())/2;
+            return ans;
+        }
+        else{  // odd number of element present -> so jisme bhi jada element hoga means vohi median hoga pakka
+            if(maxpq.size() > minpq.size()){
+                return maxpq.peek();
+            }else{
+                return minpq.peek();
+            }
+        }
+    }
+}
+
+
+
+// FOLLOW UP QUESTION : 
+// Q1. If all integer numbers from the stream are between 0 and 100, how would you optimize it?
+
+// ANSWER 1. We can maintain an integer array of length 100 to store the count of each number along with a total count. Then, we can iterate over the array to find the middle value to get our median.
+// Time and space complexity would be O(100) = O(1).
+
+
+// Q2. If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?
+// ANSWER 2.In this case, we need an integer array of length 100 and a hashmap for these numbers that are not in [0,100].
+
+//=====================================================================================================================
+
     
     

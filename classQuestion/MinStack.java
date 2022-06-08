@@ -1,4 +1,5 @@
-// QUESTION 2   MIN STACK 
+// LC - 155. Min Stack (easy)
+
 class MinStack(){
     MinStack(){ } // initializes the stack object.(ye to hamare liye hi hota ha to initialise our variable jo hamne class me define kiye ha)
     void push(int val){ } // pushes the element val onto the stack.

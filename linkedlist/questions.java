@@ -1,4 +1,4 @@
-import java.util.io;
+ import java.util.io;
 
 public class questions{
     public class ListNode{
@@ -440,57 +440,112 @@ public class questions{
     }
 
 
+//====================================================================================
+
+// LC- 160. Intersection of Two Linked Lists
+
+    public int size(ListNode head){
+        int count = 0;
+        ListNode curr = head;
+        while(curr != null) {
+            curr = curr.next;
+            count++;
+        }
+        return count;
+    }
+    public ListNode getIntersectionNode(ListNode h1, ListNode h2){
+        int size1 = size(h1);
+        int size2 = size(h2);
+        
+        if(size1 < size2) return getIntersectionNode(h2,h1);
+        
+        ListNode c1 = h1, c2 = h2;
+        int diff = size1-size2;
+        for(int i = 0; i < diff; i++)   c1 = c1.next;
+        
+        while(c1 != null && c2 != null && c1 != c2){
+            c1 = c1.next;
+            c2 = c2.next;
+        }
+        
+        return c1;      
+    }
+     
 
 
 
+//====================================================================================
 
 
+// LC- 25. Reverse Nodes in k-Group
+
+    
+    static ListNode th = null, tt = null ; // th : temporary head, tt : temporary tail
+    static ListNode fh = null, ft = null;  // fh : final head, ft : final tail
+    
+    public ListNode reverseKGroup(ListNode head, int k){ 
+        if(head == null) return null;
+        
+        th = null; tt = null;
+        fh = null; ft = null;
+        return  solve(head, k);
+    }
+    
+    public static ListNode solve(ListNode root, int k){
+        ListNode curr = root;
+        ListNode forw = root;
+        int size = size(root);
+
+        for(int count = 0; (count < size) && (size-count >= k);  ){
+            tt = null; th = null;
+            
+            for(int i = 0; i < k; i++){
+                forw = curr.next;
+                addNodeFirst(curr);
+                curr = forw;
+                count++;
+            }
+            
+            if(ft == null && fh == null){
+                ft = tt;
+                fh = th;
+            }else{
+                fh.next = tt;
+                fh = th;
+            }
+        }
+        
+        
+        fh.next = curr;
+        
+        
+        return ft;
+        
+        
+    }
+    
+    public static void addNodeFirst(ListNode root){
+        if(tt == null && th == null){
+            tt = th = root;
+        }else{
+            root.next = tt;
+            tt = root;
+        }
+    }
+    
+    public static int size(ListNode root){
+        ListNode curr = root;
+        int size = 0;
+        while(curr != null){
+            size++;
+            curr = curr.next;
+        }
+        return size;
+    }
+    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//====================================================================================
 
 
 
