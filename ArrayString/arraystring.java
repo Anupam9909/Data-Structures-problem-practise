@@ -1,10 +1,9 @@
-import java.util.io;
+ import java.util.io;
 
 public class arraystring{
     public void main(String[] args){
 
     }
-
     // lc-003 Longest substring without repeating character
     //O(n3) Solution
     public int lengthOfLongestSubstring(String s){
@@ -78,6 +77,9 @@ public class arraystring{
         }
         return maxlen;
     }
+
+
+//============================================================================================================
 
     // lc-76 Minimum Window Substring
     // O(n3)
@@ -195,6 +197,9 @@ public class arraystring{
     
     }
 
+
+//============================================================================================================
+
     //gfg -  smallest window that contains all character of string itself
 
     // O(n3) Soution Brute force
@@ -262,7 +267,6 @@ public class arraystring{
         return minlen==(int)1e8 ? "" : s.substring(gsi, gsi+minlen);
     }
 
-
     //O(n)     by anupam slight difference(dry run karo ko us time pe samaj me aye vo karo, concept samajna ha bass)
     public String findSubString( String s) {
         int si = 0, ei = 0, n = s.length();
@@ -328,6 +332,9 @@ public class arraystring{
         return str.substring(gsi, gsi + len);
     }
 
+
+//============================================================================================================
+
     // lc-159 longest substring with at most 2 distint characters 
     //o(n)
     public int lengthOfLongestSubstrigWithtwocharactes(String s){
@@ -349,6 +356,9 @@ public class arraystring{
         // update to ek baar pakka hua hoga with 1 size window
         return maxlen;
     }
+
+
+//============================================================================================================
 
     // lc-159 longest substring with at most k distint characters 
     //o(n)
@@ -373,6 +383,9 @@ public class arraystring{
         return maxlen;
     }
 
+
+//============================================================================================================
+
     // Maximum number of vowels in a substring of given length 
     //o(n)
     public boolean checkvowel(char ch ){
@@ -394,6 +407,9 @@ public class arraystring{
          return maxvcount;
     }
 
+
+
+//============================================================================================================
 
 
     //Question 1. imp.>  Count of all substrings with at most k different Integers
@@ -453,6 +469,9 @@ public class arraystring{
         return ans;
     }
 
+
+//============================================================================================================
+
     // lc - 992  count all substring with k different Integer
     public int subarraysWithKDistinct(int[] arr, int k) {
           return countSubarrayAtMost(arr, k)-countSubarrayAtMost(arr, k-1);
@@ -483,6 +502,9 @@ public class arraystring{
     }
 
 
+
+//============================================================================================================
+
     // count number of nice substring
     public int numberOfSubarrays(int[] arr, int k){
         int x = countOfSubarrays(arr, k);
@@ -506,6 +528,9 @@ public class arraystring{
         
         return ans;
     }
+
+
+//============================================================================================================
 
     // longest-k-unique-characters-substring
     // https://practice.geeksforgeeks.org/problems/longest-k-unique-characters-substring0853/1
@@ -533,6 +558,9 @@ public class arraystring{
         return maxlen==-(int)1e8 ? -1: maxlen;
     }
 
+
+//============================================================================================================
+
     // count of all unique substrings with non- repeating characters.
     public int countUniqueNonRepeatingCharacter(String s){
         int n = s.length();
@@ -551,6 +579,21 @@ public class arraystring{
         }
         return ans;
     }
+
+
+//============================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+//============================================================================================================
 
      
     // LC - 930. Binary Subarrays With Sum
@@ -578,6 +621,9 @@ public class arraystring{
         }
 
     }
+
+
+//============================================================================================================
 
     // LC : 485  Max Consecutive Ones 
     // do this way (because same hi concept(amr*u) pe based ha tarika ha issi se karo)
@@ -816,6 +862,7 @@ public class arraystring{
         return ans;
     }
 
+//=======================================================================================================
 
 
     //LC 974. Subarray Sums Divisible by K
@@ -864,6 +911,33 @@ public class arraystring{
         return count;
     }
 
+    // now issi me bol de ki find -> largest sum divisible by k
+// GFG = https://practice.geeksforgeeks.org/problems/longest-subarray-with-sum-divisible-by-k1259/1/#
+
+//  SO SAME CONCEPT HA BASS LONGEST MAXIMUM NIKALNA HA HAAR BAAR COUNT KI JAGAH
+int longSubarrWthSumDivByK(int arr[], int n, int k)
+{
+    int si = 0, ei = 0;
+    HashMap<Long, Long> hm = new HashMap<>();  //{psum, index}
+    hm.put((long)0, (long)-1);
+    long psum = 0;
+    long maxlen = -(long)1e9;
+    for(int i = 0; i < n; i++){
+        psum += arr[i];
+        long rem = psum%k;
+        if(rem < 0) rem += k;  // yahi catch hota ha isme , so less than ho jaye to +k kar do taki +ve remainder ban jaye
+        
+        if(hm.containsKey(rem)){
+            long idx = hm.get(rem);
+            maxlen = Math.max(maxlen, i-idx);
+        }else{
+            hm.put(rem, (long)i);
+        }
+    }
+    return (maxlen == -(long)1e9) ? 0 : (int)maxlen;
+   
+}
+
 // =====================================================================
 // gfg - find longest subarray sum equals k
 
@@ -889,10 +963,42 @@ public class arraystring{
         return maxlen;
     }
 
-//==================================
+//=======================================================================================================
 
+// LC - 1658. Minimum Operations to Reduce X to Zero
 
-
+    // this question is upgraded version of [SUBARRAY SUM K] 
+    // NOTE : iss question me haam ulta kaam karege ki arr me vo subarray nikalege jisme sum equals to (sum-x) hoga.
+    // and note yaha hashmap <Integer, Integer> me <value, index> ka banege na ki value vs frequency ka as haame to sirf ek subarray chahiye
+    public int minOperations(int[] arr, int x){
+        int sum = 0, n = arr.length;
+        for(int y : arr) sum += y;
+        
+        // now the question becomes find the [subarray sum k] question and here sum equal target
+        int k = sum-x;
+        if(k == 0) return arr.length;   // imp line yahi check karna padega
+        
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0, -1);
+        int psum = 0, minans = (int)1e9;
+        
+        for(int i = 0; i < n; i++){
+            psum += arr[i];
+            
+            if(hm.containsKey(psum-k)){
+                int idx = hm.get(psum-k);
+                int len = (n- (i-idx));
+                minans = Math.min(minans, len);
+            }
+            
+            hm.put(psum, i);
+        }
+        
+        return minans == (int)1e9 ? -1 : minans;
+    } 
+    
+    
+//=======================================================================================================
 
 
 

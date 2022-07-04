@@ -365,7 +365,7 @@ class MedianFinder {
 // Q2. If 99% of all integer numbers from the stream are between 0 and 100, how would you optimize it?
 // ANSWER 2.In this case, we need an integer array of length 100 and a hashmap for these numbers that are not in [0,100].
 
+
+
 //=====================================================================================================================
 
-    
-    

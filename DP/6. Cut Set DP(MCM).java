@@ -211,10 +211,131 @@ f(si, k+1),  f(k, ei)      ;    f(si, k) ,  f(k, ei)
         
         return dp[si][ei] = myans;
     }
-    
+
 
 
 //===========================================================================
+
+// LC - 132. Palindrome Partitioning II
+
+    // since : yaha partitioning simple alag alag hogi so
+    // we will use
+    //  for(int k = si; k < ei; k++){
+    //     solve(si, k);
+    //     solve(k+1, ei);
+    //  }
+    
+    public int minCut(String s){
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for(int[] x: dp) Arrays.fill(x, (int)1e9);
+        
+        int ans = solve(s, 0, n-1, dp);
+        return ans;
+    }
+    
+      
+    public int solve(String s, int si, int ei, int[][] dp){
+        if(si >= ei) return dp[si][ei] = 0;
+        if(dp[si][ei] != (int)1e9) return dp[si][ei];
+        
+        if(isPalindrome(s, si, ei)) return 0;
+        
+        int mincut = (int)1e9;
+        for(int k = si; k < ei; k++){
+            if(isPalindrome(s, si, k)){  // left rec call check kar lo agar palindrome ha to hi ander aao and dusre ko check karo varna agar nahi ha to dusre ko call karke duplicate calls lagegi (and TLE ayega and will not pass)
+                int recans = solve(s, k+1, ei, dp);
+                mincut = Math.min(mincut, recans+1);
+            }
+        }
+        return dp[si][ei] = mincut;
+    }
+    
+    
+           // for loop ke ander ye na karke upar vala kiya ha so as to reduce rec. call VARNA TLE AYEGA PAKKA 
+            // int recans1 = solve(s, si, k, dp);
+            // int recans2 = solve(s, k+1, ei, dp);
+            // int totalcut = recans1 + recans2 + 1;
+            // mincut = Math.min(mincut, totalcut);
+    
+    
+    // this method works in O(n) solution 
+    public boolean isPalindrome(String s, int si, int ei){
+        while(si < ei){
+            if(s.charAt(si) == s.charAt(ei)) { si++; ei--;}
+            else return false;
+        }
+        return true;
+    }  
+    
+    
+
+//===========================================================================================================
+
+
+// LC - 132. Palindrome Partitioning III
+
+    // iss question me recursion thode alag tarike ki ha (so yaad kar lena)
+    // CONCEPT:
+    // 1. cut set ka hi question ha where => (cut = si; cut < ei) hoga since simple partition karna ha
+    // 2. ek function banayege minop() which return the min no. of operation to make string[si,ei] palindrome 
+    // 3. let say Kth point par cut lagaya inside the solve() function:
+    // 4. so, leftcall = minop(s, si, cut)
+    //    and rightcall = solve(s, cut+1, ei, k-1)   // [cut+1, ei] tak ke window se (k-1) substring le aao which has all its individual substring palindrome 
+    // 5. note: 3 base case ka dyan rakhna ha if(ei-si+1 < k) return 1e9;
+    //                                        if(si == ei) return 0;
+    //                                        if(k == 1) return minop(s, si, ei);
+    // and at last to optimise use dp i.e 3d dp
+    
+    // NOTE : ISS QUESTION ME solve() recurssion call me hamesha ei fix rehta ha so haam sirf 2d dp bhi bana sakte ha-> dp[n+1][k+1] size ki  
+    public int palindromePartition(String s, int k){
+        int n  = s.length();
+        
+        int[][][] dp = new int[n+1][n+1][k+1];
+        for(int[][] x : dp) for(int[] y : x) Arrays.fill(y, (int)1e9);
+        
+        int ans = solve(s, 0, n-1, k, dp);
+        return ans;
+    }
+    
+    // 3 base cases ha important
+    public int solve(String s, int si, int ei , int k, int[][][] dp){
+        if(ei-si+1 < k) return dp[si][ei][k] = (int)1e9;     // agar string ki length(ei-si+1) se jada (k) ki value hui to this is a edge case not i.e not possible case. so, we return (int)1e9 yahi return karna ha varna ans wrong ayega
+        if(si == ei) return dp[si][ei][k] = 0;
+        if(k == 1){
+            return dp[si][ei][k] = minop(s, si, ei);
+        }
+        
+        if(dp[si][ei][k] != (int)1e9) return dp[si][ei][k];
+        
+        int minans = (int)1e9;
+        for(int cut = si; cut < ei; cut++){
+            int leftans = minop(s, si, cut);
+            int rightans = solve(s, cut+1, ei, k-1, dp);
+            
+            int totalop = leftans + rightans;
+
+            minans = Math.min(minans, totalop);
+        }
+        
+        return dp[si][ei][k] = minans;
+    }
+    
+    
+    public int minop(String s, int si, int ei){  // minop : minimum operation required to make string palindrome
+        int count = 0;
+        while(si < ei){
+            if(s.charAt(si) != s.charAt(ei)) count++;
+            si++; 
+            ei--;
+        }
+        return count;
+    }
+
+
+
+//===========================================================================
+
 
 // LC-312. Burst Balloons (V.Imp for Interview)
 // QUESTION : You are given n balloons, indexed from 0 to n - 1. Each balloon is painted with a number on 

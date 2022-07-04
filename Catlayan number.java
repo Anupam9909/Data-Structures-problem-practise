@@ -1,5 +1,5 @@
-public class Main
-{
+public class Main{
+    
 // CATLAYAN NUMBER SEQUENCE:
 // 1 1 2 5 14 
 

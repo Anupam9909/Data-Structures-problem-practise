@@ -453,6 +453,53 @@ public class question{
 
 //======================================================================================================
 
+    // LC - 402. Remove K Digits
+    
+    // concept : NSOL lagega till (k > 0)
+    // NOTE : yaha 3 edge cases ha handle karna 
+    // 1. after nsol loop if(k >0)
+    // 2. edge case -> when "10" and k=1 then we have to return "0"
+    // 3. removing the leading zeros
+    public String removeKdigits(String str, int k){
+        if(str.length() == k) return "0";
+        Stack<Integer> st = new Stack<>();
+        for(char ch : str.toCharArray()){
+            while(st.size() != 0 && ch-'0' < st.peek() && k > 0){
+                st.pop();
+                k--;
+            }
+            
+            st.push(ch-'0');
+        }
+        
+        // imp case : (if k is > 0) then we have to just pop the rightmost k element
+        while(k > 0 && st.size() != 0){
+            k--;
+            st.pop();
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        while(st.size() != 0){
+            sb.append(st.pop()+"");
+        }
+        
+        // edge case   -> when "10" and k=1 then we have to return "0"
+        int count = 0;
+        for(int i = 0; i < sb.length(); i++) if(sb.charAt(i) == '0') count++;
+        if(sb.length() == count) return "0";
+        
+        // removing the leading zeros
+        while(sb.length() != 0 && sb.charAt(sb.length()-1) == '0'){
+            sb.deleteCharAt(sb.length()-1);
+        }
+        return sb.reverse().toString();
+    }
+    
+    
+    
+//======================================================================================================
+    
+
 // LC-1190. Reverse Substrings Between Each Pair of Parentheses 
 
     // stack use hoga

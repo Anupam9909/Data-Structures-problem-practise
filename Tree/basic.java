@@ -14,6 +14,34 @@ public class basic{
         } 
     }
 
+    // BUILT A TREE : WHEN IN QUESTION TREE IS GIVEN IN ARRAY FORM 
+    // CASE 1 : agar tree ek array ki form me diya ha eg. array  = [-1, 0, 0, 0, 3] where index is node and their parent are arr[i] respectively
+    //           so => we will form directed graph and solve it.
+
+    // CASE 2 : agar tree ek edges ki form me diay ha edges array = [[1,2],[0,2],[2,3]...] 
+    //          so => we will form undirected graph and solve this question using tree concept (diameter vale etc.) using visited array and kissi ko bhi root maan ke (if it is not a rooted tree)
+
+    // dono case me khaas baat hogi ki cycle present nahi hoga as tree me koi bhi cycle ni hoti
+
+    // EXAMPLE FOR CASE 1 : 
+    public int QUESTION(int[] arr) {
+        // iss given array se graph(directed graph) bana lo
+        int n = arr.length;
+        List<Integer>[] graph = new ArrayList[n];
+        for(int i = 0; i < n; i++) graph[i] = new ArrayList<>();
+        for(int i = 1; i < n; i++){
+            int u = arr[i], v = i;
+            graph[u].add(v);
+        }
+        
+        int src = 0;
+        ans = solve(graph, src);  // yaha src root ka kaam karega
+
+        return ans;
+    }
+
+
+
     // WRITING BASE CASE IN A BINARY TREE
     // if(root.left == null && root.right == null) return 0;   // IT IS A LONG WAY because this is binary tree so At most two nodes ho sakte ha so dono ke liye condition lagani padegi
     // if(root == null) return -1;  //  WRITE THIS WAY ONLY 

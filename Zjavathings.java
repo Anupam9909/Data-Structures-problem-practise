@@ -19,6 +19,47 @@ for(int[] x : obst){
 boolean ans = hs.contains(List.of(x,y));
 
 
+=================================================================================================
+//TREESET IN JAVA
+// TREESET is exactly same as HASHSET(duplicate ele ek hi baar ayega), with an extra property that 
+// it stores the element in sorted order 
+
+// sab same ha jese hashset ko access karte ha vese hi treeset ko hi access karege
+
+    TreeSet<Integer> ts = new TreeSet<>();   // treeset is exactly a hashset with a extra feature that it store the element in sorted order
+    ts.add(5);
+    ts.add(2);
+    ts.add(6);
+    ts.add(9);
+    ts.add(1);
+    ts.add(5);
+    ts.add(1);
+    ts.add(2);
+
+    System.out.println(ts);      // -> prints:  [1, 2, 5, 6, 9]
+    
+    for(int x : ts){
+        System.out.println(x);
+    }
+    // it do iteration and print ele in sorted order
+    // 1
+    // 2
+    // 5
+    // 6
+    // 9
+
+    // NOTE : And since treeset me element sorted order me hota ha so,
+    TREESET me ek extra function hota ha  -> (very usefull)
+    Integer ans = ts.ceiling(num);   =>  gives the (value) of element which is just greater than (num) -> if not present it gives (null)
+    Integer ans = ts.floor(num);     =>  gives the (value) of element which is just smaller than (num) -> if not present it gives (null)
+
+    eg1
+    ts : [1, 2, 5, 6, 9]
+    Integer ans = ts.ceiling(3);   => gives ans = 5
+    Integer ans = ts.ceiling(7);   => gives ans = 9
+    Integer ans = ts.ceiling(11);   => gives ans = null
+
+
 =========================================================
 
 // RANDOM IN JAVA

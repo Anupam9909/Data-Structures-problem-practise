@@ -18,39 +18,31 @@ public class question{
 //=======================================================================================
 
 // LC-236. Lowest Common Ancestor of a Binary Tree      
-// issi question ka dursra naam:- LC-865. Smallest Subtree with all the Deepest Nodes
+// issi question ka dursra naam:-
+// I way (without using space)
 
-  // I WAY
-  // O(N^2) time & O(1) space (just recurssion ha aur kuch nahi)
-
-// CONCEPT: 
-// If left subtree height is greater, then the result is whatever returned by the left as it has highest depth elements.
-// Similarly if right subtree height is greater, then the result is whatever returned by the right as it has highest depth elements.
-// If heights of both left and right subtrees are equal then the current node is the common ancestors of the deepest leaves.
+    // O(n) time, O(1) space
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q){
+        TreeNode ans = solve(root, p, q);
+        return ans;
+    }
     
-    public TreeNode LCA(TreeNode root){
+    public TreeNode solve(TreeNode root, TreeNode p, TreeNode q){
         if(root == null) return null;
+        if(root == p || root == q) return root;
         
-        TreeNode leftLCA = LCA(root.left);
-        TreeNode rightLCA = LCA(root.right);
+        TreeNode leftans = solve(root.left, p, q);
+        TreeNode rightans = solve(root.right, p, q);
         
-        int lheight = height(root.left);
-        int rheight = height(root.right);
-        
-        if(lheight == rheight){
-            return root;  // we return this level root because this can be my potential LCA
-        }
-        else{
-            if(lheight > rheight)  return leftLCA;
-            else   return rightLCA;
+        if(leftans == null) return rightans;
+        else if(rightans == null) return leftans;
+        else if(leftans == null && rightans == null) return null;
+        else {  // means this root is LCA -> ie. -> (leftans != null && rightans != null)
+            return root; 
         }
     }
-
-    public int height(TreeNode root){
-        return root==null ? 0 : Math.max(height(root.left), height(root.right)) + 1;
-    }
-
-
+    
+    
 //------------------------------------------------------------------------------------------
 
   // II WAY
@@ -116,7 +108,7 @@ public class question{
 //=======================================================================================
 
   // LC-863 All Nodes distance k in binary Tree
-
+    // I WAY -> find root to node path and then print k distance down function
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k ){
         if(root == null) return new ArrayList<>();
         // if(k == 0) return new ArrayList<>(target.val);
@@ -164,6 +156,79 @@ public class question{
         if(blocknode != root.right)  printkdown(root.right, k-1, ans, blocknode);
     }
 
+    // --------------------------------------------
+
+        // II way solution
+    // TREE KO GRAPH BANA LO AND THEN BFS LAGA DO (and add all those node which are k distance far from target node)
+    // graph banane ke liye root ko parent chahiye so haam HASHMAP bana lege of {node , parent} ka
+    // and then BFS laga do 
+    public void markParent(TreeNode root, TreeNode parent, HashMap<TreeNode, TreeNode> hm){
+        if(root == null) return;
+        size++;
+        // work
+        hm.put(root, parent);
+        markParent(root.left, root, hm);
+        markParent(root.right, root, hm);
+    }
+    
+    public class pair{
+        TreeNode root;
+        int dist;
+        pair(TreeNode root, int d){
+            this.root = root;
+            this.dist = d;
+        }
+    }
+    static int size = 0;
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        HashMap<TreeNode, TreeNode> hm = new HashMap<>();
+        size = 0;
+        markParent(root, null, hm);
+        // System.out.println(hm);
+        List<Integer> ans = new ArrayList<>();
+        LinkedList<pair> que = new LinkedList<>();
+        que.add(new pair(target, k));
+        boolean[] vis = new boolean[size+1];
+        
+        while(que.size() != 0){
+            int s = que.size();
+            while(s-- > 0){
+                // r
+                pair rp = que.removeFirst();
+                
+                // work
+                if(rp.dist == 0){
+                    ans.add(rp.root.val);
+                }
+                
+                // m*
+                if(vis[rp.root.val]){
+                   continue;
+                }
+                vis[rp.root.val] = true;
+                
+                // a*
+                // adding left child node in que
+                TreeNode lnode = rp.root.left;
+                if(lnode != null && !vis[lnode.val] && rp.dist >= 0) {
+                    que.addLast(new pair(lnode, rp.dist-1));
+                }
+                // adding  right child node in que
+                TreeNode rnode = rp.root.right;
+                if(rnode != null && !vis[rnode.val] && rp.dist >= 0) {
+                    que.addLast(new pair(rp.root.right, rp.dist-1));
+                }
+                // adding  parent node in que
+                TreeNode pnode = hm.get(rp.root);
+                if(pnode != null  && !vis[pnode.val] && rp.dist >= 0){ 
+                    que.addLast(new pair(pnode, rp.dist-1));
+                }
+            }
+        }
+        return ans;
+    }
+
+    
 //=======================================================================================
 
 // GFG - BURNING TREE (INTERVIEW QUESTION)

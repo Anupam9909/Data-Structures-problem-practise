@@ -1,4 +1,4 @@
-// KOSARAJU'S Algorithm:
+  // KOSARAJU'S Algorithm:
   // step-1 -> do DFS and GET THE TS ORDER IN A STACK (or in an arraylist(ye liya ha to phir 3rd step me (n-1) se 0 traverse karna padega))
   // step-2 reverse the graph  
   // step-3 calcualate gcc in ngraph and this gcc is equal to scc(strongly connected components)

@@ -140,3 +140,46 @@ int insertpos = -idx-1;
         }
         return arr[si];
     }
+
+  
+//=================================================================================
+
+    // LC- 540. Single Element in a Sorted Array - (comed in amazon)
+    // binary search karte vakt
+    // yaah haam size ko and arr[mid]==arr[mid-1] ko dek ke disision lege ki binary search me kaha jana ha
+    public int singleNonDuplicate(int[] arr) {
+        int n = arr.length;
+        if(n == 1) return arr[0];
+        
+        int si = 0, ei = arr.length-1;
+        
+        while(si <= ei){
+            int mid = (si+ei)/2;
+            
+            int leftlen = mid-0;  // (mid-0) => i.e 0 index bhi le sakte ha yaha 
+            int leftele = (mid-1==-1) ? -1 : arr[mid-1];
+            int rightele =  (mid+1==n) ? -1 : arr[mid+1];
+            // System.out.println(leftele + " - " + arr[mid] + " - "+ rightele);
+            
+            
+            if(arr[mid] != leftele && arr[mid] != rightele){ 
+                return arr[mid];
+            }
+            else if(leftlen%2 == 0){  // even
+                if(leftele == arr[mid]){
+                    ei = mid-1;
+                }else{
+                    si = mid+1;
+                }
+            }
+            else{   // odd
+                if(leftele == arr[mid]){
+                    si = mid+1;
+                }else{
+                    ei = mid-1;
+                }
+            }
+        }
+        
+        return arr[si];
+    }

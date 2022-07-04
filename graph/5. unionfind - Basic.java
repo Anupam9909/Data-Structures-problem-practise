@@ -17,22 +17,6 @@ public class unionfind {
         graph[v].add(new Edge(u, w));
     }
 
-    public static void display(int N, ArrayList<Edge>[] graph) {
-        for (int i = 0; i < N; i++) {
-            System.out.print(i + " -> ");
-            for (Edge e : graph[i]) {
-                System.out.print("(" + e.v + ", " + e.w + ") ");
-            }
-            System.out.println();
-        }
-    }
-
-
-
-
-
-
-
     // union find
 
     static int[] par;
@@ -62,7 +46,6 @@ public class unionfind {
     // Path Compression: V + E(alpha(n))
     // without Path Compression: V + ELog(V)
     public static void unionFind(int N, int[][] Edges) {
-        // @SuppressWarnings("unchecked")
         ArrayList<Edge>[] graph = new ArrayList[N];
         for (int i = 0; i < N; i++)
             graph[i] = new ArrayList<>();

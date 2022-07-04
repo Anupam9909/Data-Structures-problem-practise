@@ -74,3 +74,71 @@
     }
     
     
+
+
+
+    //============================================================================================================================
+
+    // LC - 407. Trapping Rain Water II
+    
+    // NOTE :   vo 1D vala solution yaha work ni karega
+    // reason why 1D vala solution does not work here
+    // wrong approach - agar vohi 1D rainwater trapping vala solution iss 2D rainwater trapping water vale me use karege to ans galat ayega as because
+    // 1D me hamare pass only do raste the water ko flow hone ke (left or right)
+    // but 2D me hamare pass kai sare raste ha flow hone ke eg
+    //   0 0 0 1 0 0 0
+    //   1 0 0 0 0 0 1      for(1,3) ans will come to be 1 (iff we use that 1D logic)
+    //   0 0 0 1 0 0 0      // but the actual ans is 0 everywhere
+    // hence we cannot use that logic here
+
+
+    // CONCEPT : haam ek priorityQueue le lege and boundry ko kaam karte jayege and water ko add karte jayege
+    // ek visited array bhi le lege so that dubara uspe na jaye
+    // see this video for concept (simple ha pura dekna) imp ->  https://www.youtube.com/watch?v=fywyCy6Fyoo     (acha bataya ha inhone isme)
+    public int trapRainWater(int[][] arr) {
+        int n = arr.length, m = arr[0].length;
+        // 2d ka 1d karke store karege pq me
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a,b)->{ // min pq
+            return arr[a/m][a%m] - arr[b/m][b%m];  // this-other => min pq
+        });
+        int[][] dir = {{0,1}, {1,0}, {-1,0}, {0,-1}};
+        
+        boolean[][] vis = new boolean[n][m];
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(i == 0 || i == n-1 || j == 0 || j == m-1){
+                    vis[i][j] = true;
+                    pq.add(i*m+j);
+                }
+            }
+        }
+        
+        int totalwater = 0;
+        
+        while(pq.size() != 0){
+            int rem = pq.remove();
+            int r = rem/m, c = rem%m;
+            
+            for(int d = 0; d < 4; d++){
+                int x = r + dir[d][0];
+                int y = c + dir[d][1];
+                
+                if(x >= 0 && y >= 0 && x < n && y < m && vis[x][y] == false){
+                    vis[x][y] = true;
+                    if(arr[x][y] < arr[r][c]){
+                        totalwater += (arr[r][c] - arr[x][y]); 
+                        arr[x][y] = arr[r][c];  //V.Imp->water ki height same bana do abb
+                    }                           // and then pq me add kar do ie now usko 
+                                                // kaam assign kar do ki jao ans bana lo
+                    pq.add(x*m+y);
+                }
+            }
+        }
+        
+        return totalwater;
+    }
+       
+       
+       
+       
