@@ -25,12 +25,11 @@
         }); 
         
         que.add(new int[]{src, 0});
-        // vis[src] = true;
         
         while(que.size() != 0){
             int s = que.size();
             while(s-- > 0){
-                int[] rp = que.remove();
+                int[] rp = que.remove(); // remove
                 
                 // mark*
                 if(vis[rp[0]]){
