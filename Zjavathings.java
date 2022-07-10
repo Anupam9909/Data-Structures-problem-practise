@@ -61,6 +61,37 @@ boolean ans = hs.contains(List.of(x,y));
 
 
 =========================================================
+// similarly TreeMap<key, value> bhi ha jo ki exactly same as HASHSET(duplicate key ek hi baar ayega), with an extra property that 
+// it stores the [keys] in sorted order 
+
+    TreeMap<Integer, String> tm = new TreeSet<>();   // treeset is exactly a hashset with a extra feature that it store the element in sorted order
+    tm.add(5, "anupam");
+    tm.add(2, "akhil");
+    tm.add(6, "naman");
+    tm.add(9, "priya");
+    tm.add(1, "pankaj");
+
+    System.out.println(tm);      
+    // -> prints:     [ 
+                //      [1 - "pankaj"]
+                //      [2 - "akhil"]
+                //      [5 - "anupam"]
+                //      [6 - "naman"]
+                //      [9 - "pankaj"]
+                //                    ]
+        
+    for(int x : tm.keySet()){
+        System.out.println(x + "->" + tm.get(x));
+    }
+        // -> prints:     [ 
+                //      [1 - "pankaj"]
+                //      [2 - "akhil"]
+                //      [5 - "anupam"]
+                //      [6 - "naman"]
+                //      [9 - "pankaj"]
+                //                    ]
+
+=========================================================
 
 // RANDOM IN JAVA
 

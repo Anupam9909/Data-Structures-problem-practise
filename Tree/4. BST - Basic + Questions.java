@@ -94,6 +94,10 @@ public class bst{
 
     }
 
+
+//====================================================================================
+
+
     //LC-701  -  INSERT INTO BST
 
     //(I) recurrsive Approach
@@ -360,6 +364,89 @@ public class bst{
 
 
 //====================================================================================
+
+
+    // LC - 98. Validate Binary Search Tree
+
+    // bst traverse karte karte <minvalue, maxvalue> pe check karte jao
+    // if going LEFT IN BST ->   <minvalue, root.val>
+    // if going RIGHT IN BST -> <root.val, maxvalue>
+    // and check everytime for valid return true , and if not return false
+
+    public boolean isValidBST(TreeNode root) {
+        return solve(root, -(long)1e13, (long)1e13);
+    }
+    
+    public boolean solve(TreeNode root, long minvalue, long maxvalue){
+        if(root == null) return true;
+        
+        boolean myans = true;
+        if(root.val > minvalue && root.val < maxvalue){
+            myans = myans && solve(root.left, minvalue, (long)root.val);
+            myans = myans && solve(root.right, (long)root.val, maxvalue);
+        }else{
+            myans = false;
+        }
+        
+        return myans;
+    }
+
+//======================================================================================================================
+
+
+    // LC - 99. Recover Binary Search Tree
+
+        // ese hi karo (easy)
+    // case 1 : when non - continuous elements are changed
+    //     1 2 3 4 5 6 7 8 9 
+    //     1 2 7 4 5 6 3 8 9   [3,7]are changed  -> then, ans[0] = prev && ans[1] = curr
+    
+    // case 2 : when continuous elements are changed
+    //     1 2 3 4 5 6 7 8 9 
+    //     1 2 4 5 4 6 7 8 9   [4,5]are changed  -> then,  ans[1] = curr
+    
+    static TreeNode[] ans;
+    static int count;
+    static TreeNode prev;
+    public void recoverTree(TreeNode root) {
+        ans = new TreeNode[2];
+        count = 0;
+        prev = null;
+        
+        solve(root);  // ye function donno case sambhal lega and ans me correct swap element ke node le ayega
+        
+        // swap both of the nodes
+        int temp = ans[0].val;
+        ans[0].val = ans[1].val;
+        ans[1].val = temp;
+    }
+    
+    public void solve(TreeNode root){
+        if(root == null) return ;
+        
+        solve(root.left);
+        
+        // inorder ka kaam 
+        TreeNode curr = root;
+        if(prev != null){
+            if(prev.val > curr.val){
+                if(count == 0){
+                    ans[0] = prev;
+                    ans[1] = curr;
+                    count++;
+                }else{
+                    ans[1] = curr;
+                }
+            }
+        }
+        prev = curr;
+        
+     
+        solve(root.right);
+    }
+
+    
+//===========================================================================================================================
 
 
 

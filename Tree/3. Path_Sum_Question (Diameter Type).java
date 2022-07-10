@@ -99,6 +99,119 @@
 //===========================================================================================================
 
 
+
+//  LC-112. Path Sum
+
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        return solve(root, 0, targetSum);
+    }
+
+    public boolean solve(TreeNode root, int sum, int target){
+        if(root == null) return false;
+        if(root.left == null && root.right == null){  // leaf
+            if(sum+root.val == target) return true;
+            else return false;
+        }
+        boolean myans = false;
+        myans = myans || solve(root.left, sum + root.val, target);
+        myans = myans || solve(root.right, sum + root.val, target);
+        
+        return myans;
+    }
+
+
+//===========================================================================================================
+
+
+
+//  LC-113. Path Sum II
+
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> ans = new ArrayList<>();
+        solve(root, 0, targetSum, new ArrayList<>(), ans);
+        return ans;
+    }
+
+    public void solve(TreeNode root, int sum , int target, List<Integer> psf, List<List<Integer>> ans){
+        if(root == null) return;
+        
+        if(root.left == null && root.right == null){  // leaf condition
+            if(sum+root.val == target){
+                List<Integer> bsans = new ArrayList<>(psf);
+                bsans.add(root.val);
+                ans.add(bsans);
+            }
+            return;
+        }
+        
+        psf.add(root.val);
+        solve(root.left, sum + root.val, target, psf, ans);
+        
+        solve(root.right, sum + root.val, target, psf, ans);
+        psf.remove(psf.size()-1);
+    }
+
+
+
+//===========================================================================================================
+
+
+
+//  IMPORTANT QUESTION -> Maximum Path Sum In Between Two leaves of Binary Tree
+// for submit -> https://practice.geeksforgeeks.org/problems/maximum-path-sum/1/#   -> yaha ek extra condition lagani padegi see in gfg code submittion (jo ki question gfg site ke question ke hisab se galat ha but vohi karke submit hota ha kya kare)
+// concept : concept to same diameter vale logic ka hi ha were
+
+// pair : {maxAnsTillNow, maxSumFromNodeToLeaf}    
+// NOTE : jo imp ha iss question me is : haame alag alag cases bana ke hi solve karna padega and 
+//        then vo diameter ka concept lagega alag alag need ke hsab se ki rec call lagani bhi ha ki ni
+//
+//      CASE-1 (leaf)         CASE-2          CASE-3            CASE-4 (yaha to haam vo sara code likhege jo required hota ha baki cases ke liye to half half code hoga) 
+//         X                    X               X                  X
+//        / \                  / \             / \                / \
+//       /   \                /   \           /   \              /   \
+//      /     \            null    \         /    null          /     \
+//   null     null                  Y       Y                  Y       Z      
+
+    public static int maxPathSum(TreeNode root) {
+        int[] ans = solve(root);
+        return ans[0];  // returning the maximum ans till now of (LEAF TO LEAF)
+    }
+ 
+    public static int[] solve(TreeNode root){
+        // base case no need handle ho gya niche sab
+
+        int[] myans = new int[]{0, 0};  // initial value kuch bhi daal do aage haame change hi karna ha
+
+        if(root.left == null && root.right == null){  // leaf
+            myans =  new int[]{-(int)1e9, root.val};  // {-infinity, root.val} hi return hoga aur kuch nai
+        }
+        else if(root.left != null && root.right == null){  // only left child present
+            int[] left = solve(root.left); // only left se ans manga lo
+            myans[0] = left[0];
+            myans[1] = left[1] + root.val;
+        }
+        else if(root.left == null && root.right != null){ // only right child present
+            int[] right = solve(root.right);  // only right se ans manga lo
+            myans[0] = right[0];
+            myans[1] = right[1] + root.val;
+        }
+        else if(root.left != null && root.right != null){ // both left & right child present -> yaha haam apna normal tarike se nikalege ie myans[0], myans[1] ko jo concept hota ha
+            int[] left = solve(root.left);  // dono left & right se ans mangane ki jarurat padegi
+            int[] right = solve(root.right);  // ans dono se max ans nikalege
+
+            myans[0] = Math.max(left[0], right[0]);
+            myans[0] = Math.max(myans[0], (left[1] + right[1] + root.val));
+            
+            myans[1] = Math.max((left[1]+root.val), (right[1] + root.val));
+        }
+        
+        return myans;
+    }
+
+
+//===========================================================================================================
+
+
     //  LC-124. Binary Tree Maximum Path Sum
     // {maxpathsumtillNow, overallpathsumAns}
     public int maxPathSum(TreeNode root) {
@@ -128,36 +241,12 @@
 
 
 
+//===========================================================================================================
 
 
+// acha question ha
+    // LC: 437 Path Sum III   (jo sochte ha solution vo nahi hota yaha solution)
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //LC: 437 Path Sum III   (jo sochte ha solution vo nahi hota)
     // NOTE : yaha only parent to child bola ha path na ki koi bhi path
     // so this below path sum question is different from the above diameter concept
 
@@ -237,29 +326,5 @@
     // to haamne jesa array me kiya tha vesa hi karege similar to this concept i.e jab bhi bass -ve remainder aye to +k karke add karna ha hashmap me 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//==========================================================================================================================================================
 

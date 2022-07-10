@@ -287,407 +287,67 @@ public class question{
             dfsfindParent(root.right, hm, target);
         }
     }
+
+    //===========================================================================================================================
+
+
+    // 222. Count Complete Tree Nodes
+
+// brute force
+
+//     // simply write the size() function of a tree -> O(N) solution
+//     public int countNodes(TreeNode root) {
+//         if(root == null) return 0;
+//         return solve(root.left) + solve(root.right) + 1;
+//     }
     
 
+// optimized code
+// (logN)^2 time
+
+    // complete binary me last level pe left to right node fill hoge
+    // concept : ek perfect binary tree ka size is uqual to (2^level-1)
+    // so, solution
+    // har level pe ye (leftmostheight) & (rightmostheight) pehle hi nikal lo
+    // then see if they are equal use direct formula to calculate the size 
+    // if not equal then use recursion to calculate size
     
-  //================================================================================
-
-
-    // LC- 103. Binary Tree Zigzag Level Order Traversal 
-
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> ans = new ArrayList<>();
-        if(root == null) return ans;
-        
-        Stack<TreeNode> currst = new Stack<>();
-        Stack<TreeNode> forwst = new Stack<>();
-        
-        boolean order = true;
-        currst.push(root);
-        
-        while(currst.size() != 0){
-            int size = currst.size();
-            ArrayList<Integer> arr = new ArrayList<>();
-            while(size-- > 0){
-                TreeNode rnode = currst.pop();
-                    
-                arr.add(rnode.val);
-                
-                if(order){
-                    if(rnode.left != null) forwst.push(rnode.left);
-                    if(rnode.right != null) forwst.push(rnode.right);
-                }else{
-                    if(rnode.right != null) forwst.push(rnode.right);
-                    if(rnode.left != null) forwst.push(rnode.left);
-                }
-                
-            }
-            ans.add(arr); 
-            // level changes. so, update the (order) & both stack
-            order = !order;
-        
-            Stack<TreeNode> temp = currst;
-            currst = forwst;
-            forwst = temp;
-        }
-        
+    public int countNodes(TreeNode root){
+        int ans = solve(root);
         return ans;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // vertical view 
-
-    public class pair{
-        Node node;
-        int index;
-        pair(Node n , int i){
-            this.node = n;
-            this.index = i;
-        }
-    }
-
-    public static void verticalview(Node root){
-        LinkedList<Node> que = new LinkedList<>();
-        HashMap<Integer, ArrayList<Integer>> hm = new HashMap<>();
-        que.add(root);
-        int minorder = 0;
-        int maxorder = 0;
-
-
-        while(que.size() != 0){
-            int size  = que.size();
-            while(size-- > 0){
-                pair rempair = que.removeFirst();
-                Node rnode = rempair.node;
-                int index = rempair.index;
-
-                if(minorder > index) minorder = index;
-                if(maxorder < index) maxorder = index;
-
-                hm.putIfAbsent(index, new ArrayList<>());
-                hm.get(index).add(rnode.val);
-
-                if(rnode.left != null)
-                    que.addLast(rnode.left);
-
-                if(rnode.right != null)
-                    que.addLast(rnode.right);
-
-            }
-        }
-
-        return; 
-    }
-
-
-
-    // ek aur similar tarika ha (ye vala har jagah submit hoga)  CORRECT 100%
-    public static class pair {
-        TreeNode node = null;
-        int index = 0; // index of node 
-        int y = 0; // level of node 
-
-        pair(TreeNode node, int i, int y) {
-            this.node = node;
-            this.index = i;
-            this.y = y;
-        }
-    }
     
-    public List<List<Integer>> verticalTraversal(TreeNode root) {
-        PriorityQueue<pair> que = new PriorityQueue<>((a, b) -> {
-            if (a.y != b.y)
-                return a.y - b.y;   // this - other  => for default behaviour
-            else
-                return a.node.val - b.node.val; // this - other  => for default behaviour
-        });
-
-        HashMap<Integer, ArrayList<Integer>> hm = new HashMap<>();
+    public int solve(TreeNode root){
+        if(root == null) return 0;
+        int leftmostHeight = heightleft(root.left);
+        int rightmostHeight = heightright(root.right);
         
-        int minindex = 0;
-        int maxindex = 0;
-
-        que.add(new pair(root, 0 , 0));
-
-        while (que.size() != 0) {
-            pair rp = que.remove();
-            TreeNode rnode = rp.node;
-            int index = rp.index;
+        if(leftmostHeight == rightmostHeight) return (int)Math.pow(2,rightmostHeight)-1;
+        else{
+            int leftans = solve(root.left);
+            int rightans = solve(root.right);
             
-            minindex = Math.min(minindex, index);
-            maxindex = Math.max(maxindex, index);
-
-            hm.putIfAbsent(index, new ArrayList<>());
-            hm.get(index).add(rnode.val);
-
-            if (rnode.left != null)
-                que.add(new pair(rnode.left, rp.index - 1, rp.y + 1));
-
-            if (rnode.right != null)
-                que.add(new pair(rnode.right, rp.index + 1, rp.y + 1));
-
+            return leftans + rightans + 1;
         }
-
-        
-        List<List<Integer>> ans = new ArrayList<>();
-        
-        for(int i = minindex; i<= maxindex; i++){
-            ans.add(hm.get(i));
-        }
-        
-        return ans;
-        
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // CONSTRUCTION BASES QUESTION OF BINARY TREE
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // SERIALIZE AND DESERIALIZE OF A BINARY TREE
-    public void serialize(TreeNode root, StringBuilder sb){
-        if(root == null){
-            sb.append("-1001,");
-            return;
-        }
-        
-        sb.append(root.val + ",");
-        serialize(root.left, sb);
-        serialize(root.right, sb);
-        
-    }
-
-    // Encodes a tree to a single string.
-    public String serialize(TreeNode root) {
-        if(root == null) return "";
-        StringBuilder sb = new StringBuilder();
-        serialize(root, sb);
-        return sb.toString();
-    }
-
-    // Decodes your encoded data to tree.
-    public TreeNode deserialize(String data) {
-        if(itr >= data.length() || data.length() == 0) return null;
-        int num = numval(data);
-        if(num == -1001) return null;
-        
-        TreeNode root =  new TreeNode(num);
-        
-        root.left = deserialize(data);
-        root.right = deserialize(data);
-        
-        return root;
     }
     
-    int itr = 0;
-    public int numval(String data){
-        String str = new String();
-        if(data.charAt(itr) == ',') itr++;
-            
-        for(int i = itr; i < data.length(); i++){
-            String s = data.charAt(i)+"";
-            if(s.equals(",") == true){
-                break;
-            }else{
-                str = str + data.charAt(i);
-                itr++;
-            }
+    public int heightleft(TreeNode root){
+        int count = 1;
+        while(root != null){
+            count++;
+            root = root.left;
         }
-        
-        int ans = Integer.parseInt(str);
-        return ans;
+        return count;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // LC-101. Symmetric Tree
-    // (short recurssive code)
-    public boolean isSymmetric(TreeNode root){
-        if(root == null || (root.left == null && root.right == null)) return true;
-        
-        // do alag-alag tree bana lo pehle to (and ab se dono alag tree ha ye socho)
-        TreeNode leftTree = root.left;
-        TreeNode rightTree = root.right;
-        
-        boolean ans =  checkmirror(leftTree, rightTree);
-        return ans;
+    
+    public int heightright(TreeNode root){
+        int count = 1;
+        while(root != null){
+            count++;
+            root = root.right;
+        }
+        return count;
     }
-    // now haam dono ko sath-sath check karte chlege ki sahi ha na 
+     
     
-    public boolean checkmirror(TreeNode root1, TreeNode root2){
-        if(root1 == null && root2 == null)  return true;
-        if(root1 == null || root2 == null) return false;
-        
-        boolean ans = (root1.val == root2.val);
-        ans = ans && checkmirror(root1.left, root2.right);
-        ans = ans && checkmirror(root1.right, root2.left);
-        
-        return ans;
-    }
-
-
-    
-//---------------------------------------------------------------------------
- 
-
-
-    
-
-
-
-
-
-
-
-
-
 }
