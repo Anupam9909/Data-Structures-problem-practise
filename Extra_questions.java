@@ -1,8 +1,8 @@
-LC-310. Minimum Height Trees
+// LC-310. Minimum Height Trees
 
-SOLUTION:
-LEAVES KO HATATE JAO JAB TAK 1 YA 2 NODE NI MILTE 
-(EK LEVEL KE SARE LEAVES HATANE KE BAAD HI CHECK KARNA HA)
+// SOLUTION:
+// LEAVES KO HATATE JAO JAB TAK 1 YA 2 NODE NI MILTE 
+// (EK LEVEL KE SARE LEAVES HATANE KE BAAD HI CHECK KARNA HA)
 
  public List<Integer> findMinHeightTrees(int n , int[][] edges){
         HashSet<Integer>[]  tree = new HashSet[n];
