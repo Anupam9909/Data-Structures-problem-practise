@@ -360,3 +360,268 @@
     }
 
 
+//=================================================================================================================
+
+// LC - 200. Number of Islands
+
+
+    // union find solution
+    static int[] par;
+    
+    public int numIslands(char[][] grid) {
+        int n = grid.length, m = grid[0].length;
+        // initialising parent array
+        par = new int[n*m];
+        for(int i = 0; i < n*m; i++) par[i] = i;
+        
+        int[][] dir = {{-1,0}, {0,-1}, {1,0}, {0,1}};
+        
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(grid[i][j] == '1'){
+                    for(int d = 0; d < 4; d++){
+                        int x = i+dir[d][0];
+                        int y = j+dir[d][1];
+                        if(x >= 0 && x < n && y >= 0 && y < m && grid[x][y] == '1'){
+                            // merge two nodes
+                            int u = i*m+j;
+                            int v = x*m+y;
+                            
+                            int l1 = findleader(u);
+                            int l2 = findleader(v);
+                            
+                            if(l1 != l2){
+                                par[l1] = l2;
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+        
+        // making ans
+        HashSet<Integer> hs = new HashSet<>();
+        for(int i = 0; i < n*m; i++){
+            int r = i/m, c = i%m;
+            
+            if(grid[r][c] == '1'){
+                int leader = findleader(i);
+                hs.add(leader);
+            }
+        }
+        return hs.size();
+    }
+    
+    public int findleader(int u){
+        if(par[u] == u) return u;
+        int recans = findleader(par[u]);
+        return par[u] = recans;
+    }
+    
+    
+
+//=================================================================================================================
+
+// MR. PRESIDENT   
+// SUBMITTION =>   https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/practice-problems/algorithm/mr-president/
+
+// solution concept : 
+// union find se karrege solve  -> ek ans list me mst ke sare weight store kar lege and then usme se max to min weight hatate jayege jab tak hamara total sum weight kaan na ho jaye k se 
+
+// fast input ke liye ye sab input vala kiya ha varna submit nahi hoga hackerrank me as tle ayega as simple input me vo slow hota ha
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.*;
+// Warning: Printing unwanted or ill-formatted data to output will cause the test cases to fail
+import java.io.DataInputStream;  // input extra work
+import java.io.FileInputStream;   // input extra work
+import java.io.IOException;        // input extra work
+
+class TestClass {
+    public static Reader scn = new Reader();   // input extra work
+
+    public static void main(String args[] ) throws Exception { 
+        int n = scn.nextInt();
+        int m = scn.nextInt();
+        long k = scn.nextLong();
+        
+        par = new int[n+1];
+        for(int i = 0; i <= n; i++) par[i] = i;
+        int[][] edges = new int[m][3];
+        for(int i = 0; i < m; i++){
+            int u = scn.nextInt();
+            int v = scn.nextInt();
+            int w = scn.nextInt();
+
+            edges[i][0] = u;   edges[i][1] = v;   edges[i][2] = w;
+        }
+
+        Arrays.sort(edges, (a,b)->{
+            return a[2]-b[2];  // this-other -> increasing order sorting of weight
+        });
+
+        List<Integer> ans = new ArrayList<>();
+        long sum = 0;
+        int totalVtx = n;
+        for(int[] e : edges){
+            int u = e[0], v = e[1], w = e[2];
+
+            int p1 = findParent(u);
+            int p2 = findParent(v);
+
+            if(p1 != p2){  // union
+                ans.add(w);
+                sum += w;
+                par[p1] = p2;  // merging 
+                totalVtx--;
+            }           
+        }
+
+        // if totalVtx is greater than 1, it means that graph was disconneted and we know agar graph hi disconnected ha then MST to garanteed hi nahi ban payega so we print -1 
+        if(totalVtx > 1){
+            System.out.println(-1);
+            return;
+        } 
+
+        // System.out.println(sum);
+        Collections.sort(ans);
+        int count = 0;
+        for(int i = ans.size()-1; i >= 0; i--){
+            if(sum <= k) break;
+            else{
+                sum = sum - ans.get(i) + 1;
+                count++;
+            }
+        }
+
+        if(sum > k) System.out.println(-1); 
+        else System.out.println(count);
+    }
+
+    static int[] par;
+    
+    public static int findParent(int u){
+        if(u == par[u]) return u;
+        int recans = findParent(par[u]);
+        return par[u] = recans;
+    }
+
+    // input extra work starts: =====================================================================================================================================================================
+
+    static class Reader {
+        final private int BUFFER_SIZE = 1 << 28;
+        private DataInputStream din;
+        private byte[] buffer;
+        private int bufferPointer, bytesRead;
+
+        public Reader() {
+            din = new DataInputStream(System.in);
+            buffer = new byte[BUFFER_SIZE];
+            bufferPointer = bytesRead = 0;
+        }
+
+        public Reader(String file_name) throws IOException {
+            din = new DataInputStream(new FileInputStream(file_name));
+            buffer = new byte[BUFFER_SIZE];
+            bufferPointer = bytesRead = 0;
+        }
+
+        public String readLine() throws IOException {
+            byte[] buf = new byte[255]; // line length
+            int cnt = 0, c;
+            while ((c = read()) != -1) {
+                if (c == '\n') {
+                    if (cnt != 0) {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                buf[cnt++] = (byte) c;
+            }
+            return new String(buf, 0, cnt);
+        }
+
+        public int nextInt() throws IOException {
+            int ret = 0;
+            byte c = read();
+            while (c <= ' ') {
+                c = read();
+            }
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+            do {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+
+            if (neg)
+                return -ret;
+            return ret;
+        }
+
+        public long nextLong() throws IOException {
+            long ret = 0;
+            byte c = read();
+            while (c <= ' ')
+                c = read();
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+            do {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+            if (neg)
+                return -ret;
+            return ret;
+        }
+
+        public double nextDouble() throws IOException {
+            double ret = 0, div = 1;
+            byte c = read();
+            while (c <= ' ')
+                c = read();
+            boolean neg = (c == '-');
+            if (neg)
+                c = read();
+
+            do {
+                ret = ret * 10 + c - '0';
+            } while ((c = read()) >= '0' && c <= '9');
+
+            if (c == '.') {
+                while ((c = read()) >= '0' && c <= '9') {
+                    ret += (c - '0') / (div *= 10);
+                }
+            }
+
+            if (neg)
+                return -ret;
+            return ret;
+        }
+
+        private void fillBuffer() throws IOException {
+            bytesRead = din.read(buffer, bufferPointer = 0, BUFFER_SIZE);
+            if (bytesRead == -1)
+                buffer[0] = -1;
+        }
+
+        private byte read() throws IOException {
+            if (bufferPointer == bytesRead)
+                fillBuffer();
+            return buffer[bufferPointer++];
+        }
+
+        public void close() throws IOException {
+            if (din == null)
+                return;
+            din.close();
+        }
+    }
+
+    // input extra work ends  =====================================================================================================================================================================
+
+}
+
+
+//=================================================================================================================

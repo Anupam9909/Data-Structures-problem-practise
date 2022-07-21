@@ -334,74 +334,75 @@
     }
 
 
-
-
-  //===================================================================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-//===========================================================================================================
-
-
-
-    // LC- 103. Binary Tree Zigzag Level Order Traversal 
-
-    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        List<List<Integer>> ans = new ArrayList<>();
-        if(root == null) return ans;
-        
-        Stack<TreeNode> currst = new Stack<>();
-        Stack<TreeNode> forwst = new Stack<>();
-        
-        boolean order = true;
-        currst.push(root);
-        
-        while(currst.size() != 0){
-            int size = currst.size();
-            ArrayList<Integer> arr = new ArrayList<>();
-            while(size-- > 0){
-                TreeNode rnode = currst.pop();
-                    
-                arr.add(rnode.val);
-                
-                if(order){
-                    if(rnode.left != null) forwst.push(rnode.left);
-                    if(rnode.right != null) forwst.push(rnode.right);
-                }else{
-                    if(rnode.right != null) forwst.push(rnode.right);
-                    if(rnode.left != null) forwst.push(rnode.left);
-                }
-                
-            }
-            ans.add(arr); 
-            // level changes. so, update the (order) & both stack
-            order = !order;
-        
-            Stack<TreeNode> temp = currst;
-            currst = forwst;
-            forwst = temp;
-        }
-        
-        return ans;
-    }
-
 //==========================================================================================================
 
 
+    // LC - 545,  BOUNDRY TRAVERSAL OF A BINARY TREE 
+    // TO SUBMIT ON GFG
+    // striver sheet question
+    // yahi code ha ese hi karo aur koi tarika nahi ha 
+    // simply pehle print (leftBoundry) then (bottomBoundry) and then at last (rightBoundry) and jese code likha ha vese hi karna ha kuch change ni karna varna ans galat ayega dry run it
+    public ArrayList <Integer> boundary(Node root){
+        ArrayList<Integer> fans = new ArrayList<>();
+        if(root == null) return fans;
+        if(isLeaf(root) == true){ fans.add(root.data); return fans;} // edge case
+        
+        fans.add(root.data);  // ye bhot jaruri ha ki root vala haam pehle hi fans me daal de nahi to galat ho jayega
+        
+        leftBoundry(root.left, fans);  // and yaha haam (root.left) hi bhejege agar sirf root bej diya to yaha to dikkat ni ayegi par jab haam rightboundry ko call karege to vo left me chala jayega and dubara left boundery ko hi print kar dega which is wrong
+        bottomBoundry(root, fans);
+        rightBoundry(root.right, fans);  // v.imp (root.right) hi bhejege haam agar root.right, beja to duplicate left boundry vala print ho jayega
+        
+        return fans;
+    }
+
+    public boolean isLeaf(Node root){
+        if(root.left == null && root.right == null) return true;
+        return false;
+    }
+
+    public void leftBoundry(Node root, ArrayList<Integer> ans){
+        Node curr = root;
+        while(curr != null){
+            if(isLeaf(curr) == false) ans.add(curr.data);
+            if(curr.left != null) curr = curr.left;
+            else curr = curr.right;
+        }
+    }
+
+    public void rightBoundry(Node root, ArrayList<Integer> ans){
+        ArrayList<Integer> temp = new ArrayList<>();
+        Node curr = root;
+        while(curr != null ){
+            if(isLeaf(curr) == false)  temp.add(curr.data);
+            if(curr.right != null) curr = curr.right;
+            else curr = curr.left;
+        }
+        
+        for(int i = temp.size()-1; i >= 0; i--){
+            ans.add(temp.get(i));
+        }
+    }
+
+    // bottom boundry concept -> Inorder me traverse karte kar lo pure binary tree ko 
+    // and jab bhi leaf mile print kar do usse
+    // bottomBoundry === inorder DFS
+    public void bottomBoundry(Node root, ArrayList<Integer> ans){
+        if(root == null) return;
+        
+        bottomBoundry(root.left, ans);
+        
+        if(isLeaf(root) == true){ // inorder ka kaam
+            ans.add(root.data); 
+        } 
+        
+        bottomBoundry(root.right, ans);
+    }
+
+
+
+
+//==========================================================================================================
 
 
     // LC- 103. Binary Tree Zigzag Level Order Traversal 

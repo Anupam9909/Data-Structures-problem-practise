@@ -74,6 +74,9 @@
         return maxsum;
     }
     
+    // ye karne ka  concept to same vo psum vala ha ki haam psum nikalte jayege and we will search an sum element which is 
+    // greater than (psum-k), because psum-k se jo bhi just bada banda milega vohi hamara potential answer hoga
+    // and since yaha -ve element ha so haam yaha sorted array rakege ie. treeset and isme ek function hota ha ts.ceiling() usski help se nikal lege
     public int maxSumLessThanK(int[] arr, int k){
         int n = arr.length;
         TreeSet<Integer> ts = new TreeSet<>();

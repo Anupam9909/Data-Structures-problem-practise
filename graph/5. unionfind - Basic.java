@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class unionfind {
-
+    // f m c*  -> [ findParent   ,    merge if(leader1 != leader2)   ,    check cycle if(leader1 == leader2) ]
     public static class Edge {
         int v = 0;
         int w = 0;
