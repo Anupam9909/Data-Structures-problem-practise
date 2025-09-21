@@ -1,3 +1,105 @@
+// II WAY - list ki ek predefined class bana ke we can also solve 
+// do this for interview because issi ke basis pe LFU banega 
+// and also iss solution me oops lagi ha bhot
+
+class Node{
+    int key, value;
+    Node next, prev;
+    Node(int k, int v){
+        this.key = k;
+        this.value = v;
+        this.next = null;
+        this.prev = null;
+    }
+}
+
+class MyList{
+    Node head, tail;
+    MyList(){
+        head = new Node(-1, -1);
+        tail = new Node(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+    }
+    public void add(Node node){
+        if(node == null) return;
+        
+        Node forw = head.next;
+        head.next = null;
+        forw.prev = null;
+        
+        head.next = node;
+        node.prev = head;
+        
+        node.next = forw;
+        forw.prev = node;
+    } 
+    
+    public void remove(Node node){
+        Node back = node.prev;
+        Node front = node.next;
+        
+        back.next = front;
+        front.prev = back;
+        
+        node.prev = null;
+        node.next = null;
+    }
+}
+
+class LRUCache {
+    MyList list;
+    int size = 0, capacity = 0;
+    HashMap<Integer, Node> hm;
+    public LRUCache(int capacity){
+        this.size = 0;
+        this.capacity = capacity;
+        list = new MyList();
+        hm = new HashMap<>();
+    }
+    
+    public int get(int key) {
+        if(hm.containsKey(key)){
+            Node tnode = hm.get(key);
+            // update cache
+            list.remove(tnode);
+            list.add(tnode);
+            return tnode.value;
+        }else{
+            return -1;
+        }
+    }
+    
+    
+    public void put(int key, int value) {
+        if(hm.containsKey(key)){
+            Node tnode = hm.get(key);
+            tnode.value = value;  // update node value
+            // update LRU cache
+            list.remove(tnode);
+            list.add(tnode);
+        }else{
+            if(size >= capacity){  // if capacity is full : just remove the LRU node
+                Node lastnode = list.tail.prev;
+                hm.remove(lastnode.key);  // remove from hm also
+                list.remove(lastnode);
+            }
+            
+            Node nn = new Node(key,value);
+            list.add(nn);
+            size++;
+            hm.put(key, nn);
+        }
+    }
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 // I WAY (short way)
 // DO THIS WAY [LRU CACHE] for online exam
 // Note 1 :- do dummy node bana lo ek head ka and ek tail ka
@@ -121,102 +223,5 @@ class LRUCache {
 
 
 
-
-
-
-
-// II WAY - list ki ek predefined class bana ke we can also solve 
-// do this for interview because issi ke basis pe LFU banega 
-// and also iss solution me oops lagi ha bhot
-class Node{
-    int key, value;
-    Node next, prev;
-    Node(int k, int v){
-        this.key = k;
-        this.value = v;
-        this.next = null;
-        this.prev = null;
-    }
-}
-
-class MyList{
-    Node head, tail;
-    MyList(){
-        head = new Node(-1, -1);
-        tail = new Node(-1, -1);
-        head.next = tail;
-        tail.prev = head;
-    }
-    public void add(Node node){
-        if(node == null) return;
-        
-        Node forw = head.next;
-        head.next = null;
-        forw.prev = null;
-        
-        head.next = node;
-        node.prev = head;
-        
-        node.next = forw;
-        forw.prev = node;
-    } 
-    
-    public void remove(Node node){
-        Node back = node.prev;
-        Node front = node.next;
-        
-        back.next = front;
-        front.prev = back;
-        
-        node.prev = null;
-        node.next = null;
-    }
-}
-
-class LRUCache {
-    MyList list;
-    int size = 0, capacity = 0;
-    HashMap<Integer, Node> hm;
-    public LRUCache(int capacity){
-        this.size = 0;
-        this.capacity = capacity;
-        list = new MyList();
-        hm = new HashMap<>();
-    }
-    
-    public int get(int key) {
-        if(hm.containsKey(key)){
-            Node tnode = hm.get(key);
-            // update cache
-            list.remove(tnode);
-            list.add(tnode);
-            return tnode.value;
-        }else{
-            return -1;
-        }
-    }
-    
-    
-    public void put(int key, int value) {
-        if(hm.containsKey(key)){
-            Node tnode = hm.get(key);
-            tnode.value = value;  // update node value
-            // update LRU cache
-            list.remove(tnode);
-            list.add(tnode);
-        }else{
-            if(size >= capacity){  // if capacity is full : just remove the LRU node
-                Node lastnode = list.tail.prev;
-                hm.remove(lastnode.key);  // remove from hm also
-                list.remove(lastnode);
-            }
-            
-            Node nn = new Node(key,value);
-            list.add(nn);
-            size++;
-            hm.put(key, nn);
-        }
-    }
-}
 
 
