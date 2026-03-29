@@ -582,12 +582,46 @@ public class arraystring{
 
 
 //============================================================================================================
+// largest subarray with equal number of 0 and 1
+ // 0 ko -1 se replace kar do
+  // agar kissi point pe psum x hai then (x-k) dhundo -> PSUM vake ka logic yaha pe yahi hai
+ //// hashmap ->. { Psum, index}
+public int maxLen(int[] arr) {
+        // Your code here
+        int n = arr.length;
+        int[] nums = new int[n];
+        for(int i = 0; i < n; i++){
+            if(arr[i] == 0){
+                nums[i] = -1;
+            }else{
+                nums[i] = 1;
+            }
+        }
+        
+        // prefix sum 
+        int psum = 0, maxLen = 0;
+        HashMap<Integer, Integer> hm = new HashMap<>();
+        hm.put(0, -1);
+        
+        for(int i = 0; i < n; i++){
+            psum = psum + nums[i];
+            
+            if(hm.containsKey(psum)){
+                int idx = hm.get(psum);
+                int length = i-idx;
+                maxLen = Math.max(maxLen, length);
+            }else{
+                hm.put(psum, i);
+            }
+        }
+        return maxLen;
+    }
 
 
 
-
-
-
+// count subarrays with equal number of 0 and 1
+// hashmap ->. { Psum, freq}
+ count += freq;
 
 
 
