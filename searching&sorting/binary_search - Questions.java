@@ -56,46 +56,35 @@ int insertpos = -idx-1;
     // APPLY BS IN [break_pt, n-1] range 
     // and return the ans
     public int search(int[] arr, int target) {
-        int break_pt = bs(arr);
-        int n = arr.length;
-        // search in left sorted array
-        int si = 0, ei = break_pt-1;
+        int n = arr.length, defectpoint = -1, si = 0, ei = n-1;
+        
+        // note : haam yaha sirf local minima nikal rahe hai, so (ei = mid) lenge and = hote hi break kar dege
         while(si <= ei){
-            int mid = (si+ei)/2;
-            
-            if(arr[mid] < target) si = mid+1;
-            else if(arr[mid] > target) ei = mid-1;
-            else return mid;
+            int mid = si + (ei-si)/2;
+
+            if(arr[mid] < arr[ei]) ei = mid;
+            else if(arr[mid] > arr[ei]) si = mid+1;
+            else break;
         }
-        
-        
-        // searching in the right soted array
-        si = break_pt; ei = n-1;
+
+        defectpoint = si;
+        // System.out.println(defectpoint);
+        int a1 = binarysearch(arr, 0, defectpoint-1, target);
+        int a2 = binarysearch(arr, defectpoint, n-1, target);
+        if(a1 != -1) return a1;
+        if(a2 != -1) return a2;
+        return -1;
+    }
+
+    public int binarysearch(int[] arr, int si, int ei, int target){
         while(si <= ei){
-            int mid = (si+ei)/2;
-            
+            int mid = si + (ei-si)/2;
             if(arr[mid] < target) si = mid+1;
             else if(arr[mid] > target) ei = mid-1;
-            else return mid;
+            else return mid; 
         }
         return -1;
     }
-    
-    public int bs(int[] arr){
-        int n = arr.length, si = 0, ei = n-1;
-        
-        while(si <= ei){
-            int mid = (si+ei)/2;
-            
-            if(arr[mid] < arr[ei]) ei = mid;
-            else if(arr[mid] > arr[ei]) si = mid+1;
-            else return mid;
-        }
-        return 0;
-    }
-
-
-
 //=================================================================================
 
 // LC-153. Find Minimum in Rotated Sorted Array
