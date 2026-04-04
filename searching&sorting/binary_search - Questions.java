@@ -87,27 +87,6 @@ int insertpos = -idx-1;
     }
 //=================================================================================
 
-// LC-153. Find Minimum in Rotated Sorted Array
-
-    // ham yaha (mid) & (ei) ko dek ke decision lege
-    // dry run it and then code
-    // NOTE: [ei = mid] ayega and == equal to vala case bhi ese hi likhna padega nahi to ni chalega
-    // ditto esa hi karna ha (chahe to raat lo)
-    public int findMin(int[] arr) {
-        int n = arr.length, si = 0, ei = n-1;  
-        
-        while(si <= ei){
-            int mid = (si+ei)/2;
-            
-            if(arr[mid] < arr[ei]) ei = mid;
-            else if(arr[mid] > arr[ei]) si = mid+1;
-            else return arr[mid];
-        }
-        return 0;
-    }
-
-
-//=================================================================================
 
 
 // LC-154. Find Minimum in Rotated Sorted Array II (hard) // can ask in interview
